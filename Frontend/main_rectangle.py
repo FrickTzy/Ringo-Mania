@@ -176,6 +176,7 @@ class Rectangle:
         current_time = pygame.time.get_ticks()
         key_pressed = key.get_pressed()
         for keys in KEY_BINDS:
+            self.check_pause(key_pressed)
             if key_pressed[eval(keys)]:
                 self.remove_fall_circles(KEY_BINDS[keys])
                 if not HIT_SOUNDS:
@@ -183,6 +184,11 @@ class Rectangle:
                 if current_time - self.tap_time >= KEY_DELAY:
                     self.tap_time = current_time
                     self.music.play_hit_sound()
+
+    @staticmethod
+    def check_pause(key_pressed):
+        if key_pressed[pygame.K_ESCAPE]:
+            print("escaped")
 
     def determine_acc(self, y_position):
         score_category = ""

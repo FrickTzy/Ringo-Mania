@@ -28,6 +28,14 @@ class Music:
             mixer.Channel(2).set_volume(self.song_volume)
 
     @staticmethod
+    def pause_music():
+        mixer.music.pause()
+
+    @staticmethod
+    def unpause_music():
+        mixer.music.unpause()
+
+    @staticmethod
     def play_hit_sound():
         sfx = mixer.Sound(os.path.join("Backend\Sfx", "Hit_Normal.wav"))
         mixer.Channel(3).set_volume(HIT_SOUND_VOLUME)

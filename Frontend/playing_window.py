@@ -1,6 +1,6 @@
 import pygame
 from Stuff.Ringo_Mania.Frontend.settings import FPS, COMBO_X, SCORE_Y, BLACK, clock, \
-    PURPLE, ACC_Y, END_SONG_DELAY, MID_COMBO_X, MID_COMBO_Y, RECT_COMBO_DISPLAY, \
+    PURPLE, END_SONG_DELAY, MID_COMBO_X, MID_COMBO_Y, RECT_COMBO_DISPLAY, \
     RECORD_X
 from Stuff.Ringo_Mania.Frontend.main_rectangle import Rectangle
 from Stuff.Ringo_Mania.Frontend.records import Record
