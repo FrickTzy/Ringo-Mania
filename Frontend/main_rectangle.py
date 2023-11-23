@@ -102,10 +102,10 @@ class Rectangle:
 
     def fall_circles(self):
         current_time = pygame.time.get_ticks()
+        if self.pause.is_paused:
+            self.last = current_time
         if current_time - self.last >= self.display.interval:
             self.last = current_time
-            if self.pause.is_paused:
-                return
             if self.imported:
                 if self.imported_lanes_index >= len(self.imported_lanes) - 1:
                     self.map_finished = True
