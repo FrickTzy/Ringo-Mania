@@ -9,6 +9,7 @@ from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
 from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
 from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
 from Stuff.Ringo_Mania.Frontend.pause import Pause
+from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 
 class Rectangle:
@@ -28,14 +29,14 @@ class Rectangle:
         self.imported_lanes = []
         self.imported_lanes_index = 0
         self.map = []
-        self.last = pygame.time.get_ticks()
+        self.mini_timer = MiniTimer()
         self.tap_time = pygame.time.get_ticks()
         self.combo_counter = combo_counter
         self.tapped = False
         self.map_manager = maps
         self.imported = IMPORT_MAP
         self.finished_importing = False
-        self.pause = Pause(circles=self.falling_circles, music=self.music)
+        self.pause = Pause(circles=self.falling_circles, music=self.music, mini_timer=self.mini_timer)
 
     def run(self):
         self.fall_circles_init()
@@ -103,9 +104,9 @@ class Rectangle:
     def fall_circles(self):
         current_time = pygame.time.get_ticks()
         if self.pause.is_paused:
-            self.last = current_time
-        if current_time - self.last >= self.display.interval:
-            self.last = current_time
+            return
+        if current_time - self.mini_timer.last_time >= self.display.interval:
+            self.mini_timer.last_time = current_time
             if self.imported:
                 if self.imported_lanes_index >= len(self.imported_lanes) - 1:
                     self.map_finished = True
