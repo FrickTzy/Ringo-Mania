@@ -13,7 +13,7 @@ class Main:
     def run(self):
         self.play_window.run()
 
-
+    
 if __name__ == "__main__":
     main = Main()
     main.run()

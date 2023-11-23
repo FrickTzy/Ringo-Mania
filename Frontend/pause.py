@@ -15,7 +15,7 @@ class Pause:
         self.mini_timer = mini_timer
         self.timer = Timer()
 
-    def check_pause(self, key_pressed):
+    def check_pause(self, key_pressed) -> bool:
         current_time = time.get_ticks()
         if key_pressed[K_ESCAPE]:
             if current_time - self.__starting_time >= self.__PAUSE_INTERVAL:
@@ -25,10 +25,12 @@ class Pause:
                     self.unpause()
                     self.timer.end_time_ms()
                     self.__paused = False
+                    return False
                 else:
                     self.timer.reset_time()
                     self.timer.start_time_ms()
                     self.__paused = True
+                    return True
 
     @property
     def is_paused(self) -> bool:

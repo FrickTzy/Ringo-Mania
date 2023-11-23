@@ -189,8 +189,10 @@ class Rectangle:
     def detect_key(self):
         current_time = pygame.time.get_ticks()
         key_pressed = key.get_pressed()
+        self.pause.check_pause(key_pressed)
+        if self.pause.is_paused:
+            return
         for keys in KEY_BINDS:
-            self.pause.check_pause(key_pressed)
             if key_pressed[eval(keys)]:
                 self.remove_fall_circles(KEY_BINDS[keys])
                 if not HIT_SOUNDS:
