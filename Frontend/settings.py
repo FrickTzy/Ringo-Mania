@@ -1,6 +1,6 @@
 from pygame import time
 
-FULL_SCREEN_VIEW = True
+FULL_SCREEN_VIEW = False
 
 WIDTH, HEIGHT = 1200, 700
 RECTANGLE_WIDTH = WIDTH / 2.2  # 510

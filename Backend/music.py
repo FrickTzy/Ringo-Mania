@@ -29,11 +29,11 @@ class Music:
 
     @staticmethod
     def pause_music():
-        mixer.music.pause()
+        mixer.Channel(2).pause()
 
     @staticmethod
     def unpause_music():
-        mixer.music.unpause()
+        mixer.Channel(2).unpause()
 
     @staticmethod
     def play_hit_sound():

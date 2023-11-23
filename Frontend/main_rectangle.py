@@ -8,10 +8,11 @@ from Stuff.Ringo_Mania.Frontend.circles import Circle
 from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
 from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
 from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
+from Stuff.Ringo_Mania.Frontend.pause import Pause
 
 
 class Rectangle:
-    def __init__(self, window, music, maps, timer, display, combo_counter: ComboCounter):
+    def __init__(self, *, window, music, maps, timer, display, combo_counter: ComboCounter):
         self.display = display
         self.show_acc = ShowAcc()
         self.rect = Rect(self.display.rectangle_x, 0, self.display.rectangle_width, self.display.height)
@@ -34,10 +35,12 @@ class Rectangle:
         self.map_manager = maps
         self.imported = IMPORT_MAP
         self.finished_importing = False
+        self.pause = Pause(circles=self.falling_circles, music=self.music)
 
     def run(self):
         self.fall_circles_init()
-        self.remove_fall_circles()
+        if not self.pause.is_paused:
+            self.remove_fall_circles()
         self.show()
         self.detect_key()
 
@@ -68,9 +71,17 @@ class Rectangle:
         draw.rect(self.main_window, RECT_COLOR, self.rect)
         for index, circle in enumerate(self.circles):
             circle.draw_circles(y=self.display.bottom_circle_y)
+        if self.check_pause():
+            return
         for fall_circle in self.falling_circles:
             fall_circle.draw_circle(self.display.height, speed=self.display.falling_speed)
         self.show_acc.show_acc(self.main_window, x=self.display.acc_identifier_x, y=self.display.acc_identifier_y)
+
+    def check_pause(self) -> bool:
+        if self.pause.is_paused:
+            self.pause.show_pause()
+            return True
+        return False
 
     def init_circles(self):
         for i in range(4):
@@ -93,6 +104,8 @@ class Rectangle:
         current_time = pygame.time.get_ticks()
         if current_time - self.last >= self.display.interval:
             self.last = current_time
+            if self.pause.is_paused:
+                return
             if self.imported:
                 if self.imported_lanes_index >= len(self.imported_lanes) - 1:
                     self.map_finished = True
@@ -176,7 +189,7 @@ class Rectangle:
         current_time = pygame.time.get_ticks()
         key_pressed = key.get_pressed()
         for keys in KEY_BINDS:
-            self.check_pause(key_pressed)
+            self.pause.check_pause(key_pressed)
             if key_pressed[eval(keys)]:
                 self.remove_fall_circles(KEY_BINDS[keys])
                 if not HIT_SOUNDS:
@@ -184,11 +197,6 @@ class Rectangle:
                 if current_time - self.tap_time >= KEY_DELAY:
                     self.tap_time = current_time
                     self.music.play_hit_sound()
-
-    @staticmethod
-    def check_pause(key_pressed):
-        if key_pressed[pygame.K_ESCAPE]:
-            print("escaped")
 
     def determine_acc(self, y_position):
         score_category = ""
@@ -209,7 +217,3 @@ class Rectangle:
                     break
 
         return score_category, ACC_CATEGORIES_POINTS[score_category]
-
-
-if __name__ == "__main__":
-    print(Rectangle("", "", "", "").determine_acc(500))
