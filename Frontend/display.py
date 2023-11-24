@@ -29,6 +29,10 @@ class Display:
             mouse.set_visible(False)
 
     @property
+    def get_window_size(self):
+        return self.width, self.height
+
+    @property
     def record_y_interval(self):
         return self.height // RECORD_Y_INTERVAL_RATIO
 
@@ -77,6 +81,18 @@ class Display:
     @property
     def acc_identifier_y(self):
         return self.height // 2.3
+
+    @property
+    def center(self) -> tuple[int, int]:
+        return self.width // 2, self.height // 2
+
+    def pause_text_pos(self, font_width):
+        width, height = self.center
+        return self.center_window_element(width, font_width), height / 1.9
+
+    @staticmethod
+    def center_window_element(width, element_width):
+        return width - element_width / 2
 
     @property
     def combo_pos_y(self):

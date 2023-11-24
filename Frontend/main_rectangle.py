@@ -8,12 +8,10 @@ from Stuff.Ringo_Mania.Frontend.circles import Circle
 from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
 from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
 from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
-from Stuff.Ringo_Mania.Frontend.pause import Pause
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 
 class Rectangle:
-    def __init__(self, *, window, music, maps, timer, display, combo_counter: ComboCounter):
+    def __init__(self, *, window, music, maps, timer, display, combo_counter: ComboCounter, pause, mini_timer):
         self.display = display
         self.show_acc = ShowAcc()
         self.rect = Rect(self.display.rectangle_x, 0, self.display.rectangle_width, self.display.height)
@@ -29,14 +27,14 @@ class Rectangle:
         self.imported_lanes = []
         self.imported_lanes_index = 0
         self.map = []
-        self.mini_timer = MiniTimer()
+        self.mini_timer = mini_timer
         self.tap_time = pygame.time.get_ticks()
         self.combo_counter = combo_counter
         self.tapped = False
         self.map_manager = maps
         self.imported = IMPORT_MAP
         self.finished_importing = False
-        self.pause = Pause(circles=self.falling_circles, music=self.music, mini_timer=self.mini_timer)
+        self.pause = pause
 
     def run(self):
         self.fall_circles_init()
@@ -72,17 +70,18 @@ class Rectangle:
         draw.rect(self.main_window, RECT_COLOR, self.rect)
         for index, circle in enumerate(self.circles):
             circle.draw_circles(y=self.display.bottom_circle_y)
-        if self.check_pause():
+        if self.pause.is_paused:
+            self.pause_objects()
             return
         for fall_circle in self.falling_circles:
             fall_circle.draw_circle(self.display.height, speed=self.display.falling_speed)
         self.show_acc.show_acc(self.main_window, x=self.display.acc_identifier_x, y=self.display.acc_identifier_y)
 
-    def check_pause(self) -> bool:
-        if self.pause.is_paused:
-            self.pause.show_pause()
-            return True
-        return False
+    def pause_objects(self):
+        for circle in self.falling_circles:
+            circle.draw_circle(pause=True)
+        self.show_acc.show_acc(window=self.main_window, x=self.display.acc_identifier_x,
+                               y=self.display.acc_identifier_y)
 
     def init_circles(self):
         for i in range(4):

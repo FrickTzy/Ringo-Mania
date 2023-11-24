@@ -7,6 +7,8 @@ from Stuff.Ringo_Mania.Frontend.records import Record
 from Stuff.Ringo_Mania.Frontend.font import Font
 from Stuff.Ringo_Mania.Frontend.display import Display
 from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
+from Stuff.Ringo_Mania.Frontend.pause import Pause
+from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 
 class PlayWindow:
@@ -22,9 +24,12 @@ class PlayWindow:
         self.timer = timer
         self.map_manager = map_manager(song)
         self.combo_counter = ComboCounter(self.font)
+        self.mini_timer = MiniTimer()
+        self.pause = Pause(music=self.music, mini_timer=self.mini_timer, font=self.font)
         self.rectangle = Rectangle(window=self.display.window, music=self.music, maps=self.map_manager,
                                    timer=self.timer,
-                                   display=self.display, combo_counter=self.combo_counter)
+                                   display=self.display, combo_counter=self.combo_counter, pause=self.pause,
+                                   mini_timer=self.mini_timer)
 
     def run(self):
         self.background_setup()
@@ -80,9 +85,14 @@ class PlayWindow:
                 self.running = False
         if self.rectangle.combo_counter.life == 0:
             self.rectangle.failed = True
-        if self.timer.timer_finished or self.rectangle.map_finished:
+        if self.timer.timer_finished or self.rectangle.map_finished and not self.rectangle.failed:
             self.rectangle.map_finished = True
             self.play_tracker.update_plays(self.rectangle.combo_counter.get_stats())
+        if self.rectangle.pause.is_paused:
+            self.rectangle.pause.show_pause(
+                window_size=self.display.get_window_size,
+                window=self.display.window,
+                text_pos=self.display.pause_text_pos(self.font.main_text_width("Game Paused")))
 
         # self.window.get_size()
 

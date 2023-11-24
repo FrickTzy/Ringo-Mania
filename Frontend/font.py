@@ -27,3 +27,7 @@ class Font:
     def change_acc_font_size(self, height: int) -> None:
         size = int(height // self.__ACC_FONT_RATIO)
         self.acc_font = font.SysFont("arialblack", size)
+
+    def main_text_width(self, text):
+        width, height = self.main_font.size(text)
+        return width
