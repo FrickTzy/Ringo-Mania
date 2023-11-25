@@ -20,6 +20,10 @@ class Music:
         mixer.Channel(2).play(self.music)
         return self.music.get_length()
 
+    def restart_music(self):
+        mixer.Channel(2).stop()
+        self.play_music()
+
     def fade_music(self):
         ms_now = time.get_ticks()
         if ms_now - self.starting_ms > SONG_FADE_MS:

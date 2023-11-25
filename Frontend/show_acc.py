@@ -35,6 +35,9 @@ class ShowAcc:
                 acc = None
         self.__acc = acc
 
+    def reset_acc(self):
+        self.__acc = None
+
     def show_acc(self, window: pygame.Surface, x=ACC_IMG_X, y=ACC_IMG_Y):
         if self.__acc is None:
             return

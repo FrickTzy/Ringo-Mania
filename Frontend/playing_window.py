@@ -91,8 +91,10 @@ class PlayWindow:
         if self.rectangle.pause.is_paused:
             self.rectangle.pause.show_pause(
                 window_size=self.display.get_window_size,
-                window=self.display.window,
-                text_pos=self.display.pause_text_pos(self.font.main_text_width("Game Paused")))
+                window=self.display.window)
+        if self.rectangle.pause.restarted:
+            self.rectangle.restart()
+            self.rectangle.pause.restarted = False
 
         # self.window.get_size()
 

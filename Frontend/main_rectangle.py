@@ -43,6 +43,18 @@ class Rectangle:
         self.show()
         self.detect_key()
 
+    def restart(self):
+        self.falling_circles.clear()
+        self.combo_counter.reset_all()
+        self.show_acc.reset_acc()
+        self.music.restart_music()
+        self.timer.restart()
+        self.map.clear()
+        if self.imported:
+            self.finished_importing = False
+            self.import_circles_init()
+            self.imported_lanes_index = 0
+
     def update_rect(self):
         if self.display.check_window_size():
             self.rect = Rect(self.display.rectangle_x, 0, self.display.rectangle_width, self.display.height)
@@ -111,7 +123,9 @@ class Rectangle:
                     self.map_finished = True
                     return
                 for circle_index in self.imported_lanes[self.imported_lanes_index]:
-                    self.falling_circles.append(FallingCircle(self.main_window, circle_index))
+                    self.falling_circles.append(
+                        FallingCircle(self.main_window, circle_index, lane_coord=self.display.circle_position,
+                                      circle_size=self.display.circle_size))
                 self.imported_lanes_index += 1
             else:
                 self.lanes_taken = []

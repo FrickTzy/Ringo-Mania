@@ -14,6 +14,11 @@ class ComboInfo:
         if self.combo > self.highest_combo:
             self.highest_combo = self.combo
 
+    def reset(self):
+        self.combo = 0
+        self.highest_combo = 0
+        self.score = 0
+
 
 class ComboCounter:
     pyfont.init()
@@ -123,6 +128,13 @@ class ComboCounter:
             return hour, "pm"
         else:
             return hour - 12, "pm"
+
+    def reset_all(self):
+        self.__info.reset()
+        self.life = MAX_LIFE
+        self.accuracy = 0
+        self.missed = False
+        self.total_clicked.clear()
 
     def get_stats(self):
         self.get_date()

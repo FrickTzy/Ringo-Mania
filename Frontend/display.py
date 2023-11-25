@@ -1,4 +1,4 @@
-from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES
+from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors
 from Stuff.Ringo_Mania.Frontend.settings import WIDTH, HEIGHT, RESIZABLE, RECTANGLE_X, RECTANGLE_WIDTH, CIRCLE_X_START, \
     BETWEEN_CIRCLE_PADDING, CIRCLE_START_PADDING, CIRCLE_SIZE_TO_RECT_WIDTH, CIRCLE_SIZE, LIFE_BAR_PADDING, \
     RECTANGLE_WIDTH_CAP, LIFE_BAR_COORDINATES, FULL_SCREEN_VIEW, COMBO_Y_PADDING, \
@@ -27,6 +27,7 @@ class Display:
             self.width, self.height = 1600, 900
             self.window = display.set_mode((self.width, self.height), FULLSCREEN)
             mouse.set_visible(False)
+            mouse.set_cursor(cursors.arrow)
 
     @property
     def get_window_size(self):
@@ -88,7 +89,7 @@ class Display:
 
     def pause_text_pos(self, font_width):
         width, height = self.center
-        return self.center_window_element(width, font_width), height / 1.9
+        return self.center_window_element(width, font_width), height / 1.6
 
     @staticmethod
     def center_window_element(width, element_width):
