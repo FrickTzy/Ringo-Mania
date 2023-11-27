@@ -10,7 +10,7 @@ class FallingCircle(Circle):
         self.hit_box = Rect(self.lane_coord[self.lane], self.y, CIRCLE_SIZE, CIRCLE_SIZE)
         self.out = False
 
-    def draw_circle(self, height, speed=FALLING_SPEED, pause=False):
+    def draw_circle(self, height=HEIGHT, speed=FALLING_SPEED, pause=False):
         self.window.blit(super().circle_img, (self.hit_box.x, self.hit_box.y))
         if not pause:
             self.hit_box.y += speed

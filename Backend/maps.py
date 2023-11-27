@@ -20,12 +20,16 @@ class MapManager:
         self.map_list.append(current_circle_list)
 
     def import_map(self):
+        self.map_list.clear()
         if not path.exists(self.path):
             raise Exception("File Not Found")
         with open(self.path, "r") as map_file:
             for lines in map_file:
                 self.map_list.append(lines.strip())
         return reversed(self.map_list)
+
+    def reset_map_list(self) -> None:
+        self.map_list.clear()
 
     @staticmethod
     def add_decimal(num: int):

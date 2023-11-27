@@ -20,12 +20,25 @@ class Music:
         mixer.Channel(2).play(self.music)
         return self.music.get_length()
 
+    def restart_music(self):
+        self.song_volume = SONG_VOLUME
+        mixer.Channel(2).stop()
+        self.play_music()
+
     def fade_music(self):
         ms_now = time.get_ticks()
         if ms_now - self.starting_ms > SONG_FADE_MS:
             self.starting_ms = ms_now
             self.song_volume -= SONG_FADE
             mixer.Channel(2).set_volume(self.song_volume)
+
+    @staticmethod
+    def pause_music():
+        mixer.Channel(2).pause()
+
+    @staticmethod
+    def unpause_music():
+        mixer.Channel(2).unpause()
 
     @staticmethod
     def play_hit_sound():

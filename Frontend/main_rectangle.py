@@ -11,7 +11,7 @@ from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
 
 
 class Rectangle:
-    def __init__(self, window, music, maps, timer, display, combo_counter: ComboCounter):
+    def __init__(self, *, window, music, maps, timer, display, combo_counter: ComboCounter, pause, mini_timer):
         self.display = display
         self.show_acc = ShowAcc()
         self.rect = Rect(self.display.rectangle_x, 0, self.display.rectangle_width, self.display.height)
@@ -27,19 +27,34 @@ class Rectangle:
         self.imported_lanes = []
         self.imported_lanes_index = 0
         self.map = []
-        self.last = pygame.time.get_ticks()
+        self.mini_timer = mini_timer
         self.tap_time = pygame.time.get_ticks()
         self.combo_counter = combo_counter
         self.tapped = False
         self.map_manager = maps
         self.imported = IMPORT_MAP
         self.finished_importing = False
+        self.pause = pause
 
     def run(self):
         self.fall_circles_init()
-        self.remove_fall_circles()
+        if not self.pause.is_paused:
+            self.remove_fall_circles()
         self.show()
         self.detect_key()
+
+    def restart(self):
+        self.falling_circles.clear()
+        self.combo_counter.reset_all()
+        self.show_acc.reset_acc()
+        self.music.restart_music()
+        self.timer.restart()
+        self.map.clear()
+        self.failed = False
+        if self.imported:
+            self.finished_importing = False
+            self.import_circles_init()
+            self.imported_lanes_index = 0
 
     def update_rect(self):
         if self.display.check_window_size():
@@ -68,9 +83,18 @@ class Rectangle:
         draw.rect(self.main_window, RECT_COLOR, self.rect)
         for index, circle in enumerate(self.circles):
             circle.draw_circles(y=self.display.bottom_circle_y)
+        if self.pause.is_paused:
+            self.pause_objects()
+            return
         for fall_circle in self.falling_circles:
             fall_circle.draw_circle(self.display.height, speed=self.display.falling_speed)
         self.show_acc.show_acc(self.main_window, x=self.display.acc_identifier_x, y=self.display.acc_identifier_y)
+
+    def pause_objects(self):
+        for circle in self.falling_circles:
+            circle.draw_circle(pause=True)
+        self.show_acc.show_acc(window=self.main_window, x=self.display.acc_identifier_x,
+                               y=self.display.acc_identifier_y)
 
     def init_circles(self):
         for i in range(4):
@@ -91,14 +115,18 @@ class Rectangle:
 
     def fall_circles(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last >= self.display.interval:
-            self.last = current_time
+        if self.pause.is_paused:
+            return
+        if current_time - self.mini_timer.last_time >= self.display.interval:
+            self.mini_timer.last_time = current_time
             if self.imported:
                 if self.imported_lanes_index >= len(self.imported_lanes) - 1:
                     self.map_finished = True
                     return
                 for circle_index in self.imported_lanes[self.imported_lanes_index]:
-                    self.falling_circles.append(FallingCircle(self.main_window, circle_index))
+                    self.falling_circles.append(
+                        FallingCircle(self.main_window, circle_index, lane_coord=self.display.circle_position,
+                                      circle_size=self.display.circle_size))
                 self.imported_lanes_index += 1
             else:
                 self.lanes_taken = []
@@ -175,6 +203,9 @@ class Rectangle:
     def detect_key(self):
         current_time = pygame.time.get_ticks()
         key_pressed = key.get_pressed()
+        self.pause.check_pause(key_pressed)
+        if self.pause.is_paused:
+            return
         for keys in KEY_BINDS:
             if key_pressed[eval(keys)]:
                 self.remove_fall_circles(KEY_BINDS[keys])
@@ -203,7 +234,3 @@ class Rectangle:
                     break
 
         return score_category, ACC_CATEGORIES_POINTS[score_category]
-
-
-if __name__ == "__main__":
-    print(Rectangle("", "", "", "").determine_acc(500))
