@@ -6,7 +6,7 @@ class Main:
     def __init__(self):
         self.music = Music()
         self.timer = Timer()
-        self.chosen_song = "Slam_Dunk"
+        self.chosen_song = "Hell's Paradise"
         self.play_tracker = PlayTracker(self.chosen_song)
         self.play_window = PlayWindow(self.music, self.timer, MapManager, self.play_tracker, self.chosen_song)
 
