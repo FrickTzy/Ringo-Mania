@@ -111,30 +111,28 @@ class Rectangle:
             return
         if len(self.falling_circles) >= MAX_CIRCLES_PER_FRAME:
             return
-        self.fall_circles()
-
-    def fall_circles(self):
-        current_time = pygame.time.get_ticks()
         if self.pause.is_paused:
             return
-        if current_time - self.mini_timer.last_time >= self.display.interval:
-            self.mini_timer.last_time = current_time
-            if self.imported:
-                if self.imported_lanes_index >= len(self.imported_lanes) - 1:
-                    self.map_finished = True
-                    return
-                for circle_index in self.imported_lanes[self.imported_lanes_index]:
-                    self.falling_circles.append(
-                        FallingCircle(self.main_window, circle_index, lane_coord=self.display.circle_position,
-                                      circle_size=self.display.circle_size))
-                self.imported_lanes_index += 1
-            else:
-                self.lanes_taken = []
+        if self.mini_timer.time_interval_finished():
+            self.fall_circles()
+
+    def fall_circles(self):
+        if self.imported:
+            if self.imported_lanes_index >= len(self.imported_lanes) - 1:
+                self.map_finished = True
+                return
+            for circle_index in self.imported_lanes[self.imported_lanes_index]:
                 self.falling_circles.append(
-                    FallingCircle(self.main_window, self.lane_setter(), lane_coord=self.display.circle_position,
+                    FallingCircle(self.main_window, circle_index, lane_coord=self.display.circle_position,
                                   circle_size=self.display.circle_size))
-                self.multiple_circles_process()
-                self.map_manager.convert_to_map_list(self.lanes_taken, self.timer.current_time)
+            self.imported_lanes_index += 1
+        else:
+            self.lanes_taken = []
+            self.falling_circles.append(
+                FallingCircle(self.main_window, self.lane_setter(), lane_coord=self.display.circle_position,
+                              circle_size=self.display.circle_size))
+            self.multiple_circles_process()
+            self.map_manager.convert_to_map_list(self.lanes_taken, self.timer.current_time)
 
     def import_circles_init(self):
         if self.finished_importing:
@@ -214,23 +212,3 @@ class Rectangle:
                 if current_time - self.tap_time >= KEY_DELAY:
                     self.tap_time = current_time
                     self.music.play_hit_sound()
-
-    def determine_acc(self, y_position):
-        score_category = ""
-        hit_windows: dict = self.display.acc_category_hit_window
-        category_list = list(hit_windows.keys())
-        for category, acc_range in hit_windows.items():
-            if (index := category_list.index(category)) == 0:
-                continue
-            if y_position > acc_range[1]:
-                score_category = category_list[index - 1]
-                break
-            elif y_position < acc_range[0]:
-                score_category = category_list[index - 1]
-                break
-            elif category == "Amazing":
-                if acc_range[0] <= y_position <= acc_range[1]:
-                    score_category = category
-                    break
-
-        return score_category, ACC_CATEGORIES_POINTS[score_category]

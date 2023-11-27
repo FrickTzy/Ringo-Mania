@@ -42,16 +42,6 @@ class Display:
         return self.height // SCORE_PADDING_RATIO
 
     @property
-    def falling_speed(self):
-        # FALLING_SPEED + self.circle_size // SPEED_RATIO
-        return 23
-
-    @property
-    def interval(self):
-        # self.falling_speed * INTERVAL_RATIO
-        return 180
-
-    @property
     def acc_y(self):
         return self.height // ACC_Y_RATIO
 
@@ -98,60 +88,6 @@ class Display:
     @property
     def combo_pos_y(self):
         return self.height - COMBO_Y_PADDING
-
-    @property
-    def circle_position(self):
-        self.__circle_start_padding = 6 + self.__rectangle_width // 100
-        self.__circle_x_start = self.__rectangle_x + self.__circle_start_padding
-        self.__between_circle_padding = self.__rectangle_width // 4.25
-        return {
-            0: self.__circle_x_start,
-            1: self.__circle_x_start + self.__between_circle_padding * 1,
-            2: self.__circle_x_start + self.__between_circle_padding * 2,
-            3: self.__circle_x_start + self.__between_circle_padding * 3,
-        }
-
-    @property
-    def bottom_circle_y(self):
-        return self.height // BOTTOM_CIRCLE_RATIO - self.width // 20
-
-    @property
-    def first_hit_window(self):
-        return self.bottom_circle_y - HIT_WINDOW_PADDING[0]
-
-    @property
-    def last_hit_window(self):
-        return self.bottom_circle_y + HIT_WINDOW_PADDING[1]
-
-    @property
-    def amazing_hit_window(self):
-        return self.bottom_circle_y + AMAZING_SCORE_PADDING[0], self.bottom_circle_y + AMAZING_SCORE_PADDING[1]
-
-    @property
-    def perfect_hit_window(self):
-        return self.amazing_hit_window[0] - PERFECT_SCORE_PADDING, self.amazing_hit_window[1] + PERFECT_SCORE_PADDING
-
-    @property
-    def good_hit_window(self):
-        return self.perfect_hit_window[0] - GOOD_SCORE_PADDING[0], self.perfect_hit_window[1] + GOOD_SCORE_PADDING[1]
-
-    @property
-    def okay_hit_window(self):
-        return self.good_hit_window[0] - OKAY_SCORE_PADDING, self.good_hit_window[1] + OKAY_SCORE_PADDING
-
-    @property
-    def acc_category_hit_window(self):
-        return {
-            "Okay": self.okay_hit_window,
-            "Good": self.good_hit_window,
-            "Perfect": self.perfect_hit_window,
-            "Amazing": self.amazing_hit_window
-        }
-
-    @property
-    def circle_size(self):
-        self.__circle_size = int(self.__rectangle_width / CIRCLE_SIZE_TO_RECT_WIDTH)
-        return self.__circle_size
 
     @property
     def life_bar_coord_x(self):
