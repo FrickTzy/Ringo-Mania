@@ -22,7 +22,7 @@ class Timer:
         self.ending_time = 0
 
     def restart(self):
-        self.seconds_restarted += self.ms_to_second(time.get_ticks())
+        self.seconds_restarted = self.ms_to_second(time.get_ticks())
 
     @staticmethod
     def ms_to_second(ms):

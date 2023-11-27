@@ -1,4 +1,4 @@
-from pygame import K_ESCAPE, time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse, cursors
+from pygame import K_ESCAPE, time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse
 from Stuff.Ringo_Mania.Backend.music import Music
 from Stuff.Ringo_Mania.Backend.timer import Timer
 from Stuff.Ringo_Mania.Frontend.font import Font
@@ -7,7 +7,7 @@ from Stuff.Ringo_Mania.Frontend.settings import WIDTH, HEIGHT, BLACK, WHITE
 
 class Pause:
     __PAUSE_INTERVAL = 150
-    __OPACITY_PERCENTAGE = 55
+    __OPACITY_PERCENTAGE = 60
     __TEXT_POS_INTERVAL = 145
     __TEXT_POS_INTERVAL_RATIO = 6.21
     __PAUSE_Y = 115

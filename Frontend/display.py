@@ -44,7 +44,7 @@ class Display:
     @property
     def falling_speed(self):
         # FALLING_SPEED + self.circle_size // SPEED_RATIO
-        return 22
+        return 23
 
     @property
     def interval(self):

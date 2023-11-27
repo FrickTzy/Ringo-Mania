@@ -50,6 +50,7 @@ class Rectangle:
         self.music.restart_music()
         self.timer.restart()
         self.map.clear()
+        self.failed = False
         if self.imported:
             self.finished_importing = False
             self.import_circles_init()

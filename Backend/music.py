@@ -21,6 +21,7 @@ class Music:
         return self.music.get_length()
 
     def restart_music(self):
+        self.song_volume = SONG_VOLUME
         mixer.Channel(2).stop()
         self.play_music()
 
