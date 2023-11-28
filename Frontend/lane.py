@@ -13,7 +13,7 @@ class Lane:
 
     def show_fall_circles(self, height, speed, pause: bool):
         for circles in self.current_circles:
-            circles.draw_circles(height=height, speed=self.lane_circle_manager.circle_speed, pause=pause)
+            circles.draw_circles(height=height, speed=speed, pause=pause)
 
     def show_hitting_circle(self, window, hitting_circle_y, size) -> None:
         self.hitting_circle.change_size(size=size)
@@ -29,5 +29,14 @@ class Lane:
         for circle in self.current_circles:
             if last_hit_window >= circle.hit_box.y > first_hit_window:
                 self.current_circles.remove(circle)
-                return True
+                return circle.hit_box.y
         return False
+
+    def clear_circles(self) -> None:
+        self.current_circles.clear()
+
+    def update_circles(self, size):
+        for circle in self.current_circles:
+            circle.change_size(size=size)
+            circle.update_hit_box(lane_x=self.x, size=size)
+        self.hitting_circle.change_size(size=size)

@@ -5,7 +5,7 @@ from random import randrange, getrandbits
 
 class LaneManager:
     __NUM_OF_LANES = 4
-    __multiple_circle_chance = {
+    __MULTIPLE_CIRCLE_CHANCE = {
         "2": 2,
         "3": 6,
         "4": 8
@@ -18,7 +18,7 @@ class LaneManager:
         self.lanes: [Lane] = [Lane(lane_coord[0]), Lane(lane_coord[1]), Lane(lane_coord[2]), Lane(lane_coord[3])]
         self.window = window
 
-    def fall_circles(self, map_manager, current_time: int):
+    def init_fall_circles(self, map_manager, current_time: int):
         self.reset_lanes_taken()
         self.add_a_circle_to_a_lane(self.lane_setter())
         self.multiple_circles_process()
@@ -30,8 +30,12 @@ class LaneManager:
     def multiple_circles_process(self, current_circle=2):
         if current_circle > self.__NUM_OF_LANES:
             return
-        if self.double_circle_chance(self.__multiple_circle_chance[str(current_circle)]):
+        if self.double_circle_chance(self.__MULTIPLE_CIRCLE_CHANCE[str(current_circle)]):
             self.multiple_circles_process(current_circle + 1)
+
+    def show_all_circles(self, height, pause):
+        self.show_hitting_circles_to_all_lanes()
+        self.show_fall_circles_to_all_lanes(height=height, pause=pause)
 
     def show_fall_circles_to_all_lanes(self, height, pause: bool):
         for lane in self.lanes:
@@ -41,6 +45,14 @@ class LaneManager:
         for lane in self.lanes:
             lane.show_hitting_circle(window=self.window, hitting_circle_y=self.lane_circle_manager.bottom_circle_y,
                                      size=self.lane_circle_manager.circle_size)
+
+    def clear_all_circles(self):
+        for lane in self.lanes:
+            lane.clear_circles()
+
+    def update_circles(self):
+        for lane in self.lanes:
+            lane.update_circles(self.lane_circle_manager.circle_size)
 
     @staticmethod
     def double_circle_chance(chance):
@@ -60,26 +72,18 @@ class LaneManager:
         self.lanes_taken.append(lane)
         return lane
 
-    def remove_fall_circles(self, key_input="false"):
+    def check_circles_if_out(self):
         for index, lane in enumerate(self.lanes):
             if lane.check_circles_if_out():
                 return True
-            if key_input == "false":
-                return False
-            if key_input == index:
-                if lane.check_circles_if_hit(first_hit_window=self.lane_circle_manager.first_hit_window,
-                                             last_hit_window=self.lane_circle_manager.last_hit_window):
-                    grade, stats = self.determine_acc(fall_circle.hit_box.y)
-                    acc, score = stats
-                    self.combo_counter.combo += 1
-                    self.combo_counter.compute_score(score)
-                    self.show_acc.update_acc(score)
-                    self.combo_counter.add_clicked_circles(acc)
-                    if grade == "Okay":
-                        self.combo_counter.lose_life(OKAY_lIFE_DMG)
-                        continue
-                    if self.combo_counter.life < MAX_LIFE:
-                        self.combo_counter.compute_life()
+            return False
+
+    def check_key_input_range(self, key_lane_input):
+        if circle_y := self.lanes[key_lane_input].check_circles_if_hit(
+                first_hit_window=self.lane_circle_manager.first_hit_window,
+                last_hit_window=self.lane_circle_manager.last_hit_window):
+            return self.lane_circle_manager.determine_acc(circle_y)
+        return False
 
 
 class LaneCircleManager:
@@ -210,3 +214,8 @@ class ImportCircles:
         for circle_lane in self.imported_lanes[self.imported_lanes_index]:
             self.lane_manager.add_a_circle_to_a_lane(lane=circle_lane)
         self.imported_lanes_index += 1
+
+    def reset(self):
+        self.__finished_importing = False
+        self.import_fall_circles()
+        self.imported_lanes_index = 0

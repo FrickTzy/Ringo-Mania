@@ -1,15 +1,20 @@
 from pygame import mixer
 from pygame import time
-from Stuff.Ringo_Mania.Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE, \
-    SONG_FADE_MS
+from Stuff.Ringo_Mania.Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
+from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 import os
 
 
 class Music:
+    __SOUND_INTERVAL = 90
+    __SONG_FADE_MS = 100
+    __ON_HIT_SOUNDS = True
+
     def __init__(self):
         self.music: mixer.Sound
         self.song_volume = SONG_VOLUME
         self.starting_ms = time.get_ticks()
+        self.mini_timer: MiniTimer = MiniTimer(self.__SOUND_INTERVAL)
 
     def set_music(self, song_name):
         mixer.init()
@@ -27,7 +32,7 @@ class Music:
 
     def fade_music(self):
         ms_now = time.get_ticks()
-        if ms_now - self.starting_ms > SONG_FADE_MS:
+        if ms_now - self.starting_ms > self.__SONG_FADE_MS:
             self.starting_ms = ms_now
             self.song_volume -= SONG_FADE
             mixer.Channel(2).set_volume(self.song_volume)
@@ -40,11 +45,13 @@ class Music:
     def unpause_music():
         mixer.Channel(2).unpause()
 
-    @staticmethod
-    def play_hit_sound():
-        sfx = mixer.Sound(os.path.join("Backend\Sfx", "Hit_Normal.wav"))
-        mixer.Channel(3).set_volume(HIT_SOUND_VOLUME)
-        mixer.Channel(3).play(sfx)
+    def play_hit_sound(self):
+        if not self.__ON_HIT_SOUNDS:
+            return
+        if self.mini_timer.time_interval_finished():
+            sfx = mixer.Sound(os.path.join("Backend\Sfx", "Hit_Normal.wav"))
+            mixer.Channel(3).set_volume(HIT_SOUND_VOLUME)
+            mixer.Channel(3).play(sfx)
 
     @staticmethod
     def play_hit_sound_2():

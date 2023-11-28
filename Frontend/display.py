@@ -66,14 +66,6 @@ class Display:
         return self.width - (self.height // ACC_X_RATIO)
 
     @property
-    def acc_identifier_x(self):
-        return self.width / 2 - (ACC_IMG_SIZE / 2)
-
-    @property
-    def acc_identifier_y(self):
-        return self.height // 2.3
-
-    @property
     def center(self) -> tuple[int, int]:
         return self.width // 2, self.height // 2
 

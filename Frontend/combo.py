@@ -1,7 +1,7 @@
 from pygame import font as pyfont, Rect
 from datetime import datetime
 from Stuff.Ringo_Mania.Frontend.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, GRADE_ACC, \
-    COMBO_DIVIDER, LIFE_BAR_COORDINATES
+    COMBO_DIVIDER, LIFE_BAR_COORDINATES, OKAY_lIFE_DMG
 
 
 class ComboInfo:
@@ -34,6 +34,22 @@ class ComboCounter:
         self.accuracy: float = 0
         self.missed = False
         self.total_clicked: list[int] = []
+
+    def miss_score(self) -> None:
+        self.missed = True
+        self.combo = 0
+        self.add_clicked_circles(0)
+        self.lose_life()
+
+    def hit_circle_successfully(self, grade, acc, score):
+        self.combo += 1
+        self.compute_score(score)
+        self.add_clicked_circles(acc)
+        if grade == "Okay":
+            self.lose_life(OKAY_lIFE_DMG)
+            return
+        if self.life < MAX_LIFE:
+            self.compute_life()
 
     def update_life_bar_coord(self, coord: tuple) -> None:
         x, y, width, height = coord
@@ -70,9 +86,6 @@ class ComboCounter:
                         continue
                 return grade
         return "F"
-
-    def miss(self):
-        self.missed = True
 
     def add_clicked_circles(self, accuracy: int):
         self.total_clicked.append(accuracy)

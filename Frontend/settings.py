@@ -2,6 +2,8 @@ from pygame import time
 
 FULL_SCREEN_VIEW = True
 
+HIT = "HIT"
+
 WIDTH, HEIGHT = 1200, 700
 RECTANGLE_WIDTH = WIDTH / 2.2  # 510
 RECTANGLE_X = WIDTH / 2 - (RECTANGLE_WIDTH / 2)

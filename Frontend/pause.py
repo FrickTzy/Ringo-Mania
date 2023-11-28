@@ -33,20 +33,22 @@ class Pause:
         width, height = window_size
         self.__pause_surface = Surface((width, height), SRCALPHA)
 
-    def check_pause(self, key_pressed) -> None:
+    def check_pause(self, key_pressed) -> bool:
         current_time = time.get_ticks()
         if key_pressed[K_TAB]:
             if current_time - self.__starting_time >= self.__PAUSE_INTERVAL:
-                # print("escaped")
                 self.__starting_time = current_time
                 if self.__paused:
                     self.unpause()
                     self.timer.end_time_ms()
                     self.__paused = False
+                    return False
                 else:
                     self.timer.reset_time()
                     self.timer.start_time_ms()
                     self.__paused = True
+                    return True
+        return False
 
     @property
     def is_paused(self) -> bool:

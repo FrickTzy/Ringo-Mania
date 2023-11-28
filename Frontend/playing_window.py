@@ -70,7 +70,6 @@ class PlayWindow:
     def background_setup(self):
         music_length = self.music.play_music()
         self.running = True
-        self.rectangle.init_circles()
         self.timer.update_target_time(music_length, END_SONG_DELAY)
         self.record.init_record(self.play_tracker.check_plays())
 
@@ -95,8 +94,6 @@ class PlayWindow:
         if self.rectangle.pause.restarted:
             self.rectangle.restart()
             self.rectangle.pause.restarted = False
-
-        # self.window.get_size()
 
 
 if __name__ == "__main__":
