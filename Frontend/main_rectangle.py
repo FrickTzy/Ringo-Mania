@@ -29,7 +29,6 @@ class Rectangle:
         self.show()
 
     def show(self):
-        self.update_rect()
         draw.rect(self.window, RECT_COLOR, self.rect)
         self.lane_manager.show_all_circles(height=self.display.height, pause=self.pause.is_paused)
         self.show_acc.show_acc(window=self.window, window_size=self.display.get_window_size)

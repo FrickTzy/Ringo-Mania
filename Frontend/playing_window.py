@@ -79,6 +79,7 @@ class PlayWindow:
                 self.rectangle.key_pressed(index=index)
 
     def check_events(self):
+        self.detect_key()
         self.__check_map_if_failed()
         self.__check_window_if_quit()
         self.__check_map_if_finished()
