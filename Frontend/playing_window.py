@@ -1,7 +1,6 @@
 import pygame
-from Stuff.Ringo_Mania.Frontend.settings import FPS, COMBO_X, SCORE_Y, BLACK, clock, \
-    PURPLE, END_SONG_DELAY, MID_COMBO_X, MID_COMBO_Y, RECT_COMBO_DISPLAY, \
-    RECORD_X, KEY_BINDS
+from Stuff.Ringo_Mania.Frontend.settings import FPS, BLACK, clock, \
+    END_SONG_DELAY, KEY_BINDS
 from Stuff.Ringo_Mania.Frontend.main_rectangle import Rectangle
 from Stuff.Ringo_Mania.Frontend.records import Record
 from Stuff.Ringo_Mania.Frontend.font import Font
@@ -11,6 +10,7 @@ from Stuff.Ringo_Mania.Frontend.pause import Pause
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
 from Stuff.Ringo_Mania.Frontend.map_status import MapStatus
+from Stuff.Ringo_Mania.Frontend.stats import Stats
 
 
 class PlayWindow:
@@ -20,7 +20,7 @@ class PlayWindow:
     def __init__(self, music, timer, map_manager, play_tracker, song="Bocchi"):
         self.display: Display = Display()
         self.font = Font()
-        self.record = Record(self.font)
+        self.record = Record(self.font, self.display)
         self.music = music
         self.play_tracker = play_tracker
         self.music.set_music(song)
@@ -29,6 +29,7 @@ class PlayWindow:
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = MiniTimer()
         self.show_acc = ShowAcc()
+        self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
         self.rectangle = Rectangle(window=self.display.window, music=self.music, maps=self.map_manager,
@@ -42,8 +43,7 @@ class PlayWindow:
             self.timer.compute_time()
             self.update_frame()
             self.rectangle.run(current_time=self.timer.current_time)
-            self.show_record()
-            self.show_combo_and_life()
+            self.show_stats_and_etc()
             self.check_events()
         pygame.quit()
 
@@ -54,6 +54,10 @@ class PlayWindow:
         self.timer.restart()
         self.map_status.failed = False
         self.rectangle.restart()
+
+    def show_stats_and_etc(self):
+        self.font.update_all_font(self.display.height)
+        self.stats.show_all(play_info=self.combo_counter.get_play_info, life=self.combo_counter.life)
 
     def background_setup(self):
         music_length = self.music.play_music()
@@ -109,5 +113,5 @@ class PlayWindow:
 
     def __check_window_if_resized(self):
         if self.display.check_window_size():
+            self.font.update_all_font(self.display.height)
             self.rectangle.update_rect()
-            self.combo_counter.change_life_bar_coord(self.display.life_bar_coord_x)

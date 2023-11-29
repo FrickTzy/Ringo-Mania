@@ -9,19 +9,18 @@ from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 class Rectangle:
     def __init__(self, *, show_acc, window, music, maps, display, combo_counter: ComboCounter, pause,
-                 mini_timer, map_status):
+                 mini_timer: MiniTimer, map_status):
         self.display = display
         self.show_acc: ShowAcc = show_acc
         self.map_status = map_status
         self.music = music
         self.window = window
-        self.mini_timer: MiniTimer = mini_timer
         self.combo_counter = combo_counter
         self.map_manager = maps
         self.imported = IMPORT_MAP
         self.pause = pause
         self.rect = Rect(self.display.rectangle_x, 0, self.display.rectangle_width, self.display.height)
-        self.lane_manager: LaneManager = LaneManager(window=self.window, display=self.display)
+        self.lane_manager: LaneManager = LaneManager(window=self.window, display=self.display, timer=mini_timer)
         self.import_circle_manager = ImportCircles(self.lane_manager)
 
     def run(self, current_time: int):

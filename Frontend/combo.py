@@ -1,7 +1,7 @@
-from pygame import font as pyfont, Rect
+from pygame import font as pyfont
 from datetime import datetime
 from Stuff.Ringo_Mania.Frontend.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, GRADE_ACC, \
-    COMBO_DIVIDER, LIFE_BAR_COORDINATES, OKAY_lIFE_DMG
+    COMBO_DIVIDER, OKAY_lIFE_DMG
 
 
 class ComboInfo:
@@ -26,7 +26,7 @@ class ComboCounter:
     def __init__(self, font):
         self.fonts = font
         self.__info = ComboInfo()
-        self.life = MAX_LIFE
+        self.__life = MAX_LIFE
         self.date = ""
         self.current_time = ""
         self.accuracy: float = 0
@@ -46,10 +46,11 @@ class ComboCounter:
         if grade == "Okay":
             self.lose_life(OKAY_lIFE_DMG)
             return
-        if self.life < MAX_LIFE:
+        if self.__life < MAX_LIFE:
             self.compute_life()
 
-    def show_combo(self):
+    @property
+    def get_play_info(self):
         self.info.compute_highest_combo()
         self.compute_accuracy()
         return self.fonts.main_font.render(f"{self.info.combo}x", True, PURPLE), \
@@ -69,6 +70,10 @@ class ComboCounter:
     @property
     def info(self):
         return self.__info
+
+    @property
+    def life(self):
+        return self.__life
 
     def get_grade(self):
         for grade, acc in GRADE_ACC.items():
@@ -90,14 +95,14 @@ class ComboCounter:
         self.info.score += int(combo_multiplier * score)
 
     def compute_life(self):
-        self.life += int(self.info.combo * LIFE_INCREASE)
-        if self.life > MAX_LIFE:
-            self.life = MAX_LIFE
+        self.__life += int(self.info.combo * LIFE_INCREASE)
+        if self.__life > MAX_LIFE:
+            self.__life = MAX_LIFE
 
     def lose_life(self, life=LIFE_DMG):
-        self.life -= life
-        if self.life < 0:
-            self.life = 0
+        self.__life -= life
+        if self.__life < 0:
+            self.__life = 0
 
     def compute_accuracy(self):
         if len(self.total_clicked) == 0:
@@ -130,7 +135,7 @@ class ComboCounter:
 
     def reset_all(self):
         self.__info.reset()
-        self.life = MAX_LIFE
+        self.__life = MAX_LIFE
         self.accuracy = 0
         self.missed = False
         self.total_clicked.clear()

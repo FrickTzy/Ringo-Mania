@@ -4,14 +4,13 @@ from Stuff.Ringo_Mania.Frontend.life_bar import LifeBar
 class Stats:
     __mid_combo_display = False
 
-    def __init__(self, combo_counter, display):
-        self.combo_counter = combo_counter
+    def __init__(self, display):
         self.display = display
         self.life_bar = LifeBar(display=display)
         self.pos = StatsPos(display=display)
 
-    def show_combo_and_life(self):
-        combo, mid_combo, score, acc, life = self.combo_counter.show_combo()
+    def show_all(self, play_info: tuple, life):
+        combo, mid_combo, score, acc, life_txt = play_info
         self.life_bar.show_life_bar(life=life)
         self.display.window.blit(combo, (self.pos.combo_x, self.pos.combo_pos_y))
         self.display.window.blit(score, (self.pos.score_pos_x, self.pos.score_y))

@@ -13,6 +13,7 @@ class LifeBar:
         self.life_bar = Rect(x, y, width, height)
 
     def show_life_bar(self, life: int):
+        self.update_life_bar_coord()
         draw.rect(self.display.window, PURPLE, self.life_bar_coordinates)
         draw.rect(self.display.window, BLACK, self.get_life_bar_height(life=life))
 

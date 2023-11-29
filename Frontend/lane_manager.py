@@ -1,6 +1,7 @@
 from Stuff.Ringo_Mania.Frontend.lane import Lane
 from Stuff.Ringo_Mania.Frontend.display import Display
 from random import randrange, getrandbits
+from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 
 class LaneManager:
@@ -11,18 +12,24 @@ class LaneManager:
         "4": 8
     }
 
-    def __init__(self, window, display: Display):
+    def __init__(self, window, display: Display, timer: MiniTimer):
         self.lane_circle_manager = LaneCircleManager(display=display)
         self.lanes_taken = []
         lane_coord = self.lane_circle_manager.circle_position
         self.lanes: [Lane] = [Lane(lane_coord[0]), Lane(lane_coord[1]), Lane(lane_coord[2]), Lane(lane_coord[3])]
         self.window = window
+        self.mini_timer: MiniTimer = timer
+        self.set_up_timer_interval()
+
+    def set_up_timer_interval(self):
+        self.mini_timer.change_interval(interval=self.lane_circle_manager.interval)
 
     def init_fall_circles(self, map_manager, current_time: int):
-        self.reset_lanes_taken()
-        self.add_a_circle_to_a_lane(self.lane_setter())
-        self.multiple_circles_process()
-        map_manager.convert_to_map_list(self.lanes_taken, current_time)
+        if self.mini_timer.time_interval_finished():
+            self.reset_lanes_taken()
+            self.add_a_circle_to_a_lane(self.lane_setter())
+            self.multiple_circles_process()
+            map_manager.convert_to_map_list(self.lanes_taken, current_time)
 
     def add_a_circle_to_a_lane(self, lane):
         self.lanes[lane].add_fall_circle(window=self.window, size=self.lane_circle_manager.circle_size)
