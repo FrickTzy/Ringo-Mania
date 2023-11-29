@@ -1,7 +1,12 @@
 class MapStatus:
-    def __init__(self):
+    def __init__(self, imported):
         self.__failed = False
         self.__map_finished = False
+        self.__imported: bool = imported
+
+    @property
+    def imported(self):
+        return self.__imported
 
     @property
     def failed(self):

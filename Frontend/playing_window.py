@@ -1,7 +1,7 @@
 import pygame
 from Stuff.Ringo_Mania.Frontend.settings import FPS, COMBO_X, SCORE_Y, BLACK, clock, \
     PURPLE, END_SONG_DELAY, MID_COMBO_X, MID_COMBO_Y, RECT_COMBO_DISPLAY, \
-    RECORD_X
+    RECORD_X, KEY_BINDS
 from Stuff.Ringo_Mania.Frontend.main_rectangle import Rectangle
 from Stuff.Ringo_Mania.Frontend.records import Record
 from Stuff.Ringo_Mania.Frontend.font import Font
@@ -9,10 +9,13 @@ from Stuff.Ringo_Mania.Frontend.display import Display
 from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
 from Stuff.Ringo_Mania.Frontend.pause import Pause
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
+from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
+from Stuff.Ringo_Mania.Frontend.map_status import MapStatus
 
 
 class PlayWindow:
     running = False
+    imported = False
 
     def __init__(self, music, timer, map_manager, play_tracker, song="Bocchi"):
         self.display: Display = Display()
@@ -24,48 +27,33 @@ class PlayWindow:
         self.timer = timer
         self.map_manager = map_manager(song)
         self.combo_counter = ComboCounter(self.font)
-        self.mini_timer = MiniTimer()
-        self.pause = Pause(music=self.music, mini_timer=self.mini_timer, font=self.font)
+        self.circle_interval_timer = MiniTimer()
+        self.show_acc = ShowAcc()
+        self.map_status = MapStatus(imported=self.imported)
+        self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
         self.rectangle = Rectangle(window=self.display.window, music=self.music, maps=self.map_manager,
-                                   timer=self.timer,
                                    display=self.display, combo_counter=self.combo_counter, pause=self.pause,
-                                   mini_timer=self.mini_timer)
+                                   mini_timer=self.circle_interval_timer, map_status=self.map_status,
+                                   show_acc=self.show_acc)
 
     def run(self):
         self.background_setup()
         while self.running:
             self.timer.compute_time()
             self.update_frame()
-            self.rectangle.run()
+            self.rectangle.run(current_time=self.timer.current_time)
             self.show_record()
             self.show_combo_and_life()
             self.check_events()
         pygame.quit()
 
-    def show_combo_and_life(self):
-        combo, mid_combo, score, acc, life = self.combo_counter.show_combo()
-        self.combo_counter.update_life_bar_coord(self.display.life_bar_coordinates)
-        life_bar_height = self.combo_counter.get_life_bar_height()
-        self.show_life_bar(life_bar_height)
-        self.display.window.blit(combo, (COMBO_X, self.display.combo_pos_y))
-        self.display.window.blit(score, (self.display.score_pos_x, SCORE_Y))
-        self.display.window.blit(acc, (self.display.acc_pos_x, self.display.acc_y))
-        if RECT_COMBO_DISPLAY:
-            self.display.window.blit(mid_combo, (MID_COMBO_X, MID_COMBO_Y))
-
-    def show_record(self):
-        self.font.update_all_font(self.display.height)
-        for index, record in enumerate(self.record.show_record(self.rectangle.combo_counter.info)):
-            score, combo, name = record
-            self.display.window.blit(score,
-                                     (RECORD_X, self.display.record_y + (index * self.display.record_y_interval)))
-            self.display.window.blit(combo, (RECORD_X + self.display.score_padding,
-                                             self.display.record_y + (index * self.display.record_y_interval)))
-            self.display.window.blit(name, (RECORD_X, self.display.name_y + (index * self.display.record_y_interval)))
-
-    def show_life_bar(self, coord):
-        pygame.draw.rect(self.display.window, PURPLE, self.display.life_bar_coordinates)
-        pygame.draw.rect(self.display.window, BLACK, coord)
+    def restart(self):
+        self.combo_counter.reset_all()
+        self.show_acc.reset_acc()
+        self.music.restart_music()
+        self.timer.restart()
+        self.map_status.failed = False
+        self.rectangle.restart()
 
     def background_setup(self):
         music_length = self.music.play_music()
@@ -78,24 +66,48 @@ class PlayWindow:
         pygame.display.update()
         self.display.window.fill(BLACK)
 
+    def detect_key(self):
+        key_pressed = pygame.key.get_pressed()
+        if self.pause.check_pause(key_pressed):
+            return
+        for keys, index in KEY_BINDS.items():
+            if key_pressed[eval(keys)]:
+                self.rectangle.key_pressed(index=index)
+
     def check_events(self):
+        self.__check_map_if_failed()
+        self.__check_window_if_quit()
+        self.__check_map_if_finished()
+        self.__check_window_if_paused()
+        self.__check_window_if_restart()
+        self.__check_window_if_resized()
+
+    def __check_map_if_failed(self):
+        if self.combo_counter.life == 0:
+            self.map_status.failed = True
+
+    def __check_window_if_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-        if self.rectangle.combo_counter.life == 0:
-            self.rectangle.failed = True
-        if self.timer.timer_finished or self.rectangle.map_finished and not self.rectangle.failed:
+
+    def __check_map_if_finished(self):
+        if self.timer.timer_finished or self.map_status.finished and not self.map_status.failed:
             self.rectangle.map_finished = True
             self.play_tracker.update_plays(self.rectangle.combo_counter.get_stats())
-        if self.rectangle.pause.is_paused:
-            self.rectangle.pause.show_pause(
+
+    def __check_window_if_paused(self):
+        if self.pause.is_paused:
+            self.pause.show_pause(
                 window_size=self.display.get_window_size,
                 window=self.display.window)
+
+    def __check_window_if_restart(self):
         if self.rectangle.pause.restarted:
             self.rectangle.restart()
             self.rectangle.pause.restarted = False
 
-
-if __name__ == "__main__":
-    window = PlayWindow("", "")
-    window.run()
+    def __check_window_if_resized(self):
+        if self.display.check_window_size():
+            self.rectangle.update_rect()
+            self.combo_counter.change_life_bar_coord(self.display.life_bar_coord_x)

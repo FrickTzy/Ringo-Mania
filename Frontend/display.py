@@ -1,10 +1,9 @@
 from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors
 from Stuff.Ringo_Mania.Frontend.settings import WIDTH, HEIGHT, RESIZABLE, RECTANGLE_X, RECTANGLE_WIDTH, CIRCLE_X_START, \
-    BETWEEN_CIRCLE_PADDING, CIRCLE_START_PADDING, CIRCLE_SIZE_TO_RECT_WIDTH, CIRCLE_SIZE, LIFE_BAR_PADDING, \
+    BETWEEN_CIRCLE_PADDING, CIRCLE_START_PADDING, CIRCLE_SIZE, \
     RECTANGLE_WIDTH_CAP, LIFE_BAR_COORDINATES, FULL_SCREEN_VIEW, COMBO_Y_PADDING, \
-    LIFE_BAR_Y_PADDING, LIFE_BAR_HEIGHT_RATIO, RECORD_Y_RATIO, NAME_Y_RATIO, ACC_IMG_SIZE, BOTTOM_CIRCLE_RATIO, \
-    OKAY_SCORE_PADDING, AMAZING_SCORE_PADDING, PERFECT_SCORE_PADDING, GOOD_SCORE_PADDING, HIT_WINDOW_PADDING, \
-    FALLING_SPEED, SPEED_RATIO, INTERVAL_RATIO, RECORD_Y_INTERVAL_RATIO, SCORE_PADDING_RATIO, ACC_Y_RATIO, \
+    RECORD_Y_RATIO, NAME_Y_RATIO, \
+    RECORD_Y_INTERVAL_RATIO, SCORE_PADDING_RATIO, ACC_Y_RATIO, \
     SCORE_X_RATIO, ACC_X_RATIO
 
 
@@ -42,10 +41,6 @@ class Display:
         return self.height // SCORE_PADDING_RATIO
 
     @property
-    def acc_y(self):
-        return self.height // ACC_Y_RATIO
-
-    @property
     def rectangle_width(self):
         self.__rectangle_width = self.width / 2.2
         if self.__rectangle_width >= RECTANGLE_WIDTH_CAP:
@@ -56,10 +51,6 @@ class Display:
     def rectangle_x(self):
         self.__rectangle_x = self.width / 2 - (self.rectangle_width / 2)
         return self.__rectangle_x
-
-    @property
-    def score_pos_x(self):
-        return self.width - (self.height // SCORE_X_RATIO)
 
     @property
     def acc_pos_x(self):
@@ -78,33 +69,12 @@ class Display:
         return width - element_width / 2
 
     @property
-    def combo_pos_y(self):
-        return self.height - COMBO_Y_PADDING
-
-    @property
-    def life_bar_coord_x(self):
-        return self.width / 2 + (self.__rectangle_width / 2) + LIFE_BAR_PADDING
-
-    @property
-    def life_bar_coord_y(self):
-        return self.height - LIFE_BAR_Y_PADDING - self.__life_bar_height
-
-    @property
-    def __life_bar_height(self):
-        return self.height // LIFE_BAR_HEIGHT_RATIO
-
-    @property
     def record_y(self):
         return self.height // RECORD_Y_RATIO
 
     @property
     def name_y(self):
         return self.height // NAME_Y_RATIO
-
-    @property
-    def life_bar_coordinates(self):
-        self.__life_bar_coordinates = (self.life_bar_coord_x, self.life_bar_coord_y, 10, self.__life_bar_height)
-        return self.__life_bar_coordinates
 
     def check_window_size(self) -> bool:
         width, height = self.window.get_size()

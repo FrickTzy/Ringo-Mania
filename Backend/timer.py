@@ -78,7 +78,7 @@ def print_hello():
 
 
 class MiniTimer:
-    def __init__(self, interval: int):
+    def __init__(self, interval: int = 100):
         self.last_time: int = time.get_ticks()
         self.interval = interval
 
@@ -88,13 +88,8 @@ class MiniTimer:
             self.last_time = current_time
             return True
 
-    """
-    @property
-    def interval(self):
-        # self.falling_speed * INTERVAL_RATIO
-        return 180
-        
-    """
+    def change_interval(self, interval):
+        self.interval = interval
 
 
 if __name__ == "__main__":

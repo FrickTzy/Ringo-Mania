@@ -120,6 +120,11 @@ class LaneCircleManager:
         return 23
 
     @property
+    def interval(self):
+        # self.falling_speed * INTERVAL_RATIO
+        return 180
+
+    @property
     def first_hit_window(self):
         return self.bottom_circle_y - self.__HIT_WINDOW_PADDING[0]
 

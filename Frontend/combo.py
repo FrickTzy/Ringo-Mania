@@ -23,12 +23,10 @@ class ComboInfo:
 class ComboCounter:
     pyfont.init()
 
-    def __init__(self, font, life_bar_coord=LIFE_BAR_COORDINATES):
+    def __init__(self, font):
         self.fonts = font
         self.__info = ComboInfo()
         self.life = MAX_LIFE
-        x, y, width, height = life_bar_coord
-        self.life_bar_coord = Rect(x, y, width, height)
         self.date = ""
         self.current_time = ""
         self.accuracy: float = 0
@@ -50,10 +48,6 @@ class ComboCounter:
             return
         if self.life < MAX_LIFE:
             self.compute_life()
-
-    def update_life_bar_coord(self, coord: tuple) -> None:
-        x, y, width, height = coord
-        self.life_bar_coord = Rect(x, y, width, height)
 
     def show_combo(self):
         self.info.compute_highest_combo()
@@ -116,14 +110,6 @@ class ComboCounter:
         self.date = f"{date.day}/{date.month}/{date.year}"
         hour, pm = self.convert_to_standard_time(date.hour)
         self.current_time = f"{hour}:{self.fix_minutes(date.minute)} {pm}"
-
-    def get_life_bar_height(self):
-        life_bar_height = int(self.life_bar_coord.height * abs((self.life - 100) / 100))
-        return self.life_bar_coord.x, self.life_bar_coord.y, self.life_bar_coord.width, life_bar_height
-
-    def change_life_bar_coord(self, x, y=300):
-        self.life_bar_coord.x = x
-        self.life_bar_coord.y = y
 
     @staticmethod
     def fix_minutes(minutes):
