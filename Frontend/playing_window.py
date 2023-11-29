@@ -32,8 +32,8 @@ class PlayWindow:
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
-        self.rectangle = Rectangle(window=self.display.window, music=self.music, maps=self.map_manager,
-                                   display=self.display, combo_counter=self.combo_counter, pause=self.pause,
+        self.rectangle = Rectangle(maps=self.map_manager,
+                                   display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
                                    show_acc=self.show_acc)
 
@@ -58,6 +58,7 @@ class PlayWindow:
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
         self.stats.show_all(play_info=self.combo_counter.get_play_info, life=self.combo_counter.life)
+        self.record.show_record(current_rec=self.combo_counter.info)
 
     def background_setup(self):
         music_length = self.music.play_music()
@@ -100,7 +101,7 @@ class PlayWindow:
 
     def __check_map_if_finished(self):
         if self.timer.timer_finished or self.map_status.finished and not self.map_status.failed:
-            self.rectangle.map_finished = True
+            self.map_status.finished = True
             self.play_tracker.update_plays(self.rectangle.combo_counter.get_stats())
 
     def __check_window_if_paused(self):
@@ -111,6 +112,7 @@ class PlayWindow:
 
     def __check_window_if_restart(self):
         if self.pause.restarted:
+            self.restart()
             self.rectangle.restart()
             self.pause.restarted = False
 

@@ -100,10 +100,10 @@ MULTIPLE_CIRCLE_FREQ = {
 }
 
 KEY_BINDS = {
-    'pygame.K_q': 0,
-    'pygame.K_w': 1,
-    'pygame.K_o': 2,
-    'pygame.K_p': 3,
+    'pygame.K_a': 0,
+    'pygame.K_s': 1,
+    'pygame.K_k': 2,
+    'pygame.K_l': 3,
 
 }
 

@@ -33,11 +33,11 @@ class ShowAcc:
             320: self.amazing_img,
         }
 
-    def update_acc(self, acc):
+    def update_acc(self, score):
         if self.__HIDE_PERFECT:
-            if acc >= 300:
-                acc = None
-        self.__acc = acc
+            if score >= 300:
+                score = None
+        self.__acc = score
 
     def reset_acc(self):
         self.__acc = None
