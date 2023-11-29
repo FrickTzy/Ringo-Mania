@@ -33,11 +33,14 @@ class ComboCounter:
         self.missed = False
         self.total_clicked: list[int] = []
 
-    def miss_score(self) -> None:
+    def miss_score(self, amount_of_circles) -> None:
+        if amount_of_circles <= 0:
+            return
         self.missed = True
         self.combo = 0
         self.add_clicked_circles(0)
         self.lose_life()
+        self.miss_score(amount_of_circles - 1)
 
     def hit_circle_successfully(self, grade, acc, score):
         self.combo += 1

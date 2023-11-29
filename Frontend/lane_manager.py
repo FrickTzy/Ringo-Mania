@@ -38,6 +38,7 @@ class LaneManager:
         if current_circle > self.__NUM_OF_LANES:
             return
         if self.double_circle_chance(self.__MULTIPLE_CIRCLE_CHANCE[str(current_circle)]):
+            self.add_a_circle_to_a_lane(self.lane_setter())
             self.multiple_circles_process(current_circle + 1)
 
     def show_all_circles(self, height, pause):
@@ -80,10 +81,11 @@ class LaneManager:
         return lane
 
     def check_circles_if_out(self):
+        circle_quantity = 0
         for index, lane in enumerate(self.lanes):
             if lane.check_circles_if_out():
-                return True
-            return False
+                circle_quantity += 1
+        return circle_quantity
 
     def check_key_input_range(self, key_lane_input):
         if circle_y := self.lanes[key_lane_input].check_circles_if_hit(

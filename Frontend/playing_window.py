@@ -42,7 +42,7 @@ class PlayWindow:
         while self.running:
             self.timer.compute_time()
             self.update_frame()
-            self.rectangle.run(current_time=self.timer.current_time)
+            self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
             self.show_stats_and_etc()
             self.check_events()
         pygame.quit()
@@ -77,6 +77,7 @@ class PlayWindow:
         for keys, index in KEY_BINDS.items():
             if key_pressed[eval(keys)]:
                 self.rectangle.key_pressed(index=index)
+                self.music.play_hit_sound()
 
     def check_events(self):
         self.detect_key()
@@ -90,6 +91,7 @@ class PlayWindow:
     def __check_map_if_failed(self):
         if self.combo_counter.life == 0:
             self.map_status.failed = True
+            self.music.fade_music()
 
     def __check_window_if_quit(self):
         for event in pygame.event.get():
@@ -108,9 +110,9 @@ class PlayWindow:
                 window=self.display.window)
 
     def __check_window_if_restart(self):
-        if self.rectangle.pause.restarted:
+        if self.pause.restarted:
             self.rectangle.restart()
-            self.rectangle.pause.restarted = False
+            self.pause.restarted = False
 
     def __check_window_if_resized(self):
         if self.display.check_window_size():

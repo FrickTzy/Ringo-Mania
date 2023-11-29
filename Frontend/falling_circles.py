@@ -1,6 +1,6 @@
 from Stuff.Ringo_Mania.Frontend.circles import Circle
 from pygame import Rect
-from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, LANES, HEIGHT
+from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, HEIGHT
 
 
 class FallingCircle(Circle):
@@ -13,8 +13,9 @@ class FallingCircle(Circle):
 
     def draw_circles(self, height=HEIGHT, speed=FALLING_SPEED, pause=False):
         self.window.blit(super().circle_img, (self.hit_box.x, self.hit_box.y))
-        self.hit_box.y += speed
-        self.out_of_screen(height)
+        if not pause:
+            self.hit_box.y += speed
+            self.out_of_screen(height)
 
     def update_hit_box(self, lane_x, size) -> None:
         self.hit_box = Rect(lane_x, self.y, size, size)

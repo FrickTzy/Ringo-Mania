@@ -108,6 +108,7 @@ class Pause:
                                       command=lambda: [self.set_restarted(), self.unpause()])
 
     def set_restarted(self):
+        self.__music.restart_music()
         self.__restarted = True
 
     def run_quit_text(self, text_coord: tuple[int, int]) -> None:
