@@ -22,7 +22,7 @@ class Rectangle:
 
     def run(self, current_time: int, pause: bool):
         if not pause and not self.map_status.failed_or_finished:
-            self.lane_manager.init_fall_circles(map_manager=self.map_manager, current_time=current_time)
+            self.lane_manager.init_sliders()
             self.check_circles_if_out()
         self.show(pause=pause)
 
@@ -52,6 +52,8 @@ class Rectangle:
 
     def key_pressed(self, index: int):
         if hit_info := self.lane_manager.check_key_input_range(key_lane_input=index):
+            if self.map_status.failed:
+                return
             grade, stats = hit_info
             acc, score = stats
             self.combo_counter.hit_circle_successfully(grade=grade, acc=acc, score=acc)

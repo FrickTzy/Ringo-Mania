@@ -1,5 +1,6 @@
 from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
 from Stuff.Ringo_Mania.Frontend.circles import Circle
+from Stuff.Ringo_Mania.Frontend.sliders import Sliders
 
 
 class Lane:
@@ -7,13 +8,21 @@ class Lane:
         self.x = x
         self.current_circles: list[FallingCircle] = []
         self.hitting_circle = Circle()
+        self.sliders: list[Sliders] = []
 
     def add_fall_circle(self, window, size):
         self.current_circles.append(FallingCircle(window=window, lane_x=self.x, circle_size=size))
 
+    def add_sliders(self, window, size):
+        self.sliders.append(Sliders(window=window, lane_x=self.x, circle_size=size))
+
     def show_fall_circles(self, height, speed, pause: bool):
         for circles in self.current_circles:
             circles.draw_circles(height=height, speed=speed, pause=pause)
+
+    def show_sliders(self, height, speed, pause: bool):
+        for slider in self.sliders:
+            slider.draw_slider(height=height, speed=speed, pause=pause)
 
     def show_hitting_circle(self, window, hitting_circle_y, size) -> None:
         self.hitting_circle.change_size(size=size)
@@ -27,6 +36,24 @@ class Lane:
 
     def check_circles_if_hit(self, first_hit_window, last_hit_window):
         for circle in self.current_circles:
+            if last_hit_window >= circle.hit_box.y > first_hit_window:
+                self.current_circles.remove(circle)
+                return circle.hit_box.y
+        return False
+
+    def check_sliders_if_out(self):
+        for slider in self.sliders:
+            if slider.out:
+                self.sliders.remove(slider)
+                return True
+
+    def check_if_lane_taken(self):
+        for slider in self.sliders:
+            if not slider.slider_ended:
+                return True
+
+    def check_sliders_if_hit(self, first_hit_window, last_hit_window):
+        for slider in self.sliders:
             if last_hit_window >= circle.hit_box.y > first_hit_window:
                 self.current_circles.remove(circle)
                 return circle.hit_box.y

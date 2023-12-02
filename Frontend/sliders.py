@@ -1,16 +1,60 @@
-from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
-from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_HEIGHT, CIRCLE_WIDTH, FALLING_SPEED, LANES, HEIGHT
-from pygame import Rect
+from Stuff.Ringo_Mania.Frontend.circles import Circle
+from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, DARK_PURPLE, BLACK
+from pygame import Rect, draw
+from random import randrange
 
 
-class Sliders(FallingCircle):
-    def __init__(self, window, lane):
-        super().__init__(window, lane, "Purp.png")
+class Sliders(Circle):
+    __LEN_PER_BODY = 100
+    __SLIDER_COLOR = BLACK
+    __SLIDER_END_PERCENTAGE = 10
+
+    """
+    A slider consists of three parts: the starting circle, the main body, and the ending circle.
+    
+    """
+
+    def __init__(self, window, lane_x, circle_size=CIRCLE_SIZE, img="Purp.png"):
+        super().__init__(circle_size, img)
         self.y = -100
-        self.hit_box = Rect(LANES[self.lane], self.y, CIRCLE_WIDTH, CIRCLE_HEIGHT)
+        self.slider_head_hit_box = Rect(lane_x, self.y, circle_size, CIRCLE_SIZE)
+        self.slider_body_hit_box = Rect(lane_x + 33, self.y, circle_size - 61, self.__LEN_PER_BODY)
+        self.slider_tail_hit_box = Rect(lane_x, self.y, circle_size, CIRCLE_SIZE)
+        self.window = window
         self.out = False
+        self.slider_ended = False
 
-    def draw_slider(self):
-        self.window.blit(self.circle_img, (self.hit_box.x, self.hit_box.y))
-        self.hit_box.y += FALLING_SPEED
-        self.out_of_screen()
+    def draw_slider(self, height, speed, pause):
+        self.__show_slider_body(speed=speed, pause=pause)
+        if not self.slider_ended:
+            self.__add_slider_body(speed=speed, pause=pause)
+        else:
+            self.__check_out_of_screen(height=height)
+        self.__start_slider(pause=pause, speed=speed)
+
+    def __add_slider_body(self, pause, speed=FALLING_SPEED):
+        if pause:
+            return
+        self.slider_body_hit_box.height += speed
+
+    def __show_slider_body(self, speed, pause):
+        draw.rect(self.window, self.__SLIDER_COLOR, self.slider_body_hit_box)
+        if not pause and self.slider_ended:
+            self.slider_body_hit_box.y += speed
+
+    def __end_slider(self):
+        self.slider_ended = True
+
+    def check_if_end_slider(self):
+        if randrange(1, 100 // self.__SLIDER_END_PERCENTAGE) == 1:
+            self.__end_slider()
+
+    def __start_slider(self, pause: bool, speed=FALLING_SPEED):
+        self.window.blit(self.circle_img, (self.slider_head_hit_box.x, self.slider_head_hit_box.y))
+        if not pause:
+            self.slider_head_hit_box.y += speed
+
+    def __check_out_of_screen(self, height):
+        if self.slider_tail_hit_box.y >= height:
+            self.out = True
+            del self

@@ -31,16 +31,27 @@ class ComboCounter:
         self.current_time = ""
         self.accuracy: float = 0
         self.missed = False
+        self.__miss_sfx = False
         self.total_clicked: list[int] = []
 
     def miss_score(self, amount_of_circles) -> None:
         if amount_of_circles <= 0:
             return
+        if self.combo != 0:
+            self.__miss_sfx = True
         self.missed = True
         self.combo = 0
         self.add_clicked_circles(0)
         self.lose_life()
         self.miss_score(amount_of_circles - 1)
+
+    @property
+    def miss_sfx(self):
+        return self.__miss_sfx
+
+    @miss_sfx.setter
+    def miss_sfx(self, value: bool):
+        self.__miss_sfx = value
 
     def hit_circle_successfully(self, grade, acc, score):
         self.combo += 1
@@ -148,9 +159,3 @@ class ComboCounter:
         return {"score": self.info.score, "accuracy": f"{self.accuracy}%", "combo": self.info.combo,
                 "highest_combo": self.info.highest_combo, "grade": f"{self.get_grade()}", "date": self.date,
                 "time": self.current_time}
-
-
-if __name__ == "__main__":
-    counter = ComboCounter()
-    counter.accuracy = 59
-    print(counter.get_grade())

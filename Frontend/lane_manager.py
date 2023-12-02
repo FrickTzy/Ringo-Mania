@@ -31,8 +31,30 @@ class LaneManager:
             self.multiple_circles_process()
             map_manager.convert_to_map_list(self.lanes_taken, current_time)
 
+    def init_sliders(self):
+        if self.mini_timer.time_interval_finished():
+            self.reset_lanes_taken()
+            self.check_for_sliders()
+            if len(self.lanes_taken) == self.__NUM_OF_LANES:
+                return
+            self.add_a_slider_to_a_lane(self.lane_setter())
+
+    def check_if_end_sliders(self):
+        for lane in self.lanes:
+            for slider in lane.sliders:
+                slider.check_if_end_slider()
+
+    def check_for_sliders(self):
+        for index, lane in enumerate(self.lanes):
+            if lane.check_if_lane_taken():
+                self.lanes_taken.append(index)
+
     def add_a_circle_to_a_lane(self, lane):
         self.lanes[lane].add_fall_circle(window=self.window, size=self.lane_circle_manager.circle_size)
+
+    def add_a_slider_to_a_lane(self, lane):
+        if lane is not None:
+            self.lanes[lane].add_sliders(window=self.window, size=self.lane_circle_manager.circle_size)
 
     def multiple_circles_process(self, current_circle=2):
         if current_circle > self.__NUM_OF_LANES:
@@ -44,6 +66,8 @@ class LaneManager:
     def show_all_circles(self, height, pause):
         self.show_hitting_circles_to_all_lanes()
         self.show_fall_circles_to_all_lanes(height=height, pause=pause)
+        self.show_sliders_to_all_lanes(height=height, pause=pause)
+        self.check_if_end_sliders()
 
     def show_fall_circles_to_all_lanes(self, height, pause: bool):
         for lane in self.lanes:
@@ -53,6 +77,10 @@ class LaneManager:
         for lane in self.lanes:
             lane.show_hitting_circle(window=self.window, hitting_circle_y=self.lane_circle_manager.bottom_circle_y,
                                      size=self.lane_circle_manager.circle_size)
+
+    def show_sliders_to_all_lanes(self, height, pause: bool):
+        for lane in self.lanes:
+            lane.show_sliders(height=height, speed=self.lane_circle_manager.circle_speed, pause=pause)
 
     def clear_all_circles(self):
         for lane in self.lanes:
@@ -74,6 +102,8 @@ class LaneManager:
         self.lanes_taken = []
 
     def lane_setter(self):
+        if len(self.lanes_taken) == self.__NUM_OF_LANES:
+            return
         lane = randrange(0, self.__NUM_OF_LANES)
         while lane in self.lanes_taken:
             lane = randrange(0, self.__NUM_OF_LANES)

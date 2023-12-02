@@ -7,7 +7,7 @@ class FallingCircle(Circle):
     def __init__(self, window, lane_x, circle_size=CIRCLE_SIZE, img="Purp.png"):
         super().__init__(circle_size, img)
         self.y = -100
-        self.hit_box = Rect(lane_x, self.y, CIRCLE_SIZE, CIRCLE_SIZE)
+        self.hit_box = Rect(lane_x, self.y, circle_size, circle_size)
         self.window = window
         self.out = False
 
@@ -20,7 +20,7 @@ class FallingCircle(Circle):
     def update_hit_box(self, lane_x, size) -> None:
         self.hit_box = Rect(lane_x, self.y, size, size)
 
-    def out_of_screen(self, height=HEIGHT):
+    def out_of_screen(self, height):
         if self.hit_box.y >= height:
             self.out = True
             del self

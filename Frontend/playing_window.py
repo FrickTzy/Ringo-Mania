@@ -83,14 +83,21 @@ class PlayWindow:
     def check_events(self):
         self.detect_key()
         self.__check_map_if_failed()
+        self.__check_if_missed()
         self.__check_window_if_quit()
         self.__check_map_if_finished()
         self.__check_window_if_paused()
         self.__check_window_if_restart()
         self.__check_window_if_resized()
 
+    def __check_if_missed(self):
+        if self.combo_counter.miss_sfx:
+            self.music.play_miss_sound()
+            self.combo_counter.miss_sfx = False
+
     def __check_map_if_failed(self):
-        if self.combo_counter.life == 0:
+        if self.combo_counter.life <= 0:
+            print("he")
             self.map_status.failed = True
             self.music.fade_music()
 

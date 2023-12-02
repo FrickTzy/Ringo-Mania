@@ -1,6 +1,6 @@
 import pygame
 import os
-from Stuff.Ringo_Mania.Frontend.settings import BOTTOM_CIRCLE, CIRCLE_SIZE
+from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_SIZE
 
 
 class Circle:
