@@ -1,1 +1,1 @@
-from .playing_window import PlayWindow
+from .mania_play_window import ManiaPlayWindow

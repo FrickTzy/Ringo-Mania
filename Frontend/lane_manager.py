@@ -7,9 +7,10 @@ from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 class LaneManager:
     __NUM_OF_LANES = 4
     __MULTIPLE_CIRCLE_CHANCE = {
+        "Slider": 2,
         "2": 2,
         "3": 6,
-        "4": 8
+        "4": 8,
     }
 
     def __init__(self, window, display: Display, timer: MiniTimer):
@@ -27,6 +28,8 @@ class LaneManager:
     def init_fall_circles(self, map_manager, current_time: int):
         if self.mini_timer.time_interval_finished():
             self.reset_lanes_taken()
+            if self.slider_chance():
+                self.init_sliders()
             self.add_a_circle_to_a_lane(self.lane_setter())
             self.multiple_circles_process()
             map_manager.convert_to_map_list(self.lanes_taken, current_time)
@@ -35,14 +38,14 @@ class LaneManager:
         if self.mini_timer.time_interval_finished():
             self.reset_lanes_taken()
             self.check_for_sliders()
+            self.check_if_end_sliders()
             if len(self.lanes_taken) == self.__NUM_OF_LANES:
                 return
             self.add_a_slider_to_a_lane(self.lane_setter())
 
     def check_if_end_sliders(self):
         for lane in self.lanes:
-            for slider in lane.sliders:
-                slider.check_if_end_slider()
+            lane.check_if_end_slider()
 
     def check_for_sliders(self):
         for index, lane in enumerate(self.lanes):
@@ -54,7 +57,8 @@ class LaneManager:
 
     def add_a_slider_to_a_lane(self, lane):
         if lane is not None:
-            self.lanes[lane].add_sliders(window=self.window, size=self.lane_circle_manager.circle_size)
+            self.lanes[lane].add_sliders(window=self.window, size=self.lane_circle_manager.circle_size,
+                                         min_len=self.lane_circle_manager.interval)
 
     def multiple_circles_process(self, current_circle=2):
         if current_circle > self.__NUM_OF_LANES:
@@ -64,10 +68,9 @@ class LaneManager:
             self.multiple_circles_process(current_circle + 1)
 
     def show_all_circles(self, height, pause):
+        self.show_sliders_to_all_lanes(height=height, pause=pause)
         self.show_hitting_circles_to_all_lanes()
         self.show_fall_circles_to_all_lanes(height=height, pause=pause)
-        self.show_sliders_to_all_lanes(height=height, pause=pause)
-        self.check_if_end_sliders()
 
     def show_fall_circles_to_all_lanes(self, height, pause: bool):
         for lane in self.lanes:
@@ -98,6 +101,9 @@ class LaneManager:
                 return False
         return True
 
+    def slider_chance(self):
+        return self.double_circle_chance(self.__MULTIPLE_CIRCLE_CHANCE["Slider"])
+
     def reset_lanes_taken(self) -> None:
         self.lanes_taken = []
 
@@ -118,11 +124,17 @@ class LaneManager:
         return circle_quantity
 
     def check_key_input_range(self, key_lane_input):
-        if circle_y := self.lanes[key_lane_input].check_circles_if_hit(
+        if (circle_y := self.lanes[key_lane_input].check_circles_if_hit(
                 first_hit_window=self.lane_circle_manager.first_hit_window,
-                last_hit_window=self.lane_circle_manager.last_hit_window):
+                last_hit_window=self.lane_circle_manager.last_hit_window)):
             return self.lane_circle_manager.determine_acc(circle_y)
         return False
+
+    def check_slider_key_input(self, lane):
+        if circle_y := self.lanes[lane].check_sliders_if_hit(first_hit_window=self.lane_circle_manager.first_hit_window,
+                                                             last_hit_window=self.lane_circle_manager.last_hit_window,
+                                                             speed=self.lane_circle_manager.circle_speed):
+            return self.lane_circle_manager.determine_acc(circle_y)
 
 
 class LaneCircleManager:

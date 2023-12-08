@@ -1,6 +1,7 @@
 import pygame
 from Stuff.Ringo_Mania.Frontend.settings import FPS, BLACK, clock, \
     END_SONG_DELAY, KEY_BINDS
+from Stuff.Ringo_Mania.Frontend.game_mode import GameModeWindow
 from Stuff.Ringo_Mania.Frontend.main_rectangle import Rectangle
 from Stuff.Ringo_Mania.Frontend.records import Record
 from Stuff.Ringo_Mania.Frontend.font import Font
@@ -13,18 +14,14 @@ from Stuff.Ringo_Mania.Frontend.map_status import MapStatus
 from Stuff.Ringo_Mania.Frontend.stats import Stats
 
 
-class PlayWindow:
+class ManiaPlayWindow(GameModeWindow):
     running = False
     imported = False
 
     def __init__(self, music, timer, map_manager, play_tracker, song="Bocchi"):
-        self.display: Display = Display()
-        self.font = Font()
+        super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer)
         self.record = Record(self.font, self.display)
-        self.music = music
-        self.play_tracker = play_tracker
         self.music.set_music(song)
-        self.timer = timer
         self.map_manager = map_manager(song)
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = MiniTimer()
@@ -42,9 +39,10 @@ class PlayWindow:
         while self.running:
             self.timer.compute_time()
             self.update_frame()
+            self.check_events()
+
             self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
             self.show_stats_and_etc()
-            self.check_events()
         pygame.quit()
 
     def restart(self):

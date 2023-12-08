@@ -51,6 +51,7 @@ class Rectangle:
         self.lane_manager.update_circles()
 
     def key_pressed(self, index: int):
+        self.lane_manager.check_slider_key_input(lane=index)
         if hit_info := self.lane_manager.check_key_input_range(key_lane_input=index):
             if self.map_status.failed:
                 return

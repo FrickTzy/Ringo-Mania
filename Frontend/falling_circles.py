@@ -15,12 +15,12 @@ class FallingCircle(Circle):
         self.window.blit(super().circle_img, (self.hit_box.x, self.hit_box.y))
         if not pause:
             self.hit_box.y += speed
-            self.out_of_screen(height)
+            self.__check_out_of_screen(height=height)
 
     def update_hit_box(self, lane_x, size) -> None:
         self.hit_box = Rect(lane_x, self.y, size, size)
 
-    def out_of_screen(self, height):
+    def __check_out_of_screen(self, height):
         if self.hit_box.y >= height:
             self.out = True
             del self
