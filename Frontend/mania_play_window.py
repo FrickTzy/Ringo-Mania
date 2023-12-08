@@ -33,16 +33,16 @@ class ManiaPlayWindow(GameModeWindow):
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
                                    show_acc=self.show_acc)
+        self.event_handler = ManiaEventHandler(play_window=self)
 
     def run(self):
         self.background_setup()
         while self.running:
             self.timer.compute_time()
             self.update_frame()
-            self.check_events()
-
             self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
             self.show_stats_and_etc()
+            self.event_handler.check_events()
         pygame.quit()
 
     def restart(self):
@@ -69,17 +69,13 @@ class ManiaPlayWindow(GameModeWindow):
         pygame.display.update()
         self.display.window.fill(BLACK)
 
-    def detect_key(self):
-        key_pressed = pygame.key.get_pressed()
-        if self.pause.check_pause(key_pressed):
-            return
-        for keys, index in KEY_BINDS.items():
-            if key_pressed[eval(keys)]:
-                self.rectangle.key_pressed(index=index)
-                self.music.play_hit_sound()
+
+class ManiaEventHandler:
+    def __init__(self, play_window: ManiaPlayWindow):
+        self.__play_window = play_window
 
     def check_events(self):
-        self.detect_key()
+        self.__detect_key()
         self.__check_map_if_failed()
         self.__check_if_missed()
         self.__check_window_if_quit()
@@ -88,16 +84,25 @@ class ManiaPlayWindow(GameModeWindow):
         self.__check_window_if_restart()
         self.__check_window_if_resized()
 
+    def __detect_key(self):
+        key_pressed = pygame.key.get_pressed()
+        if self.__play_window.pause.check_pause(key_pressed):
+            return
+        for keys, index in KEY_BINDS.items():
+            if key_pressed[eval(keys)]:
+                self.__play_window.rectangle.key_pressed(index=index)
+                self.__play_window.music.play_hit_sound()
+
     def __check_if_missed(self):
-        if self.combo_counter.miss_sfx:
-            self.music.play_miss_sound()
-            self.combo_counter.miss_sfx = False
+        if self.__play_window.combo_counter.miss_sfx:
+            self.__play_window.music.play_miss_sound()
+            self.__play_window.combo_counter.miss_sfx = False
 
     def __check_map_if_failed(self):
-        if self.combo_counter.life <= 0:
+        if self.__play_window.combo_counter.life <= 0:
             print("he")
-            self.map_status.failed = True
-            self.music.fade_music()
+            self.__play_window.map_status.failed = True
+            self.__play_window.music.fade_music()
 
     def __check_window_if_quit(self):
         for event in pygame.event.get():
@@ -105,23 +110,24 @@ class ManiaPlayWindow(GameModeWindow):
                 self.running = False
 
     def __check_map_if_finished(self):
-        if self.timer.timer_finished or self.map_status.finished and not self.map_status.failed:
-            self.map_status.finished = True
-            self.play_tracker.update_plays(self.rectangle.combo_counter.get_stats())
+        if self.__play_window.timer.timer_finished or self.__play_window.map_status.finished and \
+                not self.__play_window.map_status.failed:
+            self.__play_window.map_status.finished = True
+            self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats())
 
     def __check_window_if_paused(self):
-        if self.pause.is_paused:
-            self.pause.show_pause(
-                window_size=self.display.get_window_size,
-                window=self.display.window)
+        if self.__play_window.pause.is_paused:
+            self.__play_window.pause.show_pause(
+                window_size=self.__play_window.display.get_window_size,
+                window=self.__play_window.display.window)
 
     def __check_window_if_restart(self):
-        if self.pause.restarted:
-            self.restart()
-            self.rectangle.restart()
-            self.pause.restarted = False
+        if self.__play_window.pause.restarted:
+            self.__play_window.restart()
+            self.__play_window.rectangle.restart()
+            self.__play_window.pause.restarted = False
 
     def __check_window_if_resized(self):
-        if self.display.check_window_size():
-            self.font.update_all_font(self.display.height)
-            self.rectangle.update_rect()
+        if self.__play_window.display.check_window_size():
+            self.__play_window.font.update_all_font(self.__play_window.display.height)
+            self.__play_window.rectangle.update_rect()
