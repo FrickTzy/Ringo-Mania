@@ -1,5 +1,5 @@
 from pygame import font as pyfont
-from Frontend.Mania_Window.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
+from Frontend.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
     GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
 from Frontend.Mania_Window.Stats.Combo.date import Date
 

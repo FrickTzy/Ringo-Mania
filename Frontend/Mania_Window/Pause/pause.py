@@ -1,8 +1,8 @@
 from pygame import time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse
-from Backend.music import Music
-from Backend.timer import Timer
+from Backend import Music
+from Backend import Timer
 from Frontend.Mania_Window.Misc.font import Font
-from Frontend.Mania_Window.settings import WIDTH, HEIGHT, BLACK, WHITE
+from Frontend.settings import WIDTH, HEIGHT, BLACK, WHITE
 
 
 class Pause:

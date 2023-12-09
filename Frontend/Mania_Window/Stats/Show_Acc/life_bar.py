@@ -1,5 +1,5 @@
 from pygame import Rect, draw
-from Frontend.Mania_Window.settings import PURPLE, BLACK
+from Frontend.settings import PURPLE, BLACK
 
 
 class LifeBar:

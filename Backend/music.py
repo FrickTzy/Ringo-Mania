@@ -1,6 +1,6 @@
 from pygame import mixer
 from pygame import time
-from Frontend.Mania_Window.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
+from Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
 from Backend.timer import IntervalTimer
 import os
 
@@ -35,6 +35,7 @@ class Music:
         if ms_now - self.starting_ms > self.__SONG_FADE_MS:
             self.starting_ms = ms_now
             self.song_volume -= SONG_FADE
+            print(self.song_volume)
             mixer.Channel(2).set_volume(self.song_volume)
 
     @property
