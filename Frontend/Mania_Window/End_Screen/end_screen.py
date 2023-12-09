@@ -1,5 +1,6 @@
 from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
 from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import PURPLE
+from Stuff.Ringo_Mania.Backend import DelayTimer
 
 
 class EndScreen:
@@ -9,12 +10,15 @@ class EndScreen:
         width, height = window_size
         self.pos = EndScreenPos(width=width, height=height)
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
+        self.delay_timer = DelayTimer()
 
     def show_end_screen(self, window: SurfaceType | Surface, stats: dict):
-        self.__end_screen_surface_setup(width=self.pos.width, height=self.pos.height)
-        self.__add_bg_pause_surface()
-        window.blit(self.__end_screen_surface, (0, 0))
-        mouse.set_visible(True)
+        self.delay_timer.check_delay(delay_seconds=2)
+        if self.delay_timer.timer_finished:
+            self.__end_screen_surface_setup(width=self.pos.width, height=self.pos.height)
+            self.__add_bg_pause_surface()
+            window.blit(self.__end_screen_surface, (0, 0))
+            mouse.set_visible(True)
 
     def __add_bg_pause_surface(self) -> None:
         r, g, b = PURPLE

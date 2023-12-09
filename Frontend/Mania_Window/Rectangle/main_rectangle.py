@@ -4,12 +4,12 @@ from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import RECT_COLOR, \
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
+from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
 
 
 class Rectangle:
     def __init__(self, *, show_acc, maps, display, combo_counter: ComboCounter,
-                 mini_timer: MiniTimer, map_status):
+                 mini_timer: IntervalTimer, map_status):
         self.display = display
         self.show_acc: ShowAcc = show_acc
         self.map_status = map_status

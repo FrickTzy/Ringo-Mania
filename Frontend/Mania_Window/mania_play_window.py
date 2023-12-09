@@ -7,7 +7,7 @@ from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc import Font, Display, MapStatu
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Pause import Pause
 from Stuff.Ringo_Mania.Frontend.Mania_Window.End_Screen import EndScreen
-from Stuff.Ringo_Mania.Backend import MiniTimer, Music
+from Stuff.Ringo_Mania.Backend import IntervalTimer, Music
 
 
 class ManiaPlayWindow(GameModeWindow):
@@ -20,7 +20,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.music.set_music(song)
         self.map_manager = map_manager(song)
         self.combo_counter = ComboCounter(self.font)
-        self.circle_interval_timer = MiniTimer()
+        self.circle_interval_timer = IntervalTimer()
         self.show_acc = ShowAcc()
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
@@ -114,9 +114,7 @@ class ManiaEventHandler:
             self.__play_window.map_status.finished = True
             self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats)
             self.__play_window.music.fade_music()
-            self.__play_window.timer.check_end_screen(delay=2)
-            if self.__play_window.timer.end_screen_finished:
-                self.__play_window.show_end_screen()
+            self.__play_window.show_end_screen()
 
     def __check_window_if_paused(self):
         if self.__play_window.pause.is_paused:

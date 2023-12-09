@@ -1,7 +1,7 @@
 from pygame import mixer
 from pygame import time
 from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
+from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
 import os
 
 
@@ -14,7 +14,7 @@ class Music:
         self.music: mixer.Sound
         self.song_volume = SONG_VOLUME
         self.starting_ms = time.get_ticks()
-        self.mini_timer: MiniTimer = MiniTimer(self.__SOUND_INTERVAL)
+        self.mini_timer: IntervalTimer = IntervalTimer(self.__SOUND_INTERVAL)
 
     def set_music(self, song_name):
         mixer.init()

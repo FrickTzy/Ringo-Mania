@@ -1,7 +1,7 @@
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane import Lane
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc.display import Display
 from random import randrange, getrandbits
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
+from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
 
 
 class LaneManager:
@@ -13,13 +13,13 @@ class LaneManager:
         "4": 8,
     }
 
-    def __init__(self, window, display: Display, timer: MiniTimer):
+    def __init__(self, window, display: Display, timer: IntervalTimer):
         self.lane_circle_manager = LaneCircleManager(display=display)
         self.lanes_taken = []
         lane_coord = self.lane_circle_manager.circle_position
         self.lanes: [Lane] = [Lane(lane_coord[0]), Lane(lane_coord[1]), Lane(lane_coord[2]), Lane(lane_coord[3])]
         self.window = window
-        self.mini_timer: MiniTimer = timer
+        self.mini_timer: IntervalTimer = timer
         self.set_up_timer_interval()
 
     def set_up_timer_interval(self):

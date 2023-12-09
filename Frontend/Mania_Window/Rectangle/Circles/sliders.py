@@ -1,6 +1,6 @@
 from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.circles import Circle
 from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import CIRCLE_SIZE, FALLING_SPEED, BLACK
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
+from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
 from pygame import Rect, draw
 from random import randrange
 
@@ -26,7 +26,7 @@ class Sliders(Circle):
         self.out = False
         self.slider_ended = False
         self.min_slider_len_finished = False
-        self.minimum_slider_len_checker = MiniTimer(interval=min_slider_len)
+        self.minimum_slider_len_checker = IntervalTimer(interval=min_slider_len)
         self.hit_head = False
         self.hit_tail = False
         self.total_len = self.__LEN_PER_BODY

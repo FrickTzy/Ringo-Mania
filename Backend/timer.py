@@ -10,16 +10,6 @@ class Timer:
         self.timer_finished: bool = False
         self.seconds_restarted: int = 0
         self.function_target_time = 0
-        self.end_screen_start: int | float = 0
-        self.end_started = False
-        self.end_screen_finished: bool = False
-
-    def check_end_screen(self, delay):
-        if not self.end_started:
-            self.end_screen_start = self.current_time
-            self.end_started = True
-        if self.end_screen_start + delay <= self.current_time:
-            self.end_screen_finished = True
 
     def update_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:
@@ -82,12 +72,33 @@ class Timer:
         return exec_function
 
 
-@Timer.delay_func
-def print_hello():
-    print("hello")
+class DelayTimer:
+    def __init__(self):
+        self.__start_time: int | float = 0
+        self.__started_timer = False
+        self.__timer_finished: bool = False
+
+    def check_delay(self, delay_seconds):
+        if not self.__started_timer:
+            self.__start_time = self.current_seconds
+            self.__started_timer = True
+        if self.__start_time + delay_seconds <= self.current_seconds:
+            self.__timer_finished = True
+
+    @property
+    def timer_finished(self):
+        return self.__timer_finished
+
+    @property
+    def current_seconds(self):
+        return self.ms_to_second(time.get_ticks())
+
+    @staticmethod
+    def ms_to_second(ms):
+        return ms // 1000
 
 
-class MiniTimer:
+class IntervalTimer:
     def __init__(self, interval: int = 100):
         self.last_time: int = time.get_ticks()
         self.interval = interval
@@ -100,8 +111,3 @@ class MiniTimer:
 
     def change_interval(self, interval):
         self.interval = interval
-
-
-if __name__ == "__main__":
-    print_hello()
-    print("jasda")
