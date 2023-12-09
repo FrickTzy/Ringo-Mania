@@ -1,8 +1,8 @@
 from pygame import time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse
-from Stuff.Ringo_Mania.Backend.music import Music
-from Stuff.Ringo_Mania.Backend.timer import Timer
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc.font import Font
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import WIDTH, HEIGHT, BLACK, WHITE
+from Backend.music import Music
+from Backend.timer import Timer
+from Frontend.Mania_Window.Misc.font import Font
+from Frontend.Mania_Window.settings import WIDTH, HEIGHT, BLACK, WHITE
 
 
 class Pause:

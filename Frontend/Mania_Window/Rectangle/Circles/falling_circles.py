@@ -1,6 +1,6 @@
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.circles import Circle
+from Frontend.Mania_Window.Rectangle.Circles.circles import Circle
 from pygame import Rect
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import CIRCLE_SIZE, FALLING_SPEED, HEIGHT
+from Frontend.Mania_Window.settings import CIRCLE_SIZE, FALLING_SPEED, HEIGHT
 
 
 class FallingCircle(Circle):

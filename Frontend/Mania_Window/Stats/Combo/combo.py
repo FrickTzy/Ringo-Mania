@@ -1,7 +1,7 @@
 from pygame import font as pyfont
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
+from Frontend.Mania_Window.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
     GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.date import Date
+from Frontend.Mania_Window.Stats.Combo.date import Date
 
 
 class ComboInfo:

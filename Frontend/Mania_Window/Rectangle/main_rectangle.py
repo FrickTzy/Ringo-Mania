@@ -1,10 +1,10 @@
 from pygame import Rect, draw
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import RECT_COLOR, \
+from Frontend.Mania_Window.settings import RECT_COLOR, \
     IMPORT_MAP
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
-from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
+from Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
+from Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
+from Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
+from Backend.timer import IntervalTimer
 
 
 class Rectangle:

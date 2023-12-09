@@ -1,6 +1,6 @@
 from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import PURPLE
-from Stuff.Ringo_Mania.Backend import DelayTimer
+from Frontend.Mania_Window.settings import PURPLE
+from Backend import DelayTimer
 
 
 class EndScreen:

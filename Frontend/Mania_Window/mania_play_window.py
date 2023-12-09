@@ -1,13 +1,13 @@
 import pygame
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import FPS, BLACK, clock, \
+from Frontend.Mania_Window.settings import FPS, BLACK, clock, \
     END_SONG_DELAY, KEY_BINDS
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Interfaces import GameModeWindow
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle import Rectangle
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc import Font, Display, MapStatus
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Pause import Pause
-from Stuff.Ringo_Mania.Frontend.Mania_Window.End_Screen import EndScreen
-from Stuff.Ringo_Mania.Backend import IntervalTimer, Music
+from Frontend.Mania_Window.Interfaces import GameModeWindow
+from Frontend.Mania_Window.Rectangle import Rectangle
+from Frontend.Mania_Window.Misc import Font, Display, MapStatus
+from Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
+from Frontend.Mania_Window.Pause import Pause
+from Frontend.Mania_Window.End_Screen import EndScreen
+from Backend import IntervalTimer, Music
 
 
 class ManiaPlayWindow(GameModeWindow):

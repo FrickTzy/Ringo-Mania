@@ -1,7 +1,7 @@
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane import Lane
-from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc.display import Display
+from Frontend.Mania_Window.Rectangle.lane import Lane
+from Frontend.Mania_Window.Misc.display import Display
 from random import randrange, getrandbits
-from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
+from Backend.timer import IntervalTimer
 
 
 class LaneManager:

@@ -1,7 +1,7 @@
 from pygame import mixer
 from pygame import time
-from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
-from Stuff.Ringo_Mania.Backend.timer import IntervalTimer
+from Frontend.Mania_Window.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
+from Backend.timer import IntervalTimer
 import os
 
 
