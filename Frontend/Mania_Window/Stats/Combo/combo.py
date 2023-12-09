@@ -1,7 +1,7 @@
 from pygame import font as pyfont
-from datetime import datetime
-from Stuff.Ringo_Mania.Frontend.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, GRADE_ACC, \
-    COMBO_DIVIDER, OKAY_lIFE_DMG
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
+    GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.date import Date
 
 
 class ComboInfo:
@@ -22,13 +22,19 @@ class ComboInfo:
 
 class ComboCounter:
     pyfont.init()
+    __acc_dict = {
+        "Miss": 0,
+        "Okay": 0,
+        "Good": 0,
+        "Perfect": 0,
+        "Amazing": 0
+    }
 
     def __init__(self, font):
         self.fonts = font
         self.__info = ComboInfo()
         self.__life = MAX_LIFE
-        self.date = ""
-        self.current_time = ""
+        self.__date = Date()
         self.accuracy: float = 0
         self.missed = False
         self.__miss_sfx = False
@@ -41,9 +47,67 @@ class ComboCounter:
             self.__miss_sfx = True
         self.missed = True
         self.combo = 0
-        self.add_clicked_circles(0)
+        self.add_clicked_circles(0, "Miss")
         self.lose_life()
         self.miss_score(amount_of_circles - 1)
+
+    def hit_circle_successfully(self, grade, acc, score):
+        self.combo += 1
+        self.compute_score(score)
+        self.add_clicked_circles(acc, grade)
+        if grade == "Okay":
+            self.lose_life(OKAY_lIFE_DMG)
+            return
+        if self.__life < MAX_LIFE:
+            self.compute_life()
+
+    def get_grade(self):
+        for grade, acc in GRADE_ACC.items():
+            if self.accuracy >= acc:
+                if grade == "S":
+                    if not self.missed:
+                        return grade
+                    else:
+                        continue
+                return grade
+        return "F"
+
+    def add_clicked_circles(self, accuracy: int, category: str):
+        self.__acc_dict[category] += 1
+        self.total_clicked.append(accuracy)
+
+    def compute_score(self, score: int = 10):
+        if not (combo_multiplier := (int(self.info.combo / COMBO_DIVIDER))):
+            combo_multiplier = 1
+        self.info.score += int(combo_multiplier * score)
+
+    def compute_life(self):
+        self.__life += int(self.info.combo * LIFE_INCREASE)
+        if self.__life > MAX_LIFE:
+            self.__life = MAX_LIFE
+
+    def lose_life(self, life=LIFE_DMG):
+        self.__life -= life
+        if self.__life < 0:
+            self.__life = 0
+
+    def compute_accuracy(self):
+        if len(self.total_clicked) == 0:
+            self.accuracy = 100.0
+            return
+        self.accuracy = round(sum(self.total_clicked) / len(self.total_clicked), 2)
+
+    def reset_all(self):
+        self.__info.reset()
+        self.__life = MAX_LIFE
+        self.accuracy = 0
+        self.missed = False
+        self.total_clicked.clear()
+        self.__reset_acc_dict()
+
+    def __reset_acc_dict(self):
+        for category in self.__acc_dict.keys():
+            self.__acc_dict[category] = 0
 
     @property
     def miss_sfx(self):
@@ -53,18 +117,8 @@ class ComboCounter:
     def miss_sfx(self, value: bool):
         self.__miss_sfx = value
 
-    def hit_circle_successfully(self, grade, acc, score):
-        self.combo += 1
-        self.compute_score(score)
-        self.add_clicked_circles(acc)
-        if grade == "Okay":
-            self.lose_life(OKAY_lIFE_DMG)
-            return
-        if self.__life < MAX_LIFE:
-            self.compute_life()
-
     @property
-    def get_play_info(self):
+    def get_play_info_text(self):
         self.info.compute_highest_combo()
         self.compute_accuracy()
         return self.fonts.main_font.render(f"{self.info.combo}x", True, PURPLE), \
@@ -89,73 +143,13 @@ class ComboCounter:
     def life(self):
         return self.__life
 
-    def get_grade(self):
-        for grade, acc in GRADE_ACC.items():
-            if self.accuracy >= acc:
-                if grade == "S":
-                    if not self.missed:
-                        return grade
-                    else:
-                        continue
-                return grade
-        return "F"
+    @property
+    def amount_dict(self) -> dict:
+        return self.__acc_dict
 
-    def add_clicked_circles(self, accuracy: int):
-        self.total_clicked.append(accuracy)
-
-    def compute_score(self, score: int = 10):
-        if not (combo_multiplier := (int(self.info.combo / COMBO_DIVIDER))):
-            combo_multiplier = 1
-        self.info.score += int(combo_multiplier * score)
-
-    def compute_life(self):
-        self.__life += int(self.info.combo * LIFE_INCREASE)
-        if self.__life > MAX_LIFE:
-            self.__life = MAX_LIFE
-
-    def lose_life(self, life=LIFE_DMG):
-        self.__life -= life
-        if self.__life < 0:
-            self.__life = 0
-
-    def compute_accuracy(self):
-        if len(self.total_clicked) == 0:
-            self.accuracy = 100.0
-            return
-        self.accuracy = round(sum(self.total_clicked) / len(self.total_clicked), 2)
-
-    def get_date(self):
-        date = datetime.now()
-        self.date = f"{date.day}/{date.month}/{date.year}"
-        hour, pm = self.convert_to_standard_time(date.hour)
-        self.current_time = f"{hour}:{self.fix_minutes(date.minute)} {pm}"
-
-    @staticmethod
-    def fix_minutes(minutes):
-        if minutes < 10:
-            return f"0{minutes}"
-        return minutes
-
-    @staticmethod
-    def convert_to_standard_time(hour):
-        if hour < 1:
-            return 12, "am"
-        elif hour < 12:
-            return hour, "am"
-        elif hour == 12:
-            return hour, "pm"
-        else:
-            return hour - 12, "pm"
-
-    def reset_all(self):
-        self.__info.reset()
-        self.__life = MAX_LIFE
-        self.accuracy = 0
-        self.missed = False
-        self.total_clicked.clear()
-
+    @property
     def get_stats(self):
-        self.get_date()
-        return {"score": self.info.score, "accuracy": f"{self.accuracy}%", "combo": self.info.combo,
-                "highest_combo": self.info.highest_combo, "grade": f"{self.get_grade()}", "date": self.date,
-                "time": self.current_time}
+        return {"score": self.info.score, "accuracy": f"{self.accuracy}%", "acc_dict": self.__acc_dict,
+                "combo": self.info.combo,
+                "highest_combo": self.info.highest_combo, "grade": f"{self.get_grade()}", "date": self.__date.get_date,
+                "time": self.__date.get_time}

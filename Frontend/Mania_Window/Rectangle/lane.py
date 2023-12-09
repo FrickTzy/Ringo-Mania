@@ -1,6 +1,6 @@
-from Stuff.Ringo_Mania.Frontend.falling_circles import FallingCircle
-from Stuff.Ringo_Mania.Frontend.circles import Circle
-from Stuff.Ringo_Mania.Frontend.sliders import Sliders
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.falling_circles import FallingCircle
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.circles import Circle
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.sliders import Sliders
 
 
 class Lane:

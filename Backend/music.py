@@ -1,6 +1,6 @@
 from pygame import mixer
 from pygame import time
-from Stuff.Ringo_Mania.Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 import os
 
@@ -36,6 +36,12 @@ class Music:
             self.starting_ms = ms_now
             self.song_volume -= SONG_FADE
             mixer.Channel(2).set_volume(self.song_volume)
+
+    @property
+    def song_finished_fade(self) -> bool:
+        if self.song_volume <= 0.1:
+            return True
+        return False
 
     @staticmethod
     def pause_music():

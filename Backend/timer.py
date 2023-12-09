@@ -10,6 +10,16 @@ class Timer:
         self.timer_finished: bool = False
         self.seconds_restarted: int = 0
         self.function_target_time = 0
+        self.end_screen_start: int | float = 0
+        self.end_started = False
+        self.end_screen_finished: bool = False
+
+    def check_end_screen(self, delay):
+        if not self.end_started:
+            self.end_screen_start = self.current_time
+            self.end_started = True
+        if self.end_screen_start + delay <= self.current_time:
+            self.end_screen_finished = True
 
     def update_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:

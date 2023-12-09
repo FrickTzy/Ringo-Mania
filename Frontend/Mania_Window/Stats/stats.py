@@ -1,4 +1,4 @@
-from Stuff.Ringo_Mania.Frontend.life_bar import LifeBar
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Show_Acc.life_bar import LifeBar
 
 
 class Stats:

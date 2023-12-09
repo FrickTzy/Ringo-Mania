@@ -1,5 +1,5 @@
-from Stuff.Ringo_Mania.Frontend.circles import Circle
-from Stuff.Ringo_Mania.Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, DARK_PURPLE, BLACK
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.Circles.circles import Circle
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import CIRCLE_SIZE, FALLING_SPEED, BLACK
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 from pygame import Rect, draw
 from random import randrange

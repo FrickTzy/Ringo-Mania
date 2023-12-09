@@ -1,5 +1,5 @@
 from pygame import Rect, draw
-from Stuff.Ringo_Mania.Frontend.settings import PURPLE, BLACK
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import PURPLE, BLACK
 
 
 class LifeBar:

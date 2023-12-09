@@ -1,5 +1,5 @@
 from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors
-from Stuff.Ringo_Mania.Frontend.settings import WIDTH, HEIGHT, RESIZABLE, RECTANGLE_X, RECTANGLE_WIDTH, \
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import WIDTH, HEIGHT, RESIZABLE, RECTANGLE_X, RECTANGLE_WIDTH, \
     RECTANGLE_WIDTH_CAP, FULL_SCREEN_VIEW
 
 

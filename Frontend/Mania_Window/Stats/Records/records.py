@@ -1,6 +1,6 @@
-from Stuff.Ringo_Mania.Frontend.combo import ComboInfo
-from Stuff.Ringo_Mania.Frontend.font import Font
-from Stuff.Ringo_Mania.Frontend.settings import WHITE, NUM_OF_RECORD, PLAYER_NAME
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.combo import ComboInfo
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc.font import Font
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import WHITE, NUM_OF_RECORD, PLAYER_NAME
 
 
 class Record:

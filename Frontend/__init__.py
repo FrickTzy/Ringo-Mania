@@ -1,1 +1,1 @@
-from .mania_play_window import ManiaPlayWindow
+from Stuff.Ringo_Mania.Frontend.Mania_Window import ManiaPlayWindow

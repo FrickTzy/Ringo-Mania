@@ -11,19 +11,19 @@ class ShowAcc:
     def __init__(self):
         self.__acc = None
         self.miss_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Img", "hit0.png")).convert_alpha(),
+            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", "hit0.png")).convert_alpha(),
             (self.__ACC_IMG_WIDTH, self.__ACC_IMG_HEIGHT))
         self.okay_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Img", "hit50.png")).convert_alpha(),
+            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", "hit50.png")).convert_alpha(),
             (self.__ACC_IMG_WIDTH, self.__ACC_IMG_HEIGHT))
         self.good_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Img", "hit100.png")).convert_alpha(),
+            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", "hit100.png")).convert_alpha(),
             (self.__ACC_IMG_WIDTH, self.__ACC_IMG_HEIGHT))
         self.perfect_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Img", "hit300.png")).convert_alpha(),
+            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", "hit300.png")).convert_alpha(),
             (self.__ACC_IMG_WIDTH, self.__ACC_IMG_HEIGHT))
         self.amazing_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Img", "hit320.png")).convert_alpha(),
+            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", "hit320.png")).convert_alpha(),
             (self.__ACC_IMG_WIDTH, self.__ACC_IMG_HEIGHT))
         self.acc_dict = {
             0: self.miss_img,

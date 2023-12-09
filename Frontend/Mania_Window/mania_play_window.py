@@ -1,24 +1,20 @@
 import pygame
-from Stuff.Ringo_Mania.Frontend.settings import FPS, BLACK, clock, \
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import FPS, BLACK, clock, \
     END_SONG_DELAY, KEY_BINDS
-from Stuff.Ringo_Mania.Frontend.game_mode import GameModeWindow
-from Stuff.Ringo_Mania.Frontend.main_rectangle import Rectangle
-from Stuff.Ringo_Mania.Frontend.records import Record
-from Stuff.Ringo_Mania.Frontend.font import Font
-from Stuff.Ringo_Mania.Frontend.display import Display
-from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
-from Stuff.Ringo_Mania.Frontend.pause import Pause
-from Stuff.Ringo_Mania.Backend.timer import MiniTimer
-from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
-from Stuff.Ringo_Mania.Frontend.map_status import MapStatus
-from Stuff.Ringo_Mania.Frontend.stats import Stats
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Interfaces import GameModeWindow
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle import Rectangle
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc import Font, Display, MapStatus
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Pause import Pause
+from Stuff.Ringo_Mania.Frontend.Mania_Window.End_Screen import EndScreen
+from Stuff.Ringo_Mania.Backend import MiniTimer, Music
 
 
 class ManiaPlayWindow(GameModeWindow):
     running = False
     imported = False
 
-    def __init__(self, music, timer, map_manager, play_tracker, song="Bocchi"):
+    def __init__(self, music: Music, timer, map_manager, play_tracker, song="Bocchi"):
         super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer)
         self.record = Record(self.font, self.display)
         self.music.set_music(song)
@@ -29,6 +25,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
+        self.__end_screen = EndScreen(window_size=self.display.get_window_size, window=self.display.window)
         self.rectangle = Rectangle(maps=self.map_manager,
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
@@ -55,7 +52,7 @@ class ManiaPlayWindow(GameModeWindow):
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
-        self.stats.show_all(play_info=self.combo_counter.get_play_info, life=self.combo_counter.life)
+        self.stats.show_all(play_info=self.combo_counter.get_play_info_text, life=self.combo_counter.life)
         self.record.show_record(current_rec=self.combo_counter.info)
 
     def background_setup(self):
@@ -68,6 +65,9 @@ class ManiaPlayWindow(GameModeWindow):
         clock.tick(FPS)
         pygame.display.update()
         self.display.window.fill(BLACK)
+
+    def show_end_screen(self):
+        self.__end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats)
 
 
 class ManiaEventHandler:
@@ -100,7 +100,6 @@ class ManiaEventHandler:
 
     def __check_map_if_failed(self):
         if self.__play_window.combo_counter.life <= 0:
-            print("he")
             self.__play_window.map_status.failed = True
             self.__play_window.music.fade_music()
 
@@ -113,7 +112,11 @@ class ManiaEventHandler:
         if self.__play_window.timer.timer_finished or self.__play_window.map_status.finished and \
                 not self.__play_window.map_status.failed:
             self.__play_window.map_status.finished = True
-            self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats())
+            self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats)
+            self.__play_window.music.fade_music()
+            self.__play_window.timer.check_end_screen(delay=2)
+            if self.__play_window.timer.end_screen_finished:
+                self.__play_window.show_end_screen()
 
     def __check_window_if_paused(self):
         if self.__play_window.pause.is_paused:

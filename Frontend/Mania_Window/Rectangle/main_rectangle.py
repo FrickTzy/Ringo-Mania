@@ -1,9 +1,9 @@
 from pygame import Rect, draw
-from Stuff.Ringo_Mania.Frontend.settings import RECT_COLOR, \
+from Stuff.Ringo_Mania.Frontend.Mania_Window.settings import RECT_COLOR, \
     IMPORT_MAP
-from Stuff.Ringo_Mania.Frontend.combo import ComboCounter
-from Stuff.Ringo_Mania.Frontend.lane_manager import LaneManager, ImportCircles
-from Stuff.Ringo_Mania.Frontend.show_acc import ShowAcc
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
 
@@ -22,7 +22,7 @@ class Rectangle:
 
     def run(self, current_time: int, pause: bool):
         if not pause and not self.map_status.failed_or_finished:
-            self.lane_manager.init_sliders()
+            self.lane_manager.init_fall_circles(map_manager=self.map_manager, current_time=current_time)
             self.check_circles_if_out()
         self.show(pause=pause)
 

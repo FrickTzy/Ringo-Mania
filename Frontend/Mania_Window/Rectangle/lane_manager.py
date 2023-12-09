@@ -1,5 +1,5 @@
-from Stuff.Ringo_Mania.Frontend.lane import Lane
-from Stuff.Ringo_Mania.Frontend.display import Display
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Rectangle.lane import Lane
+from Stuff.Ringo_Mania.Frontend.Mania_Window.Misc.display import Display
 from random import randrange, getrandbits
 from Stuff.Ringo_Mania.Backend.timer import MiniTimer
 
@@ -168,7 +168,7 @@ class LaneCircleManager:
     @property
     def circle_speed(self):
         # FALLING_SPEED + self.circle_size // SPEED_RATIO
-        return 23
+        return 24
 
     @property
     def interval(self):
