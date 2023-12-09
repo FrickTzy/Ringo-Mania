@@ -9,7 +9,6 @@ class Timer:
         self.ending_time: int | float = 0
         self.timer_finished: bool = False
         self.seconds_restarted: int = 0
-        self.function_target_time = 0
 
     def update_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:
@@ -55,21 +54,6 @@ class Timer:
     def compute_ms_time(self):
         if self.get_current_ms >= self.target_time:
             self.timer_finished = True
-
-    def init_delay_function(self, time_delay: int | float = 1000):
-        self.function_target_time = time.get_ticks() + time_delay
-
-    def activate_function(self, function):
-        if time.get_ticks() >= self.function_target_time:
-            function()
-
-    @staticmethod
-    def delay_func(function, time_delay: int | float = 1000):
-        def exec_function():
-            time.wait(time_delay)
-            function()
-
-        return exec_function
 
 
 class DelayTimer:
