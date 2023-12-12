@@ -62,12 +62,23 @@ class DelayTimer:
         self.__started_timer = False
         self.__timer_finished: bool = False
 
-    def check_delay(self, delay_seconds):
+    def check_delay_seconds(self, delay_seconds=0):
         if not self.__started_timer:
             self.__start_time = self.current_seconds
             self.__started_timer = True
         if self.__start_time + delay_seconds <= self.current_seconds:
             self.__timer_finished = True
+
+    def check_delay_ms(self, delay_ms=0):
+        if not self.__started_timer:
+            self.__start_time = self.current_ms
+            self.__started_timer = True
+        if self.__start_time + delay_ms <= self.current_ms:
+            self.__timer_finished = True
+
+    def reset_timer(self):
+        self.__started_timer = False
+        self.__timer_finished = False
 
     @property
     def timer_finished(self):
@@ -76,6 +87,10 @@ class DelayTimer:
     @property
     def current_seconds(self):
         return self.ms_to_second(time.get_ticks())
+
+    @property
+    def current_ms(self):
+        return time.get_ticks()
 
     @staticmethod
     def ms_to_second(ms):

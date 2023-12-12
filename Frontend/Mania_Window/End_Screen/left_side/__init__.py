@@ -1,1 +1,1 @@
-from .stats_text import StatsText
+from .acc_text import AccText

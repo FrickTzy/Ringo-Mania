@@ -35,7 +35,6 @@ class Music:
         if ms_now - self.starting_ms > self.__SONG_FADE_MS:
             self.starting_ms = ms_now
             self.song_volume -= SONG_FADE
-            print(self.song_volume)
             mixer.Channel(2).set_volume(self.song_volume)
 
     @property

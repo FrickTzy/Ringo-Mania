@@ -1,7 +1,7 @@
 from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
 
 from Backend import DelayTimer
-from Frontend.Mania_Window.End_Screen.left_side import StatsText
+from Frontend.Mania_Window.End_Screen.left_side import AccText
 from Frontend.settings import PURPLE
 
 
@@ -11,20 +11,26 @@ class EndScreen:
         self.pos = EndScreenPos(width=width, height=height)
         self.__opacity = Opacity()
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
-        self.__stats_text = StatsText(end_screen_surface=self.__end_screen_surface, font=font, screen_pos=self.pos,
-                                      opacity=self.__opacity)
+        self.__stats_text = AccText(end_screen_surface=self.__end_screen_surface, font=font, screen_pos=self.pos,
+                                    opacity=self.__opacity)
         self.delay_timer = DelayTimer()
 
-    def show_end_screen(self, window: SurfaceType | Surface, stats: dict):
-        self.delay_timer.check_delay(delay_seconds=2)
+    def show_end_screen(self, window: SurfaceType | Surface, size: tuple[int, int], stats: dict):
+        self.delay_timer.check_delay_ms(delay_ms=800)
         if not self.delay_timer.timer_finished:
             return
-        self.__end_screen_surface_setup(width=self.pos.width, height=self.pos.height)
+        width, height = size
+        self.__end_screen_surface_setup(width=width, height=height)
         self.__add_bg_pause_surface()
-        self.__stats_text.show_text(end_screen_surface=self.__end_screen_surface)
+        self.__stats_text.show_text(end_screen_surface=self.__end_screen_surface, stats=stats["acc_dict"])
         self.__opacity.add_opacity()
         window.blit(self.__end_screen_surface, (0, 0))
-        mouse.set_visible(True)
+        if self.__opacity.opacity >= 50:
+            mouse.set_visible(True)
+
+    def restart(self):
+        self.__opacity.reset_opacity()
+        self.delay_timer.reset_timer()
 
     def __add_bg_pause_surface(self) -> None:
         r, g, b = PURPLE
@@ -44,6 +50,9 @@ class Opacity:
     @property
     def opacity(self):
         return self.__opacity
+
+    def reset_opacity(self) -> None:
+        self.__opacity = 0
 
     def add_opacity(self):
         if self.__opacity < 255:

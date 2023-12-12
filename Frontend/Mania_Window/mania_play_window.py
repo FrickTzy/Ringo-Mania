@@ -49,6 +49,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.timer.restart()
         self.map_status.failed = False
         self.rectangle.restart()
+        self.__end_screen.restart()
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
@@ -67,7 +68,8 @@ class ManiaPlayWindow(GameModeWindow):
         self.display.window.fill(BLACK)
 
     def show_end_screen(self):
-        self.__end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats)
+        self.__end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
+                                          size=self.display.get_window_size)
 
 
 class ManiaEventHandler:
@@ -76,12 +78,12 @@ class ManiaEventHandler:
 
     def check_events(self):
         self.__detect_key()
+        self.__check_window_if_restart()
         self.__check_map_if_failed()
         self.__check_if_missed()
         self.__check_window_if_quit()
         self.__check_map_if_finished()
         self.__check_window_if_paused()
-        self.__check_window_if_restart()
         self.__check_window_if_resized()
 
     def __detect_key(self):
@@ -102,11 +104,12 @@ class ManiaEventHandler:
         if self.__play_window.combo_counter.life <= 0:
             self.__play_window.map_status.failed = True
             self.__play_window.music.fade_music()
+            self.__play_window.show_end_screen()
 
     def __check_window_if_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                self.__play_window.running = False
 
     def __check_map_if_finished(self):
         if self.__play_window.timer.timer_finished or self.__play_window.map_status.finished and \
