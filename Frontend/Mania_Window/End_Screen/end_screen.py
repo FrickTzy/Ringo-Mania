@@ -1,18 +1,18 @@
 from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
 
 from Backend import DelayTimer
-from Frontend.Mania_Window.End_Screen.left_side import AccText
+from .left_side import LeftEndScreen
 from Frontend.settings import PURPLE
 
 
 class EndScreen:
-    def __init__(self, window_size: tuple[int, int], font):
+    def __init__(self, window_size: tuple[int, int]):
         width, height = window_size
         self.pos = EndScreenPos(width=width, height=height)
         self.__opacity = Opacity()
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
-        self.__stats_text = AccText(end_screen_surface=self.__end_screen_surface, font=font, screen_pos=self.pos,
-                                    opacity=self.__opacity)
+        self.__left_end_screen = LeftEndScreen(opacity=self.__opacity, end_screen=self.__end_screen_surface,
+                                               pos=self.pos)
         self.delay_timer = DelayTimer()
 
     def show_end_screen(self, window: SurfaceType | Surface, size: tuple[int, int], stats: dict):
@@ -22,8 +22,8 @@ class EndScreen:
         width, height = size
         self.__end_screen_surface_setup(width=width, height=height)
         self.__add_bg_pause_surface()
-        self.__stats_text.show_text(end_screen_surface=self.__end_screen_surface, stats=stats["acc_dict"])
         self.__opacity.add_opacity()
+        self.__left_end_screen.show(end_screen=self.__end_screen_surface, stats=stats["acc_dict"])
         window.blit(self.__end_screen_surface, (0, 0))
         if self.__opacity.opacity >= 50:
             mouse.set_visible(True)

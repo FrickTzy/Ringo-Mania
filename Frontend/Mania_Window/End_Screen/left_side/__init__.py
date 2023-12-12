@@ -1,1 +1,1 @@
-from .acc_text import AccText
+from .left_end_screen import LeftEndScreen

@@ -25,7 +25,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
-        self.__end_screen = EndScreen(window_size=self.display.get_window_size, font=self.font)
+        self.__end_screen = EndScreen(window_size=self.display.get_window_size)
         self.rectangle = Rectangle(maps=self.map_manager,
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
