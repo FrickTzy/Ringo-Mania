@@ -19,7 +19,7 @@ class LifeBar:
 
     @property
     def life_bar_coord_x(self):
-        return self.display.width / 2 + (self.display.rectangle_width / 2) + self.__LIFE_BAR_PADDING
+        return self.display.width // 2 + (self.display.rectangle_width / 2) + self.__LIFE_BAR_PADDING
 
     @property
     def life_bar_coord_y(self):
@@ -35,8 +35,10 @@ class LifeBar:
 
     def get_life_bar_height(self, life):
         life_bar_height = int(self.life_bar.height * abs((life - 100) / 100))
-        return self.life_bar.x, self.life_bar.y, self.life_bar.width, life_bar_height
+        return self.life_bar.x - 1, self.life_bar.y, self.life_bar.width + 1, life_bar_height
 
     def update_life_bar_coord(self):
         self.life_bar.x = self.life_bar_coord_x
         self.life_bar.y = self.life_bar_coord_y
+        self.life_bar.width = self.life_bar.width
+

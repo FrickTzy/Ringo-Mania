@@ -67,3 +67,4 @@ class EndScreenPos:
     def update_window_size(self, width: int, height: int):
         self.width = width
         self.height = height
+
