@@ -112,8 +112,8 @@ class ManiaEventHandler:
                 self.__play_window.running = False
 
     def __check_map_if_finished(self):
-        if self.__play_window.timer.timer_finished or self.__play_window.map_status.finished and \
-                not self.__play_window.map_status.failed:
+        if (self.__play_window.timer.timer_finished or self.__play_window.map_status.finished) and \
+                not self.__play_window.map_status.failed and not self.__play_window.pause.is_paused:
             self.__play_window.map_status.finished = True
             self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats)
             self.__play_window.music.fade_music()

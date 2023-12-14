@@ -28,6 +28,8 @@ class EndScreenBackground:
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=1), color=self.__COLOR)
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=2), color=self.__COLOR)
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=3), color=self.__COLOR)
+        # self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=4),
+        # color=self.__COLOR)
 
     def __draw_background_rect(self, end_screen, y, color):
         r, g, b = color

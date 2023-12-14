@@ -2,7 +2,7 @@ from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
 
 from Backend import DelayTimer
 from .left_side import LeftEndScreen
-from Frontend.settings import PURPLE
+from Frontend.settings import PURPLE, DARK_PURPLE
 
 
 class EndScreen:
@@ -23,7 +23,8 @@ class EndScreen:
         self.__end_screen_surface_setup(width=width, height=height)
         self.__add_bg_pause_surface()
         self.__opacity.add_opacity()
-        self.__left_end_screen.show(end_screen=self.__end_screen_surface, stats=stats["acc_dict"])
+        self.__draw_bottom_rect(color=DARK_PURPLE)
+        self.__left_end_screen.show(end_screen=self.__end_screen_surface, stats=stats)
         window.blit(self.__end_screen_surface, (0, 0))
         if self.__opacity.opacity >= 50:
             mouse.set_visible(True)
@@ -39,6 +40,11 @@ class EndScreen:
     def __end_screen_surface_setup(self, width: int, height: int):
         self.pos.update_window_size(width=width, height=height)
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
+
+    def __draw_bottom_rect(self, color):
+        r, g, b = color
+        draw.rect(self.__end_screen_surface, (r, g, b, self.__opacity.opacity),
+                  (0, self.pos.bottom_rect_y, self.pos.width, self.pos.height))
 
 
 class Opacity:
@@ -60,6 +66,8 @@ class Opacity:
 
 
 class EndScreenPos:
+    __BOTTOM_RECT_Y_RATIO = 1.23
+
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
@@ -68,3 +76,6 @@ class EndScreenPos:
         self.width = width
         self.height = height
 
+    @property
+    def bottom_rect_y(self):
+        return self.height // self.__BOTTOM_RECT_Y_RATIO

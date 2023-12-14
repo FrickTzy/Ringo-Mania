@@ -1,16 +1,28 @@
-from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors
+from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors, image
+from os import path
 from Frontend.settings import WIDTH, HEIGHT, RESIZABLE, RECTANGLE_X, RECTANGLE_WIDTH, \
     RECTANGLE_WIDTH_CAP, FULL_SCREEN_VIEW
 
 
 class Display:
+    __LOGO_FILE = "Purps.png"
+
     def __init__(self):
         self.width, self.height = WIDTH, HEIGHT
         self.__rectangle_width = RECTANGLE_WIDTH
         self.__rectangle_x = RECTANGLE_X
         self.window = display.set_mode((self.width, self.height), PYRES if RESIZABLE else None)
         self.check_full_screen()
-        self.set_title()
+        self.__LOGO_IMAGE = image.load(path.join("Frontend\Mania_Window\Img", self.__LOGO_FILE)).convert_alpha()
+        self.__set_title()
+        self.__set_logo()
+
+    def __set_logo(self):
+        display.set_icon(self.__LOGO_IMAGE)
+
+    @staticmethod
+    def __set_title():
+        display.set_caption("Ringo Mania!")
 
     def check_full_screen(self, full_screen=False):
         if FULL_SCREEN_VIEW or full_screen:
@@ -55,7 +67,3 @@ class Display:
             return True
         else:
             return False
-
-    @staticmethod
-    def set_title():
-        display.set_caption("Ringo Mania!")
