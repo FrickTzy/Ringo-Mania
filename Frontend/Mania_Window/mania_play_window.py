@@ -14,18 +14,19 @@ class ManiaPlayWindow(GameModeWindow):
     running = False
     imported = False
 
-    def __init__(self, music: Music, timer, map_manager, play_tracker, song="Bocchi"):
-        super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer)
+    def __init__(self, music: Music, timer, map_manager, play_tracker, map_info):
+        super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer,
+                         play_state=PlayState())
         self.record = Record(self.font, self.display)
-        self.music.set_music(song)
-        self.map_manager = map_manager(song)
+        self.music.set_music(map_info.song_name)
+        self.map_manager = map_manager(map_info.song_name)
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = IntervalTimer()
         self.show_acc = ShowAcc()
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
-        self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
-        self.end_screen = EndScreen(window_size=self.display.get_window_size)
+        self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font, state=self.state)
+        self.end_screen = EndScreen(window_size=self.display.get_window_size, state=self.state, map_info=map_info)
         self.rectangle = Rectangle(maps=self.map_manager,
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
@@ -48,6 +49,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.music.restart_music()
         self.timer.restart()
         self.map_status.failed = False
+        self.timer.timer_finished = False
         self.rectangle.restart()
         self.end_screen.restart()
 
@@ -70,6 +72,21 @@ class ManiaPlayWindow(GameModeWindow):
     def show_end_screen(self):
         self.end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
                                         size=self.display.get_window_size)
+
+
+class PlayState:
+    def __init__(self):
+        self.__restarted = False
+
+    @property
+    def restarted(self):
+        return self.__restarted
+
+    def restart(self):
+        self.__restarted = True
+
+    def un_restart(self):
+        self.__restarted = False
 
 
 class ManiaEventHandler:
@@ -113,7 +130,7 @@ class ManiaEventHandler:
 
     def __check_map_if_finished(self):
         if (self.__play_window.timer.timer_finished or self.__play_window.map_status.finished) and \
-                not self.__play_window.map_status.failed and not self.__play_window.pause.is_paused:
+                not (self.__play_window.map_status.failed and not self.__play_window.pause.is_paused):
             self.__play_window.map_status.finished = True
             self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats)
             self.__play_window.music.fade_music()
@@ -126,10 +143,10 @@ class ManiaEventHandler:
                 window=self.__play_window.display.window)
 
     def __check_window_if_restart(self):
-        if self.__play_window.pause.restarted or self.__play_window.end_screen.state.restarted:
+        if self.__play_window.state.restarted:
             self.__play_window.restart()
             self.__play_window.rectangle.restart()
-            self.__play_window.pause.restarted = False
+            self.__play_window.state.un_restart()
             self.__play_window.end_screen.state.un_restart()
 
     def __check_window_if_resized(self):

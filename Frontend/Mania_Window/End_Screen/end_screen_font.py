@@ -2,7 +2,7 @@ from pygame import font
 
 
 class EndScreenFont:
-    __FONT_RATIO = 14.5
+    __FONT_RATIO = 15
 
     def __init__(self):
         self.font = font.SysFont("Roboto", 15, bold=True)
@@ -11,7 +11,7 @@ class EndScreenFont:
         size = int(height // self.__FONT_RATIO)
         self.font = font.SysFont("arialblack", size)
 
-    def pause_text_size(self, text: str) -> tuple[int, int]:
+    def text_size(self, text: str) -> tuple[int, int]:
         width, height = self.font.size(text)
         return width, height
 

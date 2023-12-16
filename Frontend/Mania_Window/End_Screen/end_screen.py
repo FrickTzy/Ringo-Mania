@@ -9,18 +9,18 @@ from Frontend.Mania_Window.End_Screen.end_screen_font import EndScreenFont
 
 
 class EndScreen:
-    def __init__(self, window_size: tuple[int, int]):
+    def __init__(self, window_size: tuple[int, int], state, map_info):
         width, height = window_size
         self.pos = EndScreenPos(width=width, height=height)
-        self.state = EndScreenState()
+        self.state = state
         self.__opacity = Opacity()
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
         self.__fade_effect = FadeEffect(pos=self.pos, opacity=Opacity)
         self.__font = EndScreenFont()
         self.__left_end_screen = LeftEndScreen(opacity=self.__opacity, end_screen=self.__end_screen_surface,
                                                pos=self.pos, font=self.__font)
-        self.__right_end_screen = RightEndScreen(end_screen=self.__end_screen_surface, pos=self.pos, font=self.__font,
-                                                 state=self.state)
+        self.__right_end_screen = RightEndScreen(end_screen=self.__end_screen_surface, pos=self.pos,
+                                                 state=self.state, map_info=map_info)
         self.delay_timer = DelayTimer()
         self.__opacity.set_opacity(opacity=255)
 
@@ -37,7 +37,7 @@ class EndScreen:
     def __finished_delay_and_fade(self, window):
         if self.__fade_effect.finished_fading_out:
             return
-        self.delay_timer.check_delay_ms(delay_ms=800)
+        self.delay_timer.check_delay_ms(delay_ms=1000)
         if self.delay_timer.timer_finished:
             self.__fade_effect.show(end_screen=self.__end_screen_surface, window=window)
             if self.__fade_effect.halfway_fade_out:
@@ -60,21 +60,6 @@ class EndScreen:
         r, g, b = color
         draw.rect(self.__end_screen_surface, (r, g, b, self.__opacity.opacity),
                   (0, self.pos.bottom_rect_y, self.pos.width, self.pos.height))
-
-
-class EndScreenState:
-    def __init__(self):
-        self.__restarted = False
-
-    @property
-    def restarted(self):
-        return self.__restarted
-
-    def restart(self):
-        self.__restarted = True
-
-    def un_restart(self):
-        self.__restarted = False
 
 
 class Opacity:

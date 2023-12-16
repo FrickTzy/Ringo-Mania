@@ -5,8 +5,8 @@ from Frontend.settings import BLACK
 
 class FadeEffect:
     __COLOR = BLACK
-    __FADE_LEN_MS = 350
-    __FADE_SPEED = 8
+    __FADE_LEN_MS = 500
+    __FADE_SPEED = 15
 
     def __init__(self, pos, opacity):
         self.__pos = pos

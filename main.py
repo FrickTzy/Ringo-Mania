@@ -1,4 +1,4 @@
-from Backend import Music, Timer, MapManager, PlayTracker
+from Backend import Music, Timer, MapManager, PlayTracker, MapInfo
 from Frontend.Mania_Window import ManiaPlayWindow
 
 
@@ -6,9 +6,10 @@ class Main:
     def __init__(self):
         self.music = Music()
         self.timer = Timer()
-        self.chosen_song = "Realize"
-        self.play_tracker = PlayTracker(self.chosen_song)
-        self.play_window = ManiaPlayWindow(self.music, self.timer, MapManager, self.play_tracker, self.chosen_song)
+        self.map_info = MapInfo(song_name="Ao_no_sumika", song_artist="Tatsuya Kitani")
+        self.play_tracker = PlayTracker(self.map_info.song_name)
+        self.play_window = ManiaPlayWindow(self.music, self.timer, MapManager, self.play_tracker,
+                                           map_info=self.map_info)
 
     def run(self):
         self.play_window.run()

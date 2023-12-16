@@ -9,7 +9,7 @@ from Frontend.Helper_Files import ButtonEventHandler
 class Pause:
     PAUSE_INTERVAL = 150
 
-    def __init__(self, music: Music, mini_timer, font: Font):
+    def __init__(self, music: Music, mini_timer, font: Font, state):
         self.__starting_time: int = 0
         self.__paused = False
         self.__music = music
@@ -17,6 +17,7 @@ class Pause:
         self.__pos = PausePos()
         self.mini_timer = mini_timer
         self.timer = Timer()
+        self.__state = state
         self.__pause_surface = Surface((WIDTH, HEIGHT), SRCALPHA)
         self.__restarted = False
         self.__text = PauseText(event_handler=ButtonEventHandler(), font=font, pos=self.__pos,
@@ -68,7 +69,7 @@ class Pause:
 
     def set_restarted(self):
         self.__music.restart_music()
-        self.__restarted = True
+        self.__state.restart()
 
     def draw_to_pause_surface(self, window_size: tuple) -> None:
         r, g, b = BLACK
