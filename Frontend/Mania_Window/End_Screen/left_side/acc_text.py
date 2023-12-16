@@ -68,15 +68,15 @@ class AccText:
             self.__end_screen_surface.blit(text, self.__pos.acc_text_pos())
 
     @staticmethod
-    def __check_if_acc_is_small(acc: str):
+    def __check_if_acc_is_small(acc: str) -> bool:
         if float(acc.removesuffix("%")) < 10.00:
             return True
         return False
 
 
 class StatsTextPos:
-    __LEFT_X_RATIO = 7.8
-    __RIGHT_X_RATIO = 2.87
+    __LEFT_X_RATIO = 8.1
+    __RIGHT_X_RATIO = 2.94
     __CENTER_X_RATIO = 4.65
     __Y_START_RATIO = 4.50
     __Y_INTERVAL_RATIO = 5.50

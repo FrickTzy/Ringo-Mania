@@ -13,12 +13,12 @@ class Display:
         self.__rectangle_x = RECTANGLE_X
         self.window = display.set_mode((self.width, self.height), PYRES if RESIZABLE else None)
         self.check_full_screen()
-        self.__LOGO_IMAGE = image.load(path.join("Frontend\Mania_Window\Img", self.__LOGO_FILE)).convert_alpha()
         self.__set_title()
         self.__set_logo()
 
     def __set_logo(self):
-        display.set_icon(self.__LOGO_IMAGE)
+        logo_image = image.load(path.join("Frontend\Mania_Window\Img", self.__LOGO_FILE)).convert_alpha()
+        display.set_icon(logo_image)
 
     @staticmethod
     def __set_title():

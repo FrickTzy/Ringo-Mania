@@ -64,7 +64,7 @@ class AccLogoPos:
     __Y_START_RATIO = 4.46
     __Y_INTERVAL_RATIO = 5.45
     __LEFT_X_RATIO = 16
-    __RIGHT_X_RATIO = 3.56
+    __RIGHT_X_RATIO = 3.59
     __CENTER_X_RATIO = 6.27
     __LOGO_SIZE_RATIO = 11.25
 
