@@ -25,7 +25,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font)
-        self.__end_screen = EndScreen(window_size=self.display.get_window_size)
+        self.end_screen = EndScreen(window_size=self.display.get_window_size)
         self.rectangle = Rectangle(maps=self.map_manager,
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
@@ -49,7 +49,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.timer.restart()
         self.map_status.failed = False
         self.rectangle.restart()
-        self.__end_screen.restart()
+        self.end_screen.restart()
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
@@ -68,8 +68,8 @@ class ManiaPlayWindow(GameModeWindow):
         self.display.window.fill(BLACK)
 
     def show_end_screen(self):
-        self.__end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
-                                          size=self.display.get_window_size)
+        self.end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
+                                        size=self.display.get_window_size)
 
 
 class ManiaEventHandler:
@@ -82,8 +82,8 @@ class ManiaEventHandler:
         self.__check_map_if_failed()
         self.__check_if_missed()
         self.__check_window_if_quit()
-        self.__check_map_if_finished()
         self.__check_window_if_paused()
+        self.__check_map_if_finished()
         self.__check_window_if_resized()
 
     def __detect_key(self):
@@ -126,10 +126,11 @@ class ManiaEventHandler:
                 window=self.__play_window.display.window)
 
     def __check_window_if_restart(self):
-        if self.__play_window.pause.restarted:
+        if self.__play_window.pause.restarted or self.__play_window.end_screen.state.restarted:
             self.__play_window.restart()
             self.__play_window.rectangle.restart()
             self.__play_window.pause.restarted = False
+            self.__play_window.end_screen.state.un_restart()
 
     def __check_window_if_resized(self):
         if self.__play_window.display.check_window_size():

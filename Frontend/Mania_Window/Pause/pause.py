@@ -3,6 +3,7 @@ from Backend import Music
 from Backend import Timer
 from Frontend.Mania_Window.Misc.font import Font
 from Frontend.settings import WIDTH, HEIGHT, BLACK, WHITE
+from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Pause:
@@ -18,7 +19,7 @@ class Pause:
         self.timer = Timer()
         self.__pause_surface = Surface((WIDTH, HEIGHT), SRCALPHA)
         self.__restarted = False
-        self.__text = PauseText(event_handler=PauseEventHandler(pos=self.__pos), font=font, pos=self.__pos,
+        self.__text = PauseText(event_handler=ButtonEventHandler(), font=font, pos=self.__pos,
                                 pause_surface=self.__pause_surface)
 
     def pause_surface_setup(self, window_size):
@@ -163,18 +164,6 @@ class Opacity:
         return int(255 * (percent / 100))
 
 
-class PauseEventHandler:
-    def __init__(self, pos):
-        self.pos = pos
-
-    def check_buttons_for_clicks(self, starting_pos: tuple[int, int], text_size: tuple[int, int], command):
-        starting_x, starting_y = starting_pos
-        ending_x, ending_y = self.pos.get_ending_pos(starting_pos, text_size)
-        x, y = mouse.get_pos()
-        if (starting_x <= x <= ending_x and starting_y <= y <= ending_y) and mouse.get_pressed()[0]:
-            command()
-
-
 class PausePos:
     TEXT_POS_INTERVAL = 145
     TEXT_POS_INTERVAL_RATIO = 6.21
@@ -184,9 +173,3 @@ class PausePos:
     def update_text_coord(self, height: int):
         self.TEXT_POS_INTERVAL = height // self.TEXT_POS_INTERVAL_RATIO
         self.PAUSE_Y = height // self.PAUSE_Y_RATIO
-
-    @staticmethod
-    def get_ending_pos(starting_pos: tuple[int, int], text_size: tuple[int, int]) -> tuple[int, int]:
-        starting_x, starting_y = starting_pos
-        text_width, text_height = text_size
-        return starting_x + text_width, starting_y + text_height

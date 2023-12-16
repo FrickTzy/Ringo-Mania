@@ -5,9 +5,9 @@ from Frontend.settings import DARK_PURPLE
 
 
 class LeftEndScreen:
-    def __init__(self, *, opacity, end_screen, pos):
+    def __init__(self, *, opacity, end_screen, pos, font):
         self.__acc_text = AccText(end_screen_surface=end_screen, screen_pos=pos,
-                                  opacity=opacity)
+                                  opacity=opacity, font=font)
         self.__acc_logo = AccLogo(screen_pos=pos, opacity=opacity)
         self.__background = EndScreenBackground(pos=pos, opacity=opacity)
 

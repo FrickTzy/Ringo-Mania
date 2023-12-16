@@ -1,12 +1,12 @@
-from pygame import Surface, SurfaceType, font
+from pygame import Surface, SurfaceType
 from Frontend.settings import WHITE
 
 
 class AccText:
-    def __init__(self, end_screen_surface: Surface | SurfaceType, screen_pos, opacity):
+    def __init__(self, end_screen_surface: Surface | SurfaceType, screen_pos, opacity, font):
         self.__end_screen_surface = end_screen_surface
         self.__pos = StatsTextPos(screen_pos=screen_pos)
-        self.__font = EndScreenFont()
+        self.__font = font
         self.__opacity = opacity
 
     def show_text(self, end_screen_surface, stats: dict) -> None:
@@ -145,22 +145,3 @@ class StatsTextPos:
     @property
     def height(self):
         return self.screen_pos.height
-
-
-class EndScreenFont:
-    __FONT_RATIO = 14.5
-
-    def __init__(self):
-        self.font = font.SysFont("Roboto", 15, bold=True)
-
-    def update_font(self, height: int):
-        size = int(height // self.__FONT_RATIO)
-        self.font = font.SysFont("arialblack", size)
-
-
-"""
-['arial', 'arialblack', 'bahnschrift', 'calibri', 'cambria', 'cambriamath', 'candara', 'comicsansms', 'consolas', 
-'constantia', 'corbel', 'couriernew', 'ebrima', 'franklingothicmedium', 'gabriola', 'gadugi', 'georgia', 'impact', 
-'inkfree', 'javanesetext', 'leelawadeeui', 'leelawadeeuisemilight', 'lucidaconsole', 'lucidasans', 'malgungothic', 
-'malgungothicsemilight', 'microsofthimalaya', 'microsoftjhenghei']
-"""
