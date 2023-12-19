@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 class MapInfoChecker:
     def __init__(self):
-        self.__path: str = "song_info.rinf"
+        self.__path: str = "Backend\Map_Info\song_info.rinf"
         self.__web_parser = WebParser()
         self.current_song_info = {}
         self.__all_song_info = []
@@ -33,7 +33,13 @@ class MapInfoChecker:
         return False
 
     def __search_for_song_artist(self, song_name: str):
-        self.__web_parser.search(search=f"who is the song artist for {song_name}")
+        result = self.__web_parser.search(search=f"who is the song artist for {song_name}")
+        song_info = {song_name: {"artist": result}}
+        self.__all_song_info.append(song_info)
+        self.__overwrite_file()
+        return result
+
+    def __overwrite_file(self):
         with open(self.__path, 'w') as file:
             for song_info in self.__all_song_info:
                 file.writelines(f"{str(song_info)}\n")
@@ -44,7 +50,7 @@ class WebParser:
         self.__url_template = "https://www.google.com/search?q="
 
     def search(self, search="is earth round?"):
-        req = requests.get(f"{self.__url_template}{search}")
+        req = requests.get(url=f"{self.__url_template}{search}")
         parser = BeautifulSoup(req.text, "html.parser")
         result = parser.find("div", class_="BNeawe").text
         return result

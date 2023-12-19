@@ -8,6 +8,7 @@
 {'score': 835980, 'accuracy': '93.21%', 'combo': 65, 'highest_combo': 202, 'grade': 'A', 'date': '25/11/2023', 'time': '10:45 am'}
 {'score': 756875, 'accuracy': '96.48%', 'acc_dict': {'Miss': 4, 'Okay': 1, 'Good': 61, 'Perfect': 264, 'Amazing': 231}, 'combo': 24, 'highest_combo': 380, 'grade': 'A', 'date': '9/12/2023', 'time': '2:23 pm'}
 {'score': 714800, 'accuracy': '96.94%', 'acc_dict': {'Miss': 3, 'Okay': 7, 'Good': 46, 'Perfect': 286, 'Amazing': 246}, 'combo': 44, 'highest_combo': 340, 'grade': 'A', 'date': '9/12/2023', 'time': '2:55 pm'}
+{'score': 419025, 'accuracy': '96.69%', 'acc_dict': {'Miss': 5, 'Okay': 2, 'Good': 55, 'Perfect': 300, 'Amazing': 235}, 'combo': 165, 'highest_combo': 212, 'grade': 'A', 'date': '19/12/2023', 'time': '11:52 am'}
 {'score': 415650, 'accuracy': '95.81%', 'acc_dict': {'Miss': 7, 'Okay': 6, 'Good': 60, 'Perfect': 263, 'Amazing': 260}, 'combo': 95, 'highest_combo': 215, 'grade': 'A', 'date': '9/12/2023', 'time': '1:06 pm'}
 {'score': 399550, 'accuracy': '95.61%', 'acc_dict': {'Miss': 3, 'Okay': 9, 'Good': 73, 'Perfect': 269, 'Amazing': 232}, 'combo': 113, 'highest_combo': 169, 'grade': 'A', 'date': '9/12/2023', 'time': '2:40 pm'}
 {'score': 389150, 'accuracy': '96.33%', 'acc_dict': {'Miss': 8, 'Okay': 1, 'Good': 54, 'Perfect': 289, 'Amazing': 248}, 'combo': 183, 'highest_combo': 182, 'grade': 'A', 'date': '17/12/2023', 'time': '1:04 pm'}
@@ -18,3 +19,4 @@
 {'score': 227600, 'accuracy': '94.27%', 'acc_dict': {'Miss': 12, 'Okay': 4, 'Good': 82, 'Perfect': 290, 'Amazing': 214}, 'combo': 75, 'highest_combo': 129, 'grade': 'A', 'date': '16/12/2023', 'time': '8:01 pm'}
 {'score': 210830, 'accuracy': '88.73%', 'combo': 0, 'highest_combo': 109, 'grade': 'B', 'date': '17/11/2023', 'time': '8:38 am'}
 {'score': 209975, 'accuracy': '94.42%', 'acc_dict': {'Miss': 13, 'Okay': 3, 'Good': 71, 'Perfect': 276, 'Amazing': 216}, 'combo': 6, 'highest_combo': 127, 'grade': 'A', 'date': '16/12/2023', 'time': '6:28 pm'}
+{'score': 181950, 'accuracy': '92.09%', 'acc_dict': {'Miss': 16, 'Okay': 2, 'Good': 117, 'Perfect': 270, 'Amazing': 180}, 'combo': 35, 'highest_combo': 145, 'grade': 'A', 'date': '19/12/2023', 'time': '11:50 am'}

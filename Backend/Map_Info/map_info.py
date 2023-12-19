@@ -14,7 +14,7 @@ class MapInfo:
 
     @property
     def song_artist(self):
-        return self.__artist
+        return self.__info_checker.get_song_artist(song_name=self.__song_name)
 
     @property
     def map_maker(self):
@@ -22,4 +22,4 @@ class MapInfo:
 
     @property
     def song_info(self):
-        return f"{self.__song_name} - {self.__artist}"
+        return f"{self.__song_name} - {self.song_artist}"

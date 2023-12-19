@@ -1,3 +1,4 @@
 {'score': 5111270, 'accuracy': '99.08%', 'combo': 273, 'highest_combo': 518, 'grade': 'A', 'date': '9/11/2023', 'time': '10:44 am'}
 {'score': 2805600, 'accuracy': '97.17%', 'combo': 365, 'highest_combo': 365, 'grade': 'A', 'date': '14/11/2023', 'time': '6:29 pm'}
 {'score': 789225, 'accuracy': '97.38%', 'combo': 35, 'highest_combo': 310, 'grade': 'A', 'date': '30/11/2023', 'time': '7:56 pm'}
+{'score': 718175, 'accuracy': '96.36%', 'acc_dict': {'Miss': 5, 'Okay': 6, 'Good': 79, 'Perfect': 362, 'Amazing': 310}, 'combo': 104, 'highest_combo': 286, 'grade': 'A', 'date': '19/12/2023', 'time': '12:02 pm'}
