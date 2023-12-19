@@ -27,3 +27,7 @@ class MapStatus:
     @property
     def failed_or_finished(self) -> bool:
         return self.finished or self.failed
+
+    def restart(self):
+        self.__failed = False
+        self.__map_finished = False

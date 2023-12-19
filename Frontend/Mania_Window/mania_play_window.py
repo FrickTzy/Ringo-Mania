@@ -48,8 +48,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.show_acc.reset_acc()
         self.music.restart_music()
         self.timer.restart()
-        self.map_status.failed = False
-        self.timer.timer_finished = False
+        self.map_status.restart()
         self.rectangle.restart()
         self.end_screen.restart()
 
@@ -147,7 +146,6 @@ class ManiaEventHandler:
             self.__play_window.restart()
             self.__play_window.rectangle.restart()
             self.__play_window.state.un_restart()
-            self.__play_window.end_screen.state.un_restart()
 
     def __check_window_if_resized(self):
         if self.__play_window.display.check_window_size():

@@ -10,6 +10,7 @@
 {'score': 714800, 'accuracy': '96.94%', 'acc_dict': {'Miss': 3, 'Okay': 7, 'Good': 46, 'Perfect': 286, 'Amazing': 246}, 'combo': 44, 'highest_combo': 340, 'grade': 'A', 'date': '9/12/2023', 'time': '2:55 pm'}
 {'score': 415650, 'accuracy': '95.81%', 'acc_dict': {'Miss': 7, 'Okay': 6, 'Good': 60, 'Perfect': 263, 'Amazing': 260}, 'combo': 95, 'highest_combo': 215, 'grade': 'A', 'date': '9/12/2023', 'time': '1:06 pm'}
 {'score': 399550, 'accuracy': '95.61%', 'acc_dict': {'Miss': 3, 'Okay': 9, 'Good': 73, 'Perfect': 269, 'Amazing': 232}, 'combo': 113, 'highest_combo': 169, 'grade': 'A', 'date': '9/12/2023', 'time': '2:40 pm'}
+{'score': 389150, 'accuracy': '96.33%', 'acc_dict': {'Miss': 8, 'Okay': 1, 'Good': 54, 'Perfect': 289, 'Amazing': 248}, 'combo': 183, 'highest_combo': 182, 'grade': 'A', 'date': '17/12/2023', 'time': '1:04 pm'}
 {'score': 286625, 'accuracy': '96.27%', 'acc_dict': {'Miss': 7, 'Okay': 2, 'Good': 55, 'Perfect': 280, 'Amazing': 239}, 'combo': 54, 'highest_combo': 135, 'grade': 'A', 'date': '9/12/2023', 'time': '2:15 pm'}
 {'score': 284300, 'accuracy': '92.16%', 'acc_dict': {'Miss': 21, 'Okay': 5, 'Good': 95, 'Perfect': 258, 'Amazing': 224}, 'combo': 74, 'highest_combo': 213, 'grade': 'A', 'date': '9/12/2023', 'time': '6:21 pm'}
 {'score': 272625, 'accuracy': '94.23%', 'acc_dict': {'Miss': 13, 'Okay': 3, 'Good': 75, 'Perfect': 276, 'Amazing': 209}, 'combo': 11, 'highest_combo': 152, 'grade': 'A', 'date': '14/12/2023', 'time': '9:21 pm'}
