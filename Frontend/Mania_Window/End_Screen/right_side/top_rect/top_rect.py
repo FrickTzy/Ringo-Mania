@@ -22,7 +22,7 @@ class TopRect:
 
 
 class TopRectPos:
-    __HEIGHT_RATIO = 6.2
+    __HEIGHT_RATIO = 5.5
 
     def __init__(self, pos):
         self.__pos = pos

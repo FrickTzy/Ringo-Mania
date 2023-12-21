@@ -63,6 +63,8 @@ class ComboCounter:
 
     @property
     def get_grade(self):
+        if self.__failed:
+            return "F"
         for grade, acc in GRADE_ACC.items():
             if self.accuracy >= acc:
                 if grade == "S":
@@ -72,6 +74,10 @@ class ComboCounter:
                         continue
                 return grade
         return "F"
+
+    @property
+    def __failed(self):
+        return self.__life <= 0
 
     def add_clicked_circles(self, accuracy: int, category: str):
         self.__acc_dict[category] += 1

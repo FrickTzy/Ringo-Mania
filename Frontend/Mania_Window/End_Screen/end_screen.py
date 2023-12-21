@@ -5,7 +5,6 @@ from .left_side import LeftEndScreen
 from .right_side import RightEndScreen
 from .fade_effect import FadeEffect
 from Frontend.settings import PURPLE, DARK_PURPLE
-from Frontend.Mania_Window.End_Screen.end_screen_font import EndScreenFont
 
 
 class EndScreen:
@@ -16,9 +15,8 @@ class EndScreen:
         self.__opacity = Opacity()
         self.__end_screen_surface = Surface((width, height), SRCALPHA)
         self.__fade_effect = FadeEffect(pos=self.pos, opacity=Opacity)
-        self.__font = EndScreenFont()
         self.__left_end_screen = LeftEndScreen(opacity=self.__opacity, end_screen=self.__end_screen_surface,
-                                               pos=self.pos, font=self.__font)
+                                               pos=self.pos)
         self.__right_end_screen = RightEndScreen(end_screen=self.__end_screen_surface, pos=self.pos,
                                                  state=self.state, map_info=map_info)
         self.delay_timer = DelayTimer()

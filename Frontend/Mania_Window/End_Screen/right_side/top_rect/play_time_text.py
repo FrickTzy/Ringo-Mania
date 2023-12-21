@@ -17,7 +17,7 @@ class PlayTimeText:
 
 
 class PlayTimeTextPos:
-    __X_TEXT_RATIO, __Y_TEXT_RATIO = 1.28, 8.65
+    __X_TEXT_RATIO, __Y_TEXT_RATIO = 1.28, 7.6
 
     def __init__(self, pos):
         self.__pos = pos

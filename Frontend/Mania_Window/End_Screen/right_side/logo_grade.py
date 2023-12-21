@@ -28,12 +28,23 @@ class LogoGrade:
 
 
 class GradePosSize:
+    __SIZE_RATIO = 1.5
+    __X_RATIO, __Y_RATIO = 1.76, 7.5
+
     def __init__(self, pos):
         self.__pos = pos
 
     @property
     def img_coord(self):
-        return 950, 130
+        return self.__x, self.__y
+
+    @property
+    def __x(self):
+        return self.__pos.width // self.__X_RATIO
+
+    @property
+    def __y(self):
+        return self.__pos.height // self.__Y_RATIO
 
     @property
     def size_tuple(self):
@@ -41,4 +52,4 @@ class GradePosSize:
 
     @property
     def __size(self):
-        return 550
+        return self.__pos.height // self.__SIZE_RATIO

@@ -7,3 +7,4 @@
 {'score': 385650, 'accuracy': '96.09%', 'acc_dict': {'Miss': 4, 'Okay': 5, 'Good': 62, 'Perfect': 269, 'Amazing': 222}, 'combo': 170, 'highest_combo': 181, 'grade': 'A', 'date': '16/12/2023', 'time': '7:57 pm'}
 {'score': 260350, 'accuracy': '92.29%', 'acc_dict': {'Miss': 16, 'Okay': 10, 'Good': 73, 'Perfect': 231, 'Amazing': 179}, 'combo': 66, 'highest_combo': 175, 'grade': 'A', 'date': '16/12/2023', 'time': '6:52 pm'}
 {'score': 220850, 'accuracy': '93.81%', 'acc_dict': {'Miss': 15, 'Okay': 8, 'Good': 67, 'Perfect': 278, 'Amazing': 210}, 'combo': 98, 'highest_combo': 133, 'grade': 'A', 'date': '17/12/2023', 'time': '12:52 pm'}
+{'score': 177950, 'accuracy': '93.97%', 'acc_dict': {'Miss': 14, 'Okay': 7, 'Good': 68, 'Perfect': 274, 'Amazing': 209}, 'combo': 103, 'highest_combo': 103, 'grade': 'A', 'date': '21/12/2023', 'time': '4:47 pm'}

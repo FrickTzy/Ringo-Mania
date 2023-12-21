@@ -5,9 +5,9 @@ from Frontend.settings import DARK_PURPLE
 
 
 class LeftEndScreen:
-    def __init__(self, *, opacity, end_screen, pos, font):
+    def __init__(self, *, opacity, end_screen, pos):
         self.__acc_text = AccText(end_screen_surface=end_screen, screen_pos=pos,
-                                  opacity=opacity, font=font)
+                                  opacity=opacity)
         self.__acc_logo = AccLogo(screen_pos=pos, opacity=opacity)
         self.__background = EndScreenBackground(pos=pos, opacity=opacity)
 
@@ -25,6 +25,7 @@ class EndScreenBackground:
         self.__opacity = opacity
 
     def draw_to_pause_surface(self, end_screen) -> None:
+        self.__draw_top_rect(end_screen=end_screen, color=self.__COLOR)
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=1), color=self.__COLOR)
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=2), color=self.__COLOR)
         self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=3), color=self.__COLOR)
@@ -36,15 +37,29 @@ class EndScreenBackground:
         draw.rect(end_screen, (r, g, b, self.__opacity.opacity),
                   (self.__pos.padding, y, self.__pos.width, self.__pos.height))
 
+    def __draw_top_rect(self, end_screen, color):
+        r, g, b = color
+        draw.rect(end_screen, (r, g, b, self.__opacity.opacity),
+                  (0, 0, self.__pos.top_rect_width, self.__pos.top_rect_height))
+
 
 class BackgroundRectanglePos:
     __HEIGHT_RATIO = 7.5
     __PADDING_RATIO = 53.33
     __RECT_INTERVAL_RATIO = 5.5
     __STARTING_Y_RATIO = 4.74
+    __TOP_RECT_HEIGHT_RATIO = 7.83
 
     def __init__(self, pos):
         self.__pos = pos
+
+    @property
+    def top_rect_width(self):
+        return self.__pos.width // 2 + 20
+
+    @property
+    def top_rect_height(self):
+        return self.__pos.height // self.__TOP_RECT_HEIGHT_RATIO
 
     @property
     def width(self):

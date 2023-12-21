@@ -37,7 +37,7 @@ class Display:
 
     @property
     def rectangle_width(self):
-        self.__rectangle_width = self.width / 2.2
+        self.__rectangle_width = self.width / 2.3
         if self.__rectangle_width >= RECTANGLE_WIDTH_CAP:
             self.__rectangle_width = RECTANGLE_WIDTH_CAP
         return self.__rectangle_width
