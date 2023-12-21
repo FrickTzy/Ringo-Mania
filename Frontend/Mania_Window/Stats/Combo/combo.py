@@ -61,6 +61,7 @@ class ComboCounter:
         if self.__life < MAX_LIFE:
             self.compute_life()
 
+    @property
     def get_grade(self):
         for grade, acc in GRADE_ACC.items():
             if self.accuracy >= acc:
@@ -148,8 +149,12 @@ class ComboCounter:
         return self.__acc_dict
 
     @property
+    def date_time(self) -> dict:
+        return {"date": self.__date.get_date, "time": self.__date.get_time}
+
+    @property
     def get_stats(self):
         return {"score": self.info.score, "accuracy": f"{self.accuracy}%", "acc_dict": self.__acc_dict,
                 "combo": self.info.combo,
-                "highest_combo": self.info.highest_combo, "grade": f"{self.get_grade()}", "date": self.__date.get_date,
+                "highest_combo": self.info.highest_combo, "grade": self.get_grade, "date": self.__date.get_date,
                 "time": self.__date.get_time}

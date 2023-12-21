@@ -33,7 +33,7 @@ class MapInfoChecker:
         return False
 
     def __search_for_song_artist(self, song_name: str):
-        result = self.__web_parser.search(search=f"who is the song artist for {song_name}")
+        result = self.__web_parser.search(search=f"who made the song {song_name}")
         song_info = {song_name: {"artist": result}}
         self.__all_song_info.append(song_info)
         self.__overwrite_file()

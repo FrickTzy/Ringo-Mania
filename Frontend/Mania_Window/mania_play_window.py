@@ -70,7 +70,8 @@ class ManiaPlayWindow(GameModeWindow):
 
     def show_end_screen(self):
         self.end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
-                                        size=self.display.get_window_size)
+                                        size=self.display.get_window_size, date_time=self.combo_counter.date_time,
+                                        grade=self.combo_counter.get_grade)
 
 
 class PlayState:

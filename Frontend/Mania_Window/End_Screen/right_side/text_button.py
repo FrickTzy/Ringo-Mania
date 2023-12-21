@@ -46,30 +46,41 @@ class TextButton:
 
 
 class ButtonPos:
-    __BOTTOM_TEXT_Y_RATIO = 1.18
+    __CONTINUE_X_RATIO = 1.31
+    __RESTART_X_RATIO = 1.30
+    __CONTINUE_Y_RATIO = 1.2
+    _RESTART_Y_RATIO = 1.1
 
     def __init__(self, pos):
         self.__pos = pos
 
     @property
     def continue_pos(self):
-        return 1220, 750
+        return self.__continue_x, self.__continue_y
 
     @property
     def restart_pos(self):
-        return 1235, 815
+        return self.__restart_x, self.__restart_y
 
     @property
     def height(self):
         return self.__pos.height
 
     @property
-    def __text_y_top(self):
-        return self.__pos.height // self.__BOTTOM_TEXT_Y_RATIO
+    def __continue_x(self):
+        return self.__pos.width // self.__CONTINUE_X_RATIO
 
     @property
-    def __text_y_bottom(self):
-        return self.__pos.height // self.__BOTTOM_TEXT_Y_RATIO
+    def __restart_x(self):
+        return self.__pos.width // self.__RESTART_X_RATIO
+
+    @property
+    def __continue_y(self):
+        return self.__pos.height // self.__CONTINUE_Y_RATIO
+
+    @property
+    def __restart_y(self):
+        return self.__pos.height // self._RESTART_Y_RATIO
 
 
 class ButtonFont:

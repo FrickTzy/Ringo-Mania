@@ -24,13 +24,14 @@ class EndScreen:
         self.delay_timer = DelayTimer()
         self.__opacity.set_opacity(opacity=255)
 
-    def show_end_screen(self, window: SurfaceType | Surface, size: tuple[int, int], stats: dict):
+    def show_end_screen(self, window: SurfaceType | Surface, size: tuple[int, int], stats: dict, date_time: dict,
+                        grade):
         if self.__fade_effect.finished_fade_in:
             self.__end_screen_surface_setup(size=size)
             self.__add_bg_pause_surface()
             self.__draw_bottom_rect(color=DARK_PURPLE)
             self.__left_end_screen.show(end_screen=self.__end_screen_surface, stats=stats)
-            self.__right_end_screen.show(end_screen=self.__end_screen_surface)
+            self.__right_end_screen.show(end_screen=self.__end_screen_surface, date_time=date_time, grade=grade)
             window.blit(self.__end_screen_surface, (0, 0))
         self.__finished_delay_and_fade(window=window)
 

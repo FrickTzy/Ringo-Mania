@@ -19,8 +19,8 @@ class TopRectText:
 
 
 class Font:
-    __SONG_FONT_RATIO = 19
-    __ARTIST_FONT_RATIO = 32
+    __SONG_FONT_RATIO = 21
+    __MAP_MAKER_FONT_RATIO = 34
     __FONT_SIZE_CAP = 40
 
     def __init__(self):
@@ -34,14 +34,14 @@ class Font:
         return self.__song_info_font
 
     def map_maker_font(self, height: int):
-        self.__map_maker_font = font.SysFont("Arialblack", self.__song_artist_size(height=height))
+        self.__map_maker_font = font.SysFont("Arialblack", self.__map_maker_font_size(height=height))
         return self.__map_maker_font
 
     def __song_font_size(self, height: int, text):
         return height // self.__SONG_FONT_RATIO
 
-    def __song_artist_size(self, height: int):
-        return height // self.__ARTIST_FONT_RATIO
+    def __map_maker_font_size(self, height: int):
+        return height // self.__MAP_MAKER_FONT_RATIO
 
     def __song_info_width(self, text: str) -> int:
         width, height = self.__song_info_font.size(text)
@@ -49,16 +49,32 @@ class Font:
 
 
 class TextPos:
+    __TEXT_X_RATIO = 1.84
+    __SONG_INFO_Y_RATIO = 60
+    __MAP_MAKER_Y_RATIO = 13
+
     def __init__(self, pos):
         self.__pos = pos
 
     @property
     def song_info_pos(self):
-        return 870, 15
+        return self.__text_x, self.__song_info_y
 
     @property
     def map_maker_pos(self):
-        return 870, 75
+        return self.__text_x, self.__map_maker_y
+
+    @property
+    def __text_x(self):
+        return self.__pos.width // self.__TEXT_X_RATIO
+
+    @property
+    def __song_info_y(self):
+        return self.__pos.height // self.__SONG_INFO_Y_RATIO
+
+    @property
+    def __map_maker_y(self):
+        return self.__pos.height // self.__MAP_MAKER_Y_RATIO
 
     @property
     def height(self):

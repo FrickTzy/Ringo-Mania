@@ -1,5 +1,6 @@
 from pygame import Rect, draw
 from .top_rect_text import TopRectText
+from .play_time_text import PlayTimeText
 from Frontend.settings import DARK_PURPLE
 
 
@@ -10,12 +11,14 @@ class TopRect:
         self.__pos = TopRectPos(pos=pos)
         self.__rect = Rect(self.__pos.x, 0, self.__pos.width, self.__pos.height)
         self.__text = TopRectText(pos=pos)
+        self.__time = PlayTimeText(pos=pos)
         self.__map_info = map_info
 
-    def show(self, end_screen):
+    def show(self, end_screen, date_time: dict):
         draw.rect(end_screen, DARK_PURPLE, self.__rect)
         self.__text.show_text(end_screen=end_screen, song_info=self.__map_info.song_info,
                               map_maker=self.__map_info.map_maker)
+        self.__time.show(end_screen=end_screen, date_time=date_time)
 
 
 class TopRectPos:
