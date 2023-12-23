@@ -18,8 +18,8 @@ class ManiaPlayWindow(GameModeWindow):
         super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer,
                          play_state=PlayState())
         self.record = Record(self.font, self.display)
-        self.music.set_music(map_info.song_name)
-        self.map_manager = map_manager(map_info.song_name)
+        self.music.set_music(map_info.song_file_name)
+        self.map_manager = map_manager(map_info.song_file_name)
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = IntervalTimer()
         self.show_acc = ShowAcc()
@@ -51,6 +51,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.map_status.restart()
         self.rectangle.restart()
         self.end_screen.restart()
+        self.record.init_record(self.play_tracker.check_plays())
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
