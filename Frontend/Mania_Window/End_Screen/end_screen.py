@@ -4,10 +4,13 @@ from Backend import DelayTimer
 from .left_side import LeftEndScreen
 from .right_side import RightEndScreen
 from .fade_effect import FadeEffect
+from .background import Background
 from Frontend.settings import PURPLE, DARK_PURPLE
 
 
 class EndScreen:
+    __SHOW_BACKGROUND = True
+
     def __init__(self, window_size: tuple[int, int], state, map_info):
         width, height = window_size
         self.pos = EndScreenPos(width=width, height=height)
@@ -17,8 +20,10 @@ class EndScreen:
         self.__fade_effect = FadeEffect(pos=self.pos, opacity=Opacity)
         self.__left_end_screen = LeftEndScreen(opacity=self.__opacity, end_screen=self.__end_screen_surface,
                                                pos=self.pos)
+        self.__map_info = map_info
         self.__right_end_screen = RightEndScreen(end_screen=self.__end_screen_surface, pos=self.pos,
-                                                 state=self.state, map_info=map_info)
+                                                 state=self.state, map_info=self.__map_info)
+        self.__background = Background()
         self.delay_timer = DelayTimer()
         self.__opacity.set_opacity(opacity=255)
 
@@ -49,6 +54,9 @@ class EndScreen:
     def __add_bg_pause_surface(self) -> None:
         r, g, b = PURPLE
         draw.rect(self.__end_screen_surface, (r, g, b, self.__opacity.opacity), (0, 0, self.pos.width, self.pos.height))
+        if self.__SHOW_BACKGROUND:
+            self.__background.show_background(end_screen=self.__end_screen_surface, window_size=self.pos.window_size,
+                                              map_background_status=self.__map_info.map_background_status)
 
     def __end_screen_surface_setup(self, size: tuple[int, int]):
         width, height = size
@@ -106,6 +114,10 @@ class EndScreenPos:
     def update_window_size(self, width: int, height: int):
         self.width = width
         self.height = height
+
+    @property
+    def window_size(self):
+        return self.width, self.height
 
     @property
     def bottom_rect_y(self):

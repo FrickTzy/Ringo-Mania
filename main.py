@@ -6,7 +6,7 @@ class Main:
     def __init__(self):
         self.music = Music()
         self.timer = Timer()
-        self.map_info = MapInfo(song_name="Hell's Paradise Op 1 - Work")
+        self.map_info = MapInfo(song_name="Tsukinami")
         self.play_tracker = PlayTracker(self.map_info.song_name)
         self.play_window = ManiaPlayWindow(self.music, self.timer, MapManager, self.play_tracker,
                                            map_info=self.map_info)

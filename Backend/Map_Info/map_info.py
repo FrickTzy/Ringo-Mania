@@ -16,6 +16,21 @@ class MapInfo:
     def song_name(self):
         return self.__check_for_anime_titles()
 
+    @property
+    def __anime_title(self):
+        if "Op" in self.__song_file_name:
+            index = self.__song_file_name.index("Op")
+        else:
+            index = self.__song_file_name.index("Ed")
+        return self.__song_file_name[:index - 1]
+
+    @property
+    def map_background_status(self):
+        if "-" not in self.__song_file_name:
+            return self.song_artist, False
+        else:
+            return self.__anime_title, True
+
     def __check_for_anime_titles(self):
         if "-" not in self.__song_file_name:
             return self.__song_file_name

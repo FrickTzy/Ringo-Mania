@@ -1,6 +1,7 @@
 from pygame import time
 
 FULL_SCREEN_VIEW = True
+BACKGROUND = True
 
 HIT = "HIT"
 

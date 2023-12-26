@@ -136,6 +136,7 @@ class ManiaEventHandler:
             self.__play_window.play_tracker.update_plays(self.__play_window.combo_counter.get_stats)
             self.__play_window.music.fade_music()
             self.__play_window.show_end_screen()
+            self.__play_window.map_manager.overwrite_map()
 
     def __check_window_if_paused(self):
         if self.__play_window.pause.is_paused:
