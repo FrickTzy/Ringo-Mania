@@ -1,5 +1,4 @@
 from Frontend.Mania_Window.Rectangle.lane import Lane
-from Frontend.Mania_Window.Misc.display import Display
 from random import randrange, getrandbits
 from Backend.timer import IntervalTimer
 
@@ -13,8 +12,8 @@ class LaneManager:
         "4": 8,
     }
 
-    def __init__(self, window, display: Display, timer: IntervalTimer):
-        self.lane_circle_manager = LaneCircleManager(display=display)
+    def __init__(self, window, display, rectangle_pos, timer: IntervalTimer):
+        self.lane_circle_manager = LaneCircleManager(display=display, rectangle_pos=rectangle_pos)
         self.lanes_taken = []
         lane_coord = self.lane_circle_manager.circle_position
         self.lanes: [Lane] = [Lane(lane_coord[0]), Lane(lane_coord[1]), Lane(lane_coord[2]), Lane(lane_coord[3])]
@@ -90,8 +89,9 @@ class LaneManager:
             lane.clear_circles()
 
     def update_circles(self):
-        for lane in self.lanes:
-            lane.update_circles(self.lane_circle_manager.circle_size)
+        for index, lane in enumerate(self.lanes):
+            lane.update_circles(self.lane_circle_manager.circle_size,
+                                circle_x=self.lane_circle_manager.circle_position[index])
 
     @staticmethod
     def double_circle_chance(chance):
@@ -142,15 +142,16 @@ class LaneCircleManager:
     __BOTTOM_CIRCLE_RATIO = 1.20
     __HIT_WINDOW_PADDING = (60, 85)
 
-    def __init__(self, display: Display):
-        self.display = display
+    def __init__(self, display, rectangle_pos):
+        self.__display = display
+        self.__rectangle_pos = rectangle_pos
         self.circle_hit_window = CircleHitWindow()
 
     @property
     def circle_position(self):
-        circle_start_padding = 6 + self.display.rectangle_width // 100
-        circle_x_start = self.display.rectangle_x + circle_start_padding
-        between_circle_padding = self.display.rectangle_width // 4.25
+        circle_start_padding = 6 + self.__rectangle_pos.rectangle_width // 100
+        circle_x_start = self.__rectangle_pos.rectangle_x + circle_start_padding
+        between_circle_padding = self.__rectangle_pos.rectangle_width // 4.25
         return {
             0: circle_x_start,
             1: circle_x_start + between_circle_padding * 1,
@@ -159,11 +160,11 @@ class LaneCircleManager:
 
     @property
     def circle_size(self):
-        return int(self.display.rectangle_width / self.__CIRCLE_SIZE_TO_RECT_WIDTH)
+        return int(self.__rectangle_pos.rectangle_width / self.__CIRCLE_SIZE_TO_RECT_WIDTH)
 
     @property
     def bottom_circle_y(self):
-        return self.display.height // self.__BOTTOM_CIRCLE_RATIO - self.display.width // 20
+        return self.__display.height // self.__BOTTOM_CIRCLE_RATIO - self.__display.width // 20
 
     @property
     def circle_speed(self):

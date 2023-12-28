@@ -4,9 +4,9 @@ from Frontend.Mania_Window.Stats.Show_Acc.life_bar import LifeBar
 class Stats:
     __mid_combo_display = False
 
-    def __init__(self, display):
+    def __init__(self, display, rectangle_pos):
         self.display = display
-        self.life_bar = LifeBar(display=display)
+        self.life_bar = LifeBar(display=display, rectangle_pos=rectangle_pos)
         self.pos = StatsPos(display=display)
 
     def show_all(self, play_info: tuple, life):

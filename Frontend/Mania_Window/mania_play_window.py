@@ -3,7 +3,7 @@ from Frontend.settings import FPS, BLACK, clock, \
     END_SONG_DELAY, KEY_BINDS
 from Frontend.Mania_Window.Interfaces import GameModeWindow
 from Frontend.Mania_Window.Rectangle import Rectangle
-from Frontend.Mania_Window.Misc import Font, Display, MapStatus
+from Frontend.Mania_Window.Misc import Font, MapStatus
 from Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
 from Frontend.Mania_Window.Pause import Pause
 from Frontend.Mania_Window.End_Screen import EndScreen
@@ -14,8 +14,8 @@ class ManiaPlayWindow(GameModeWindow):
     running = False
     imported = False
 
-    def __init__(self, music: Music, timer, map_manager, play_tracker, map_info):
-        super().__init__(display=Display(), font=Font(), music=music, play_tracker=play_tracker, timer=timer,
+    def __init__(self, music: Music, timer, map_manager, play_tracker, map_info, display):
+        super().__init__(display=display, font=Font(), music=music, play_tracker=play_tracker, timer=timer,
                          play_state=PlayState())
         self.record = Record(self.font, self.display)
         self.music.set_music(map_info.song_file_name)
@@ -23,7 +23,6 @@ class ManiaPlayWindow(GameModeWindow):
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = IntervalTimer()
         self.show_acc = ShowAcc()
-        self.stats = Stats(display=self.display)
         self.map_status = MapStatus(imported=self.imported)
         self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font, state=self.state)
         self.end_screen = EndScreen(window_size=self.display.get_window_size, state=self.state, map_info=map_info)
@@ -31,6 +30,7 @@ class ManiaPlayWindow(GameModeWindow):
                                    display=self.display, combo_counter=self.combo_counter,
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
                                    show_acc=self.show_acc)
+        self.stats = Stats(display=self.display, rectangle_pos=self.rectangle.pos_class)
         self.event_handler = ManiaEventHandler(play_window=self)
 
     def run(self):

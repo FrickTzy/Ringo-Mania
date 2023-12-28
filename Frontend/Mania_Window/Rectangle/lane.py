@@ -5,16 +5,16 @@ from Frontend.Mania_Window.Rectangle.Circles.sliders import Sliders
 
 class Lane:
     def __init__(self, x):
-        self.x = x
+        self.__x = x
         self.current_circles: list[FallingCircle] = []
         self.hitting_circle = Circle()
         self.sliders: list[Sliders] = []
 
     def add_fall_circle(self, window, size):
-        self.current_circles.append(FallingCircle(window=window, lane_x=self.x, circle_size=size))
+        self.current_circles.append(FallingCircle(window=window, lane_x=self.__x, circle_size=size))
 
     def add_sliders(self, window, size, min_len):
-        self.sliders.append(Sliders(window=window, lane_x=self.x, circle_size=size, min_slider_len=min_len))
+        self.sliders.append(Sliders(window=window, lane_x=self.__x, circle_size=size, min_slider_len=min_len))
 
     def show_fall_circles(self, height, speed, pause: bool):
         for circles in self.current_circles:
@@ -26,7 +26,7 @@ class Lane:
 
     def show_hitting_circle(self, window, hitting_circle_y, size) -> None:
         self.hitting_circle.change_size(size=size)
-        self.hitting_circle.draw_circles(window=window, x=self.x, y=hitting_circle_y)
+        self.hitting_circle.draw_circles(window=window, x=self.__x, y=hitting_circle_y)
 
     def check_circles_if_out(self):
         for fall_circle in self.current_circles:
@@ -70,8 +70,9 @@ class Lane:
     def clear_circles(self) -> None:
         self.current_circles.clear()
 
-    def update_circles(self, size):
+    def update_circles(self, size, circle_x):
+        self.__x = circle_x
         for circle in self.current_circles:
             circle.change_size(size=size)
-            circle.update_hit_box(lane_x=self.x, size=size)
+            circle.update_hit_box(lane_x=self.__x, size=size)
         self.hitting_circle.change_size(size=size)
