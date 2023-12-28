@@ -16,10 +16,14 @@ class FadeEffect:
         self.__finished_fade_in = False
 
     def show(self, end_screen, window):
+        self.__update_rect()
         self.__draw_rect(end_screen=end_screen, window=window)
         self.__add_opacity()
         self.__check_if_finished_fade_in()
         self.__check_if_started_fading_out()
+
+    def __update_rect(self):
+        self.__rect = Rect(0, 0, self.__pos.width, self.__pos.height)
 
     def reset(self):
         self.__delay_timer.reset_timer()

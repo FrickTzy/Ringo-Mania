@@ -1,7 +1,8 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from Frontend.Helper_Files import WindowInterface
 
 
-class GameModeWindow(ABC):
+class GameModeWindow(WindowInterface):
     def __init__(self, *, display, font, music, play_tracker, timer, play_state):
         self.display = display
         self.font = font

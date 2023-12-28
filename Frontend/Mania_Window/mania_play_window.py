@@ -1,6 +1,5 @@
 import pygame
-from Frontend.settings import FPS, BLACK, clock, \
-    END_SONG_DELAY, KEY_BINDS
+from Frontend.settings import END_SONG_DELAY, KEY_BINDS
 from Frontend.Mania_Window.Interfaces import GameModeWindow
 from Frontend.Mania_Window.Rectangle import Rectangle
 from Frontend.Mania_Window.Misc import Font, MapStatus
@@ -11,10 +10,10 @@ from Backend import IntervalTimer, Music
 
 
 class ManiaPlayWindow(GameModeWindow):
-    running = False
     imported = False
+    __setup_finished = False
 
-    def __init__(self, music: Music, timer, map_manager, play_tracker, map_info, display):
+    def __init__(self, music: Music, timer, map_manager, play_tracker, map_info, display, window_manager):
         super().__init__(display=display, font=Font(), music=music, play_tracker=play_tracker, timer=timer,
                          play_state=PlayState())
         self.record = Record(self.font, self.display)
@@ -31,17 +30,14 @@ class ManiaPlayWindow(GameModeWindow):
                                    mini_timer=self.circle_interval_timer, map_status=self.map_status,
                                    show_acc=self.show_acc)
         self.stats = Stats(display=self.display, rectangle_pos=self.rectangle.pos_class)
-        self.event_handler = ManiaEventHandler(play_window=self)
+        self.event_handler = ManiaEventHandler(play_window=self, window_manager=window_manager)
 
     def run(self):
         self.background_setup()
-        while self.running:
-            self.timer.compute_time()
-            self.update_frame()
-            self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
-            self.show_stats_and_etc()
-            self.event_handler.check_events()
-        pygame.quit()
+        self.timer.compute_time()
+        self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
+        self.show_stats_and_etc()
+        self.event_handler.check_events()
 
     def restart(self):
         self.combo_counter.reset_all()
@@ -59,15 +55,12 @@ class ManiaPlayWindow(GameModeWindow):
         self.record.show_record(current_rec=self.combo_counter.info)
 
     def background_setup(self):
+        if self.__setup_finished:
+            return
         music_length = self.music.play_music()
-        self.running = True
         self.timer.update_target_time(music_length, END_SONG_DELAY)
         self.record.init_record(self.play_tracker.check_plays())
-
-    def update_frame(self):
-        clock.tick(FPS)
-        pygame.display.update()
-        self.display.window.fill(BLACK)
+        self.__setup_finished = True
 
     def show_end_screen(self):
         self.end_screen.show_end_screen(window=self.display.window, stats=self.combo_counter.get_stats,
@@ -91,8 +84,9 @@ class PlayState:
 
 
 class ManiaEventHandler:
-    def __init__(self, play_window: ManiaPlayWindow):
+    def __init__(self, play_window: ManiaPlayWindow, window_manager):
         self.__play_window = play_window
+        self.__window_manager = window_manager
 
     def check_events(self):
         self.__detect_key()
@@ -127,7 +121,7 @@ class ManiaEventHandler:
     def __check_window_if_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.__play_window.running = False
+                self.__window_manager.quit()
 
     def __check_map_if_finished(self):
         if (self.__play_window.timer.timer_finished or self.__play_window.map_status.finished) and \
