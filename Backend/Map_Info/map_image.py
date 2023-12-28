@@ -6,11 +6,11 @@ from os import path
 
 class MapImage:
     def __init__(self):
-        self.__downloader = MapImageDownloader()
         self.__anime_path = "C:/Users/Admiin/PycharmProjects/Ringo-chan's codes/Stuff/Ringo_Mania/Backend/Map_Images" \
                             "/Anime Background"
         self.__other_path = "C:/Users/Admiin/PycharmProjects/Ringo-chan's codes/Stuff/Ringo_Mania/Backend/Map_Images" \
                             "/Others"
+        self.__downloader = MapImageDownloader(anime_path=self.__anime_path, other_path=self.__other_path)
 
     def get_image(self, title: str, anime_song: bool):
         if anime_song:

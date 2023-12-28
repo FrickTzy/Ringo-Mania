@@ -6,11 +6,12 @@ from urllib.parse import quote
 
 
 class MapImageDownloader:
-    __ANIME_PATH = "C:/Users/Admiin/PycharmProjects/Ringo-chan's codes/Stuff/Ringo_Mania/Backend/Map_Images/Anime Background"
-    __OTHER_PATH = "C:/Users/Admiin/PycharmProjects/Ringo-chan's codes/Stuff/Ringo_Mania/Backend/Map_Images" \
-                   "/Others"
     __POSSIBLE_EXTENSIONS = ('.jpeg', ".jpg")
     __MAP_SEARCH_PADDING = " Pc Wallpaper"
+
+    def __init__(self, anime_path, other_path):
+        self.__anime_path = anime_path
+        self.__other_path = other_path
 
     @staticmethod
     def __download_page(url):
@@ -55,7 +56,7 @@ class MapImageDownloader:
 
     def __write_image(self, image_url, title, anime_path: bool):
         req = requests.get(image_url, allow_redirects=True, timeout=None)
-        path = self.__ANIME_PATH if anime_path else self.__OTHER_PATH
+        path = self.__anime_path if anime_path else self.__other_path
         if 'html' not in str(req.content):
             mime = magic.Magic(mime=True)
             file_type = mime.from_buffer(req.content)
@@ -69,4 +70,4 @@ class MapImageDownloader:
 
 if __name__ == "__main__":
     map_downloader = MapImageDownloader()
-    map_downloader.download(sentence_to_search="tower of god")
+    map_downloader.download(sentence_to_search='Moonstar88')
