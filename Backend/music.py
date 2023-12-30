@@ -10,20 +10,24 @@ class Music:
     __SONG_FADE_MS = 100
     __ON_HIT_SOUNDS = True
 
-    def __init__(self):
-        self.music: mixer.Sound
+    def __init__(self, map_info=None):
+        self.__music = None
         self.song_volume = SONG_VOLUME
         self.starting_ms = time.get_ticks()
         self.mini_timer: IntervalTimer = IntervalTimer(self.__SOUND_INTERVAL)
+        self.__map_info = map_info
+        mixer.init()
 
     def set_music(self, song_name):
-        mixer.init()
-        self.music = mixer.Sound(os.path.join("Backend\Songs", f"{song_name}.mp3"))
+        self.__music = mixer.Sound(os.path.join("Backend\Songs", f"{song_name}.mp3"))
 
     def play_music(self):
+        if self.__map_info is not None:
+            self.set_music(song_name=self.__map_info.song_file_name)
         mixer.Channel(2).set_volume(self.song_volume)
-        mixer.Channel(2).play(self.music)
-        return self.music.get_length()
+        mixer.Channel(2).stop()
+        mixer.Channel(2).play(self.__music)
+        return self.__music.get_length()
 
     def restart_music(self):
         self.song_volume = SONG_VOLUME

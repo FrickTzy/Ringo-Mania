@@ -11,7 +11,7 @@ class Record:
         self.__pos = RecordPos(display=display)
 
     def init_record(self, record: list):
-        """Adds the record to a list"""
+        """Adds the Record to a list"""
         self.record_list.clear()
         for index in range(NUM_OF_RECORD):
             try:

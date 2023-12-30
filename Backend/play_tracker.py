@@ -4,15 +4,15 @@ from os import path
 class PlayTracker:
     SORT_TYPE = "score"
 
-    def __init__(self, map_name: str):
-        self.map_name = map_name
-        self.path = path.join("Backend\Map_History", f"{self.map_name}.rinh")
+    def __init__(self, map_info):
+        self.map_info = map_info
         self.updated = False
         self.sorted_plays: list = []
         self.converted_dict = {}
 
-    def change_map(self, map_name):
-        self.map_name = map_name
+    @property
+    def path(self):
+        return path.join("Backend\Map_History", f"{self.map_info.song_name}.rinh")
 
     def check_plays(self) -> list:
         plays_history = []

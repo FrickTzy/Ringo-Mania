@@ -18,6 +18,10 @@ class Display:
         display.set_icon(logo_image)
 
     @staticmethod
+    def show_cursor():
+        mouse.set_visible(True)
+
+    @staticmethod
     def __set_title():
         display.set_caption("Ringo Mania!")
 

@@ -17,7 +17,6 @@ class ManiaPlayWindow(GameModeWindow):
         super().__init__(display=display, font=Font(), music=music, play_tracker=play_tracker, timer=timer,
                          play_state=PlayState())
         self.record = Record(self.font, self.display)
-        self.music.set_music(map_info.song_file_name)
         self.map_manager = map_manager(map_info.song_file_name)
         self.combo_counter = ComboCounter(self.font)
         self.circle_interval_timer = IntervalTimer()
