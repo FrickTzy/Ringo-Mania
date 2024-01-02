@@ -14,12 +14,12 @@ class TopRect:
         self.__time = PlayTimeText(pos=pos)
         self.__map_info = map_info
 
-    def show(self, end_screen, date_time: dict):
+    def show(self, screen, date_time: dict):
         self.__update_rect()
-        draw.rect(end_screen, DARK_PURPLE, self.__rect)
-        self.__text.show_text(end_screen=end_screen, song_info=self.__map_info.song_info,
+        draw.rect(screen, DARK_PURPLE, self.__rect)
+        self.__text.show_text(screen=screen, song_info=self.__map_info.song_info,
                               map_maker=self.__map_info.map_maker)
-        self.__time.show(end_screen=end_screen, date_time=date_time)
+        self.__time.show(screen=screen, date_time=date_time)
 
     def __update_rect(self):
         self.__rect = Rect(self.__pos.x, 0, self.__pos.width, self.__pos.height)

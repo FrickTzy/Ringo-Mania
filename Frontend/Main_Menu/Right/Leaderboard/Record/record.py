@@ -2,23 +2,31 @@ from pygame import Rect, draw, image, transform
 from os import path
 from .text_stat import TextStats
 from Frontend.settings import DARK_PURPLE, PLAYER_NAME
+from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 
 
 class Record:
     __COLOR = DARK_PURPLE
     __OPACITY = 210
 
-    def __init__(self, play_dict, display):
+    def __init__(self, play_dict, display, state):
         self.__pos = RecordPos(display=display)
+        self.__play_dict = play_dict
         self.__text_stats = TextStats(play_info=play_dict, pos=self.__pos)
         self.__rect = Rect(0, 0, self.__pos.record_width, self.__pos.record_height)
+        self.__button_handler = ButtonEventHandler()
         self.__profile = RecordProfile(pos=self.__pos)
+        self.__state = state
 
     def show(self, main_menu_surface, y: int):
         self.__update_rect(y=y)
         self.__draw_rect(main_menu_surface=main_menu_surface)
         self.__profile.show_profile(main_menu_surface=main_menu_surface)
         self.__text_stats.show_text(main_menu_surface=main_menu_surface)
+        self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
+                                                       size=self.__pos.record_size,
+                                                       command=lambda: self.__state.show_score_screen(
+                                                           current_play=self.__play_dict))
 
     def __draw_rect(self, main_menu_surface):
         r, g, b = self.__COLOR
@@ -81,16 +89,24 @@ class RecordPos:
         return 60
 
     @property
-    def height(self):
-        return self.__display.height
+    def record_size(self):
+        return self.record_width, self.record_height
 
     @property
-    def record_y(self):
-        return self.__record_y
+    def height(self):
+        return self.__display.height
 
     def set_record_y(self, padding):
         self.__record_y = 200 + padding
 
     @property
+    def record_y(self):
+        return self.__record_y
+
+    @property
     def record_x(self):
         return 1000
+
+    @property
+    def record_starting_coord(self):
+        return self.record_x, self.record_y

@@ -7,29 +7,29 @@ from .combo_acc import ComboAcc
 class AccText:
     __COLOR = WHITE
 
-    def __init__(self, end_screen_surface: Surface | SurfaceType, screen_pos, opacity):
-        self.__end_screen_surface = end_screen_surface
+    def __init__(self, screen_surface: Surface | SurfaceType, screen_pos, opacity):
+        self.__screen_surface = screen_surface
         self.__pos = StatsTextPos(screen_pos=screen_pos)
         self.__font = Font()
         self.__opacity = opacity
         self.__combo_acc = ComboAcc(pos=screen_pos)
 
-    def show_text(self, end_screen_surface, stats: dict) -> None:
-        self.__update_surface(end_screen_surface=end_screen_surface)
+    def show_text(self, screen_surface, stats: dict) -> None:
+        self.__update_surface(screen_surface=screen_surface)
         self.__font.update_font(height=self.__pos.height)
         self.__blit_score(score=stats["score"])
         self.__blit_stats(stats=stats["acc_dict"])
-        self.__combo_acc.show(end_screen=end_screen_surface, acc=stats["accuracy"], combo=stats["highest_combo"])
+        self.__combo_acc.show(screen=screen_surface, acc=stats["accuracy"], combo=stats["highest_combo"])
 
-    def __update_surface(self, end_screen_surface):
-        self.__end_screen_surface = end_screen_surface
+    def __update_surface(self, screen_surface):
+        self.__screen_surface = screen_surface
 
     def __blit_score(self, score: int):
         text = self.__font.score_font.render(f"{score}", True, self.__COLOR)
         score_label = self.__font.score_label_font.render("Score", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(score_label, self.__pos.score_label_pos)
-        self.__end_screen_surface.blit(text, self.__pos.score_pos)
+        self.__screen_surface.blit(score_label, self.__pos.score_label_pos)
+        self.__screen_surface.blit(text, self.__pos.score_pos)
 
     def __blit_stats(self, stats: dict):
         self.__show_perfect_acc(stats["Perfect"])
@@ -41,27 +41,27 @@ class AccText:
     def __show_perfect_acc(self, acc) -> None:
         text = self.__font.font.render(f"{acc}x", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(text, self.__pos.left_text_pos(sequence_num=1))
+        self.__screen_surface.blit(text, self.__pos.left_text_pos(sequence_num=1))
 
     def __show_amazing_acc(self, acc) -> None:
         text = self.__font.font.render(f"{acc}x", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(text, self.__pos.right_text_pos(sequence_num=1))
+        self.__screen_surface.blit(text, self.__pos.right_text_pos(sequence_num=1))
 
     def __show_okay_acc(self, acc) -> None:
         text = self.__font.font.render(f"{acc}x", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(text, self.__pos.left_text_pos(sequence_num=2))
+        self.__screen_surface.blit(text, self.__pos.left_text_pos(sequence_num=2))
 
     def __show_good_acc(self, acc) -> None:
         text = self.__font.font.render(f"{acc}x", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(text, self.__pos.right_text_pos(sequence_num=2))
+        self.__screen_surface.blit(text, self.__pos.right_text_pos(sequence_num=2))
 
     def __show_misses(self, acc) -> None:
         text = self.__font.font.render(f"{acc}x", True, self.__COLOR)
         text.set_alpha(self.__opacity.opacity)
-        self.__end_screen_surface.blit(text, self.__pos.center_pos(sequence_num=3))
+        self.__screen_surface.blit(text, self.__pos.center_pos(sequence_num=3))
 
 
 class Font:

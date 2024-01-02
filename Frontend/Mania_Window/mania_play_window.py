@@ -6,6 +6,7 @@ from Frontend.Mania_Window.Misc import Font, MapStatus
 from Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
 from Frontend.Mania_Window.Pause import Pause
 from Frontend.Mania_Window.End_Screen import EndScreen
+from Frontend.Helper_Files.Interfaces.state_interface import State
 from Backend import IntervalTimer, Music
 
 
@@ -67,9 +68,20 @@ class ManiaPlayWindow(GameModeWindow):
                                         grade=self.combo_counter.get_grade)
 
 
-class PlayState:
+class PlayState(State):
     def __init__(self):
         self.__restarted = False
+        self.__leave_mania = False
+
+    @property
+    def leave_mania(self):
+        return self.__leave_mania
+
+    def enter_playing_window(self):
+        self.__leave_mania = False
+
+    def leave_score_screen(self):
+        self.__leave_mania = True
 
     @property
     def restarted(self):
@@ -96,6 +108,7 @@ class ManiaEventHandler:
         self.__check_window_if_paused()
         self.__check_map_if_finished()
         self.__check_window_if_resized()
+        self.__check_if_leave_play_window()
 
     def __detect_key(self):
         key_pressed = pygame.key.get_pressed()
@@ -121,6 +134,11 @@ class ManiaEventHandler:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__window_manager.quit()
+
+    def __check_if_leave_play_window(self):
+        if not self.__play_window.state.leave_mania:
+            return
+        self.__window_manager.show_main_menu()
 
     def __check_map_if_finished(self):
         if (self.__play_window.timer.timer_finished or self.__play_window.map_status.finished) and \

@@ -24,16 +24,16 @@ class AccLogo:
             image.load(path.join("Frontend\Mania_Window\Img", "hit320.png")).convert_alpha(),
             self.__pos.logo_size_tuple)
 
-    def show_logo(self, end_screen_surface: Surface):
+    def show_logo(self, screen_surface: Surface):
         self.__set_logo_opacity()
-        self.__blit_logo(end_screen_surface=end_screen_surface)
+        self.__blit_logo(screen_surface=screen_surface)
 
-    def __blit_logo(self, end_screen_surface: Surface):
-        end_screen_surface.blit(self.__amazing_img, self.__pos.right_logo_pos(sequence_num=1))
-        end_screen_surface.blit(self.__perfect_img, self.__pos.left_logo_pos(sequence_num=1))
-        end_screen_surface.blit(self.__good_img, self.__pos.right_logo_pos(sequence_num=2))
-        end_screen_surface.blit(self.__okay_img, self.__pos.left_logo_pos(sequence_num=2))
-        end_screen_surface.blit(self.__miss_img, self.__pos.center_logo_pos(sequence_num=3))
+    def __blit_logo(self, screen_surface: Surface):
+        screen_surface.blit(self.__amazing_img, self.__pos.right_logo_pos(sequence_num=1))
+        screen_surface.blit(self.__perfect_img, self.__pos.left_logo_pos(sequence_num=1))
+        screen_surface.blit(self.__good_img, self.__pos.right_logo_pos(sequence_num=2))
+        screen_surface.blit(self.__okay_img, self.__pos.left_logo_pos(sequence_num=2))
+        screen_surface.blit(self.__miss_img, self.__pos.center_logo_pos(sequence_num=3))
 
     def __set_logo_opacity(self):
         self.__amazing_img.set_alpha(self.__opacity.opacity)

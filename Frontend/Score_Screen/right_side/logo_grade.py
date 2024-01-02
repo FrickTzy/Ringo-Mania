@@ -22,9 +22,9 @@ class LogoGrade:
             "SS": self.__ss_img
         }
 
-    def show_grade(self, grade: str, end_screen: Surface):
+    def show_grade(self, grade: str, screen: Surface):
         img_grade = transform.scale(self.__grades[grade], self.__pos.size_tuple)
-        end_screen.blit(img_grade, self.__pos.img_coord)
+        screen.blit(img_grade, self.__pos.img_coord)
 
 
 class GradePosSize:

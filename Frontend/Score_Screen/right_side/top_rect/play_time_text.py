@@ -9,11 +9,11 @@ class PlayTimeText:
         self.__pos = PlayTimeTextPos(pos=pos)
         self.__font = Font()
 
-    def show(self, end_screen, date_time: dict):
+    def show(self, screen, date_time: dict):
         time_text = self.__font.date_time_font(height=self.__pos.height).render(
             f"Played on {date_time['time']} - {date_time['date']}", True,
             self.__COLOR)
-        end_screen.blit(time_text, self.__pos.date_time_pos)
+        screen.blit(time_text, self.__pos.date_time_pos)
 
 
 class PlayTimeTextPos:

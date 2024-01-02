@@ -4,42 +4,42 @@ from .acc_logo import AccLogo
 from Frontend.settings import DARK_PURPLE
 
 
-class LeftEndScreen:
-    def __init__(self, *, opacity, end_screen, pos):
-        self.__acc_text = AccText(end_screen_surface=end_screen, screen_pos=pos,
+class LeftScoreScreen:
+    def __init__(self, *, opacity, screen, pos):
+        self.__acc_text = AccText(screen_surface=screen, screen_pos=pos,
                                   opacity=opacity)
         self.__acc_logo = AccLogo(screen_pos=pos, opacity=opacity)
-        self.__background = EndScreenBackground(pos=pos, opacity=opacity)
+        self.__background = ScoreScreenBackground(pos=pos, opacity=opacity)
 
-    def show(self, end_screen, stats):
-        self.__background.draw_to_pause_surface(end_screen=end_screen)
-        self.__acc_text.show_text(end_screen_surface=end_screen, stats=stats)
-        self.__acc_logo.show_logo(end_screen_surface=end_screen)
+    def show(self, screen, stats):
+        self.__background.draw_to_pause_surface(screen=screen)
+        self.__acc_text.show_text(screen_surface=screen, stats=stats)
+        self.__acc_logo.show_logo(screen_surface=screen)
 
 
-class EndScreenBackground:
+class ScoreScreenBackground:
     __COLOR = DARK_PURPLE
 
     def __init__(self, pos, opacity):
         self.__pos = BackgroundRectanglePos(pos=pos)
         self.__opacity = opacity
 
-    def draw_to_pause_surface(self, end_screen) -> None:
-        self.__draw_top_rect(end_screen=end_screen, color=self.__COLOR)
-        self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=1), color=self.__COLOR)
-        self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=2), color=self.__COLOR)
-        self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=3), color=self.__COLOR)
-        # self.__draw_background_rect(end_screen=end_screen, y=self.__pos.get_rect_y(sequence_num=4),
+    def draw_to_pause_surface(self, screen) -> None:
+        self.__draw_top_rect(screen=screen, color=self.__COLOR)
+        self.__draw_background_rect(screen=screen, y=self.__pos.get_rect_y(sequence_num=1), color=self.__COLOR)
+        self.__draw_background_rect(screen=screen, y=self.__pos.get_rect_y(sequence_num=2), color=self.__COLOR)
+        self.__draw_background_rect(screen=screen, y=self.__pos.get_rect_y(sequence_num=3), color=self.__COLOR)
+        # self.__draw_background_rect(screen=screen, y=self.__pos.get_rect_y(sequence_num=4),
         # color=self.__COLOR)
 
-    def __draw_background_rect(self, end_screen, y, color):
+    def __draw_background_rect(self, screen, y, color):
         r, g, b = color
-        draw.rect(end_screen, (r, g, b, self.__opacity.opacity),
+        draw.rect(screen, (r, g, b, self.__opacity.opacity),
                   (self.__pos.padding, y, self.__pos.width, self.__pos.height))
 
-    def __draw_top_rect(self, end_screen, color):
+    def __draw_top_rect(self, screen, color):
         r, g, b = color
-        draw.rect(end_screen, (r, g, b, self.__opacity.opacity),
+        draw.rect(screen, (r, g, b, self.__opacity.opacity),
                   (0, 0, self.__pos.top_rect_width, self.__pos.top_rect_height))
 
 

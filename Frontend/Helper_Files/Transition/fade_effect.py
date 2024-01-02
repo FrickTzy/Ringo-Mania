@@ -1,6 +1,7 @@
 from pygame import Rect, draw
 from Backend.timer import DelayTimer
 from Frontend.settings import BLACK
+from Frontend.Helper_Files.Transition.opacity import Opacity
 
 
 class FadeEffect:
@@ -8,16 +9,23 @@ class FadeEffect:
     __FADE_LEN_MS = 500
     __FADE_SPEED = 15
 
-    def __init__(self, pos, opacity):
+    def __init__(self, pos):
         self.__pos = pos
         self.__delay_timer = DelayTimer()
-        self.__opacity = opacity()
+        self.__opacity = Opacity()
         self.__rect = Rect(0, 0, self.__pos.width, self.__pos.height)
         self.__finished_fade_in = False
 
-    def show(self, end_screen, window):
+    def show(self, screen, window):
         self.__update_rect()
-        self.__draw_rect(end_screen=end_screen, window=window)
+        self.__draw_rect(screen=screen, window=window)
+        self.__add_opacity()
+        self.__check_if_finished_fade_in()
+        self.__check_if_started_fading_out()
+
+    def show_between_window(self, window):
+        self.__update_rect()
+        self.__draw_rect(window=window)
         self.__add_opacity()
         self.__check_if_finished_fade_in()
         self.__check_if_started_fading_out()
@@ -35,11 +43,15 @@ class FadeEffect:
             return
         self.__opacity.add_opacity(sum_num=self.__FADE_SPEED)
 
-    def __draw_rect(self, end_screen, window):
+    def __draw_rect(self, window, screen=None):
         r, g, b = self.__COLOR
-        draw.rect(end_screen, (r, g, b, self.__opacity.opacity),
-                  self.__rect)
-        window.blit(end_screen, (0, 0))
+        if screen is None:
+            draw.rect(window, (r, g, b, self.__opacity.opacity),
+                      self.__rect)
+        else:
+            draw.rect(screen, (r, g, b, self.__opacity.opacity),
+                      self.__rect)
+            window.blit(screen, (0, 0))
 
     def __check_if_finished_fade_in(self):
         if self.finished_fade_in:

@@ -9,13 +9,13 @@ class TopRectText:
         self.__font = Font()
         self.__pos = TextPos(pos=pos)
 
-    def show_text(self, end_screen, song_info: str, map_maker: str):
+    def show_text(self, screen, song_info: str, map_maker: str):
         song_info_text = self.__font.song_info_font(height=self.__pos.height, text=song_info).render(song_info, True,
                                                                                                      self.__COLOR)
         map_maker_text = self.__font.map_maker_font(height=self.__pos.height).render(f"Beatmap by {map_maker}", True,
                                                                                      self.__COLOR)
-        end_screen.blit(song_info_text, self.__pos.song_info_pos)
-        end_screen.blit(map_maker_text, self.__pos.map_maker_pos)
+        screen.blit(song_info_text, self.__pos.song_info_pos)
+        screen.blit(map_maker_text, self.__pos.map_maker_pos)
 
 
 class Font:

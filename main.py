@@ -10,10 +10,10 @@ class Main:
     def __init__(self):
         self.__timer = Timer()
         self.__display = Display()
-        self.__map_info = MapInfo(song_name="Code Geass Op 1 - COLORS")
+        self.__map_info = MapInfo(song_name="Sunflower")
         self.__music = Music(map_info=self.__map_info)
         self.__play_tracker = PlayTracker(self.__map_info)
-        self.__window_manager = WindowManager()
+        self.__window_manager = WindowManager(display=self.__display)
         self.__main_menu = MainMenu(display=self.__display, window_manager=self.__window_manager,
                                     map_info=self.__map_info, play_tracker=self.__play_tracker)
         self.__play_window = ManiaPlayWindow(music=self.__music, timer=self.__timer, map_manager=MapManager,
@@ -26,7 +26,7 @@ class Main:
         while self.__window_manager.running:
             self.update_frame()
             self.__window_manager.check_window_if_quit()
-            self.__window_manager.current_window.run()
+            self.__window_manager.run_current_window()
         pygame.quit()
 
     def update_frame(self):

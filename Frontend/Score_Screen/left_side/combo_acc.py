@@ -9,24 +9,24 @@ class ComboAcc:
         self.__pos = Pos(pos=pos)
         self.__font = Font()
 
-    def show(self, end_screen, combo, acc):
-        self.__show_combo(end_screen=end_screen, combo=combo)
-        self.__show_accuracy(end_screen=end_screen, acc=acc)
+    def show(self, screen, combo, acc):
+        self.__show_combo(screen=screen, combo=combo)
+        self.__show_accuracy(screen=screen, acc=acc)
 
-    def __show_combo(self, end_screen, combo) -> None:
+    def __show_combo(self, screen, combo) -> None:
         text = self.__font.font(height=self.__pos.height).render(f"{combo}x", True, self.__COLOR)
         label = self.__font.label_font(height=self.__pos.height).render("Combo", True, self.__COLOR)
-        end_screen.blit(text, self.__pos.combo_text_pos)
-        end_screen.blit(label, self.__pos.combo_label_pos)
+        screen.blit(text, self.__pos.combo_text_pos)
+        screen.blit(label, self.__pos.combo_label_pos)
 
-    def __show_accuracy(self, end_screen, acc) -> None:
+    def __show_accuracy(self, screen, acc) -> None:
         text = self.__font.font(height=self.__pos.height).render(f"{acc}", True, self.__COLOR)
         label = self.__font.label_font(height=self.__pos.height).render("Acc", True, self.__COLOR)
-        end_screen.blit(label, self.__pos.acc_label_pos)
+        screen.blit(label, self.__pos.acc_label_pos)
         if self.__check_if_acc_is_small(acc=acc):
-            end_screen.blit(text, self.__pos.small_acc_text_pos())
+            screen.blit(text, self.__pos.small_acc_text_pos())
         else:
-            end_screen.blit(text, self.__pos.acc_text_pos())
+            screen.blit(text, self.__pos.acc_text_pos())
 
     @staticmethod
     def __check_if_acc_is_small(acc: str) -> bool:
