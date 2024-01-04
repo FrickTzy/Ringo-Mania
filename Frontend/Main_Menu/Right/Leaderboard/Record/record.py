@@ -97,7 +97,7 @@ class RecordPos:
         return self.__display.height
 
     def set_record_y(self, padding):
-        self.__record_y = 200 + padding
+        self.__record_y = 220 + padding
 
     @property
     def record_y(self):

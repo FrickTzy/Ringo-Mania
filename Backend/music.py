@@ -24,15 +24,17 @@ class Music:
     def play_music(self):
         if self.__map_info is not None:
             self.set_music(song_name=self.__map_info.song_file_name)
-        mixer.Channel(2).set_volume(self.song_volume)
-        mixer.Channel(2).stop()
-        mixer.Channel(2).play(self.__music)
+        self.__start_music()
         return self.__music.get_length()
 
     def restart_music(self):
         self.song_volume = SONG_VOLUME
+        self.__start_music()
+
+    def __start_music(self):
+        mixer.Channel(2).set_volume(self.song_volume)
         mixer.Channel(2).stop()
-        self.play_music()
+        mixer.Channel(2).play(self.__music)
 
     def fade_music(self):
         ms_now = time.get_ticks()

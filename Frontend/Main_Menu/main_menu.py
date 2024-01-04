@@ -32,7 +32,7 @@ class MainMenu(WindowInterface):
                                           map_background_status=self.__map_info.map_background_status)
         self.__top_div.show(main_menu_surface=self.__main_menu_surface)
         self.__bottom_div.show(main_menu_surface=self.__main_menu_surface)
-        self.__right_div.show(main_menu_surface=self.__main_menu_surface)
+        self.__right_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.background)
         self.__display.window.blit(self.__main_menu_surface, (0, 0))
         self.__event_handler.check_events()
 

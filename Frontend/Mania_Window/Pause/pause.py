@@ -68,7 +68,6 @@ class Pause:
         window.blit(self.__pause_surface, (0, 0))
 
     def set_restarted(self):
-        self.__music.restart_music()
         self.__state.restart()
 
     def draw_to_pause_surface(self, window_size: tuple) -> None:
@@ -128,8 +127,8 @@ class PauseText:
         text = self.__font.pause_font.render(self.__CONTINUE, True, WHITE)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
-                                                      text_size=self.__font.pause_text_size(self.__MINI_FONT,
-                                                                                            self.__CONTINUE),
+                                                      size=self.__font.pause_text_size(self.__MINI_FONT,
+                                                                                       self.__CONTINUE),
                                                       command=command)
 
     def __run_restart_text(self, text_coord: tuple[int, int], command) -> None:
@@ -138,8 +137,8 @@ class PauseText:
         text = self.__font.pause_font.render(self.__RESTART, True, WHITE)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
-                                                      text_size=self.__font.pause_text_size(self.__MINI_FONT,
-                                                                                            self.__RESTART),
+                                                      size=self.__font.pause_text_size(self.__MINI_FONT,
+                                                                                       self.__RESTART),
                                                       command=command)
 
     def __run_quit_text(self, text_coord: tuple[int, int]) -> None:
@@ -148,8 +147,8 @@ class PauseText:
         text = self.__font.pause_font.render(self.__QUIT, True, WHITE)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
-                                                      text_size=self.__font.pause_text_size(self.__MINI_FONT,
-                                                                                            self.__QUIT),
+                                                      size=self.__font.pause_text_size(self.__MINI_FONT,
+                                                                                       self.__QUIT),
                                                       command=quit)
 
 

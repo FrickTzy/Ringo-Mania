@@ -47,6 +47,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.map_status.restart()
         self.rectangle.restart()
         self.end_screen.restart()
+        self.state.un_restart()
         self.record.init_record(self.play_tracker.check_plays())
 
     def show_stats_and_etc(self):
@@ -158,8 +159,6 @@ class ManiaEventHandler:
     def __check_window_if_restart(self):
         if self.__play_window.state.restarted:
             self.__play_window.restart()
-            self.__play_window.rectangle.restart()
-            self.__play_window.state.un_restart()
 
     def __check_window_if_resized(self):
         if self.__play_window.display.check_window_size():

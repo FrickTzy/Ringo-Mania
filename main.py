@@ -10,7 +10,7 @@ class Main:
     def __init__(self):
         self.__timer = Timer()
         self.__display = Display()
-        self.__map_info = MapInfo(song_name="Sunflower")
+        self.__map_info = MapInfo(song_name="Code Geass Op 1 - COLORS")
         self.__music = Music(map_info=self.__map_info)
         self.__play_tracker = PlayTracker(self.__map_info)
         self.__window_manager = WindowManager(display=self.__display)
