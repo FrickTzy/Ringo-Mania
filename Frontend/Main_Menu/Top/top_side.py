@@ -43,7 +43,7 @@ class Pos:
 class Outline:
     __OUTLINE_COLOR = PURPLE
     __OUTLINE_OPACITY = 80
-    __OUTLINE_THICKNESS = 15
+    __OUTLINE_THICKNESS = 10
 
     def show_outline(self, main_menu_surface, rect: Rect):
         outline = Rect(rect.x - self.__OUTLINE_THICKNESS, self.__OUTLINE_THICKNESS,

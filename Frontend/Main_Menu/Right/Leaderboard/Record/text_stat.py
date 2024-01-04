@@ -15,9 +15,18 @@ class TextStats:
         score = self.__font.font(height=self.__pos.height).render(str(self.__play_info["score"]), True, self.__COLOR)
         accuracy = self.__font.font(height=self.__pos.height).render(str(self.__play_info["accuracy"]), True,
                                                                      self.__COLOR)
-        main_menu_surface.blit(player_name, self.__pos.name_pos)
-        main_menu_surface.blit(score, self.__pos.score_pos)
-        main_menu_surface.blit(accuracy, self.__pos.acc_pos)
+        main_menu_surface.blit(player_name, self.__pos.name_pos())
+        main_menu_surface.blit(score, self.__pos.score_pos())
+        main_menu_surface.blit(accuracy, self.__pos.acc_pos())
+
+    def show_static_text(self, main_menu_surface, y):
+        player_name = self.__font.font(height=self.__pos.height).render(PLAYER_NAME, True, self.__COLOR)
+        score = self.__font.font(height=self.__pos.height).render(str(self.__play_info["score"]), True, self.__COLOR)
+        accuracy = self.__font.font(height=self.__pos.height).render(str(self.__play_info["accuracy"]), True,
+                                                                     self.__COLOR)
+        main_menu_surface.blit(player_name, self.__pos.name_pos(y=y))
+        main_menu_surface.blit(score, self.__pos.score_pos(y=y))
+        main_menu_surface.blit(accuracy, self.__pos.acc_pos(y=y))
 
 
 class Font:
@@ -49,14 +58,23 @@ class TextPos:
     def height(self):
         return self.__pos.height
 
-    @property
-    def name_pos(self):
-        return self.__pos.record_x + 100, self.__pos.record_y + 5
+    def name_pos(self, y=0):
+        if not y:
+            pos = self.__pos.record_x + 100, self.__pos.record_y + 5
+        else:
+            pos = self.__pos.record_x + 100, y + 5
+        return pos
 
-    @property
-    def score_pos(self):
-        return self.__pos.record_x + 450, self.__pos.record_y + 5
+    def score_pos(self, y=0):
+        if not y:
+            pos = self.__pos.record_x + 450, self.__pos.record_y + 5
+        else:
+            pos = self.__pos.record_x + 450, y + 5
+        return pos
 
-    @property
-    def acc_pos(self):
-        return self.__pos.record_x + 450, self.__pos.record_y + 25
+    def acc_pos(self, y=0):
+        if not y:
+            pos = self.__pos.record_x + 450, self.__pos.record_y + 25
+        else:
+            pos = self.__pos.record_x + 450, y + 25
+        return pos

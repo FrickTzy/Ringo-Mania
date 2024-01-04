@@ -26,7 +26,7 @@ class TopRight:
 
 
 class Pos:
-    __HEIGHT_RATIO = 5.71
+    __HEIGHT_RATIO = 5.80
 
     def __init__(self, display):
         self.__display = display

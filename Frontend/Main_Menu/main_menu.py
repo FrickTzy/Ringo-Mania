@@ -30,11 +30,15 @@ class MainMenu(WindowInterface):
         self.__display.check_window_size()
         self.__background.show_background(window=self.__display.window, window_size=self.__display.get_window_size,
                                           map_background_status=self.__map_info.map_background_status)
+        self.__clear_surface()
         self.__top_div.show(main_menu_surface=self.__main_menu_surface)
         self.__bottom_div.show(main_menu_surface=self.__main_menu_surface)
         self.__right_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.background)
         self.__display.window.blit(self.__main_menu_surface, (0, 0))
         self.__event_handler.check_events()
+
+    def __clear_surface(self):
+        self.__main_menu_surface.fill((0, 0, 0, 0))
 
     def show_score_screen(self, play_stats: dict):
         self.__score_screen.show_score_screen(window=self.__display.window, stats=play_stats,
