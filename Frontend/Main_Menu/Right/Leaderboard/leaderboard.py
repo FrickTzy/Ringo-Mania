@@ -5,7 +5,6 @@ from Frontend.Helper_Files import ButtonEventHandler
 
 class Leaderboard:
     __initialized = False
-    __MAX_RECORD_VIEW = 6
 
     def __init__(self, play_tracker, display, state):
         self.__play_tracker = play_tracker
@@ -13,9 +12,11 @@ class Leaderboard:
         self.__pos = Pos(display=display)
         self.__record_list: list[Record] = []
         self.__state = state
+        self.__view_counter = ViewCounter()
         self.__best_play: Record
         self.__hidden_background = HiddenBackground()
-        self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos)
+        self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos,
+                                                       view=self.__view_counter)
 
     def show_leaderboard(self, main_menu_surface, background_img):
         self.__init_leaderboard()
@@ -23,11 +24,17 @@ class Leaderboard:
         self.__event_handler.check_for_events()
 
     def __show_all_records(self, main_menu_surface, background_img):
+        self.__view_counter.reset_view()
         for index, record in enumerate(self.__record_list):
             record.show(main_menu_surface=main_menu_surface, y=self.__pos.starting_record_pos(index=index))
-        if len(self.__record_list) >= self.__MAX_RECORD_VIEW:
+            self.__check_if_viewed(record=record)
+        if len(self.__record_list) >= self.__view_counter.MAX_RECORD_VIEW:
             self.__best_play.show_static(main_menu_surface=main_menu_surface, y=690)
             self.__hidden_background.show(background_img=background_img, surface=main_menu_surface)
+
+    def __check_if_viewed(self, record: Record):
+        if record.is_viewed:
+            self.__view_counter.current_record_view += 1
 
     def __init_leaderboard(self):
         if self.__initialized:
@@ -41,6 +48,14 @@ class Leaderboard:
 
     def restart(self):
         self.__initialized = False
+
+
+class ViewCounter:
+    MAX_RECORD_VIEW = 6
+    current_record_view = 0
+
+    def reset_view(self):
+        self.current_record_view = 0
 
 
 class HiddenBackground:
@@ -62,8 +77,9 @@ class HiddenBackground:
 
 
 class LeaderboardEventHandler:
-    def __init__(self, record_list: list[Record], pos):
+    def __init__(self, record_list: list[Record], pos, view: ViewCounter):
         self.__record_list = record_list
+        self.__view = view
         self.__pos = pos
         self.__button_event_handler = ButtonEventHandler()
 
@@ -77,19 +93,32 @@ class LeaderboardEventHandler:
             return
         for event_occur in event.get():
             if event_occur.type == MOUSEWHEEL:
-                if event_occur.y > 0:
-                    self.__pos.change_starting_y(add=True)
-                else:
-                    self.__pos.change_starting_y(add=False)
+                self.__scroll(event_occur=event_occur)
+
+    def __scroll(self, event_occur):
+        if event_occur.y > 0:
+            if self.__pos.record_starting_y >= 222:
+                return
+            self.__pos.change_starting_y(add=True)
+        else:
+            if self.__check_if_out_of_bound_scroll():
+                return
+            self.__pos.change_starting_y(add=False)
+
+    def __check_if_out_of_bound_scroll(self):
+        if not len(self.__record_list) > self.__view.MAX_RECORD_VIEW:
+            return True
+        if self.__view.current_record_view <= 5:
+            return True
 
 
 class Pos:
-    __INTERVAL_PER_SCROLL = 8
+    __INTERVAL_PER_SCROLL = 10
     __RECORD_INTERVAL = 12.86
 
     def __init__(self, display):
         self.__display = display
-        self.__record_starting_y = 220
+        self.__record_starting_y = 222
 
     def starting_record_pos(self, index):
         return index * self.__get_interval_per_record
@@ -100,7 +129,7 @@ class Pos:
 
     @property
     def __leaderboard_starting_y(self):
-        return 220
+        return 222
 
     @property
     def leaderboard_x(self):

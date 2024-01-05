@@ -8,6 +8,7 @@ from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 class Record:
     __COLOR = DARK_PURPLE
     __OPACITY = 210
+    __viewed = False
 
     def __init__(self, play_dict, display, pos, state):
         self.__pos = RecordPos(display=display, pos=pos)
@@ -22,6 +23,7 @@ class Record:
     def show(self, main_menu_surface, y: int):
         self.__update_rect(y=y)
         if self.__check_if_out_of_bounds():
+            self.__viewed = False
             return
         self.__draw_rect(main_menu_surface=main_menu_surface)
         self.__profile.show_profile(main_menu_surface=main_menu_surface)
@@ -30,6 +32,11 @@ class Record:
                                                        size=self.__pos.record_size,
                                                        command=lambda: self.__state.show_score_screen(
                                                            current_play=self.__play_dict))
+        self.__viewed = True
+
+    @property
+    def is_viewed(self) -> bool:
+        return self.__viewed
 
     def __check_if_out_of_bounds(self):
         if self.__pos.record_y >= 690 or self.__pos.record_y <= 165:
