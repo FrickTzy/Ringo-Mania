@@ -52,6 +52,7 @@ class Leaderboard:
 
 class ViewCounter:
     MAX_RECORD_VIEW = 6
+    NUMBER_OF_RECORD_THAT_CANNOT_SCROLL = 5
     current_record_view = 0
 
     def reset_view(self):
@@ -108,7 +109,7 @@ class LeaderboardEventHandler:
     def __check_if_out_of_bound_scroll(self):
         if not len(self.__record_list) > self.__view.MAX_RECORD_VIEW:
             return True
-        if self.__view.current_record_view <= 5:
+        if self.__view.current_record_view <= self.__view.NUMBER_OF_RECORD_THAT_CANNOT_SCROLL:
             return True
 
 
