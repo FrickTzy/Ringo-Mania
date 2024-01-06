@@ -6,6 +6,7 @@ from .background import Background
 from .Top import Top
 from .Bottom import Bottom
 from .Right import Right
+from .Left import Left
 
 
 class MainMenu(WindowInterface):
@@ -21,6 +22,7 @@ class MainMenu(WindowInterface):
         self.__bottom_div = Bottom(display=self.__display)
         self.__right_div = Right(play_tracker=play_tracker, display=self.__display, state=self.__event_handler.state)
         self.__map_info = map_info
+        self.__left_div = Left(display=self.__display, map_info=self.__map_info, state=self.__event_handler.state)
         self.__background = Background()
         self.__score_screen = ScoreScreen(window_size=self.__display.get_window_size, state=self.__event_handler.state,
                                           map_info=map_info)
@@ -31,6 +33,7 @@ class MainMenu(WindowInterface):
         self.__background.show_background(window=self.__display.window, window_size=self.__display.get_window_size,
                                           map_background_status=self.__map_info.map_background_status)
         self.__clear_surface()
+        self.__left_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.image)
         self.__top_div.show(main_menu_surface=self.__main_menu_surface)
         self.__bottom_div.show(main_menu_surface=self.__main_menu_surface)
         self.__right_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.background)

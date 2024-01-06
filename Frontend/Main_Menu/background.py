@@ -21,3 +21,7 @@ class Background:
     @property
     def background(self):
         return self.__background
+
+    @property
+    def image(self):
+        return self.__image

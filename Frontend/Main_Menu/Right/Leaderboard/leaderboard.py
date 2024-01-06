@@ -27,14 +27,10 @@ class Leaderboard:
         self.__view_counter.reset_view()
         for index, record in enumerate(self.__record_list):
             record.show(main_menu_surface=main_menu_surface, y=self.__pos.starting_record_pos(index=index))
-            self.__check_if_viewed(record=record)
+            self.__view_counter.check_if_viewed(record=record)
         if len(self.__record_list) >= self.__view_counter.MAX_RECORD_VIEW:
             self.__best_play.show_static(main_menu_surface=main_menu_surface, y=690)
             self.__hidden_background.show(background_img=background_img, surface=main_menu_surface)
-
-    def __check_if_viewed(self, record: Record):
-        if record.is_viewed:
-            self.__view_counter.current_record_view += 1
 
     def __init_leaderboard(self):
         if self.__initialized:
@@ -50,6 +46,7 @@ class Leaderboard:
 
     def restart(self):
         self.__initialized = False
+        self.__record_list.clear()
 
 
 class ViewCounter:
@@ -59,6 +56,10 @@ class ViewCounter:
 
     def reset_view(self):
         self.current_record_view = 0
+
+    def check_if_viewed(self, record: Record):
+        if record.is_viewed:
+            self.current_record_view += 1
 
 
 class HiddenBackground:
@@ -105,7 +106,7 @@ class LeaderboardEventHandler:
     def __check_if_clicked_record(self):
         for record in self.__record_list:
             record.check_if_clicked()
-    
+
     def __check_if_scroll(self):
         for event_occur in event.get():
             if event_occur.type == MOUSEWHEEL:
@@ -122,7 +123,7 @@ class LeaderboardEventHandler:
             self.__pos.change_starting_y(add=False)
 
     def __check_if_out_of_bound_scroll(self):
-        if not len(self.__record_list) > self.__view.MAX_RECORD_VIEW:
+        if not len(self.__record_list) >= self.__view.MAX_RECORD_VIEW:
             return True
         if self.__view.current_record_view <= self.__view.NUMBER_OF_RECORD_THAT_CANNOT_SCROLL:
             return True
