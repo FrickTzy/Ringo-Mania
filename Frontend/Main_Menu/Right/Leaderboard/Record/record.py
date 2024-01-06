@@ -28,11 +28,13 @@ class Record:
         self.__draw_rect(main_menu_surface=main_menu_surface)
         self.__profile.show_profile(main_menu_surface=main_menu_surface)
         self.__text_stats.show_text(main_menu_surface=main_menu_surface)
+        self.__viewed = True
+
+    def check_if_clicked(self):
         self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
                                                        size=self.__pos.record_size,
                                                        command=lambda: self.__state.show_score_screen(
                                                            current_play=self.__play_dict))
-        self.__viewed = True
 
     @property
     def is_viewed(self) -> bool:

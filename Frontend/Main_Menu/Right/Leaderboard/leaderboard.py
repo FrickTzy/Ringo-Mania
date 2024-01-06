@@ -40,6 +40,8 @@ class Leaderboard:
         if self.__initialized:
             return
         play_list = self.__play_tracker.check_plays()
+        if not play_list:
+            return
         self.__best_play = Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos)
         for play in play_list:
             self.__record_list.append(
@@ -52,7 +54,7 @@ class Leaderboard:
 
 class ViewCounter:
     MAX_RECORD_VIEW = 6
-    NUMBER_OF_RECORD_THAT_CANNOT_SCROLL = 5
+    NUMBER_OF_RECORD_THAT_CANNOT_SCROLL = 4
     current_record_view = 0
 
     def reset_view(self):
@@ -85,13 +87,26 @@ class LeaderboardEventHandler:
         self.__button_event_handler = ButtonEventHandler()
 
     def check_for_events(self):
-        self.__check_if_scroll()
+        self.__check_mouse_input_events()
 
-    def __check_if_scroll(self):
-        if not self.__button_event_handler.check_if_mouse_is_in_an_area(
+    def __check_mouse_input_events(self):
+        if not self.__check_mouse_pos_is_in_correct_position():
+            return
+        self.__check_if_scroll()
+        self.__check_if_clicked_record()
+
+    def __check_mouse_pos_is_in_correct_position(self):
+        if self.__button_event_handler.check_if_mouse_is_in_an_area(
                 starting_pos=self.__pos.leaderboard_starting_pos,
                 size=self.__pos.leaderboard_size):
-            return
+            return True
+        return False
+
+    def __check_if_clicked_record(self):
+        for record in self.__record_list:
+            record.check_if_clicked()
+    
+    def __check_if_scroll(self):
         for event_occur in event.get():
             if event_occur.type == MOUSEWHEEL:
                 self.__scroll(event_occur=event_occur)
@@ -114,7 +129,7 @@ class LeaderboardEventHandler:
 
 
 class Pos:
-    __INTERVAL_PER_SCROLL = 10
+    __SCROLL_SPEED = 15
     __RECORD_INTERVAL = 12.86
 
     def __init__(self, display):
@@ -158,6 +173,6 @@ class Pos:
 
     def change_starting_y(self, add: bool):
         if add:
-            self.__record_starting_y += self.__INTERVAL_PER_SCROLL
+            self.__record_starting_y += self.__SCROLL_SPEED
         else:
-            self.__record_starting_y -= self.__INTERVAL_PER_SCROLL
+            self.__record_starting_y -= self.__SCROLL_SPEED

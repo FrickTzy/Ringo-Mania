@@ -12,9 +12,10 @@ class TextStats:
 
     def show_text(self, main_menu_surface):
         player_name = self.__font.font(height=self.__pos.height).render(PLAYER_NAME, True, self.__COLOR)
-        score = self.__font.font(height=self.__pos.height).render(str(self.__play_info["score"]), True, self.__COLOR)
-        accuracy = self.__font.font(height=self.__pos.height).render(str(self.__play_info["accuracy"]), True,
-                                                                     self.__COLOR)
+        score = self.__font.font(height=self.__pos.height).render(f"{self.__play_info['score']}", True, self.__COLOR)
+        accuracy = self.__font.font(height=self.__pos.height).render(
+            f"{format(float(str(self.__play_info['accuracy']).removesuffix('%')), '.2f')}%",
+            True, self.__COLOR)
         main_menu_surface.blit(player_name, self.__pos.name_pos())
         main_menu_surface.blit(score, self.__pos.score_pos())
         main_menu_surface.blit(accuracy, self.__pos.acc_pos())

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 class MapInfoChecker:
     def __init__(self):
-        self.__path: str = "Backend/Map_Info/song_info.rinf"
+        self.__path: str = "Backend/Map_Info/Map_Songs/song_info.rinf"
         self.__web_parser = WebParser()
         self.current_song_info = {}
         self.__all_song_info = []

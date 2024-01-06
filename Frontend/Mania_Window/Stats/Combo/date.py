@@ -8,7 +8,7 @@ class Date:
 
     def update_date_and_time(self):
         date = datetime.now()
-        self.date = f"{date.day}/{date.month}/{date.year}"
+        self.date = f"{date.day:02d}/{date.month:02d}/{date.year}"
         hour, pm = self.convert_to_standard_time(date.hour)
         self.current_time = f"{hour}:{self.fix_minutes(date.minute)} {pm}"
 
@@ -38,4 +38,3 @@ class Date:
         if minutes < 10:
             return f"0{minutes}"
         return minutes
-

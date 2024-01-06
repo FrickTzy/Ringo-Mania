@@ -104,6 +104,10 @@ class ComboCounter:
             return
         self.accuracy = round(sum(self.total_clicked) / len(self.total_clicked), 2)
 
+    @property
+    def __formatted_acc(self):
+        return format(self.accuracy, '.2f')
+
     def reset_all(self):
         self.__info.reset()
         self.__life = MAX_LIFE
@@ -131,7 +135,7 @@ class ComboCounter:
         return self.fonts.main_font.render(f"{self.info.combo}x", True, PURPLE), \
                self.fonts.main_font.render(f"{self.info.combo}", True, WHITE), \
                self.fonts.main_font.render(f"{self.info.score:08d}", True, PURPLE), \
-               self.fonts.acc_font.render(f"{self.accuracy}%", True, PURPLE), \
+               self.fonts.acc_font.render(f"{self.__formatted_acc}%", True, PURPLE), \
                self.fonts.main_font.render(f"{self.life}", True, PURPLE)
 
     @property
@@ -160,7 +164,7 @@ class ComboCounter:
 
     @property
     def get_stats(self):
-        return {"score": self.info.score, "accuracy": f"{self.accuracy}%", "acc_dict": self.__acc_dict,
+        return {"score": self.info.score, "accuracy": f"{self.__formatted_acc}%", "acc_dict": self.__acc_dict,
                 "combo": self.info.combo,
                 "highest_combo": self.info.highest_combo, "grade": self.get_grade, "date": self.__date.get_date,
                 "time": self.__date.get_time}

@@ -1,4 +1,4 @@
-from .map_info_checker import MapInfoChecker
+from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
 class MapInfo:
