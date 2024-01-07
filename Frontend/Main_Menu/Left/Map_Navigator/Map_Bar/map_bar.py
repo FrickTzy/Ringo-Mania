@@ -125,7 +125,7 @@ class BackgroundPreviewPos:
 
     @property
     def __x(self):
-        return self.__pos.record_x + 558
+        return self.__pos.record_x + 553
 
     def y(self, y=0):
         if not y:
@@ -134,7 +134,7 @@ class BackgroundPreviewPos:
 
     @property
     def size_tuple(self):
-        return 135, 94
+        return 140, 94
 
 
 class RecordPos:

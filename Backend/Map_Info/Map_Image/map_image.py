@@ -18,24 +18,28 @@ class MapImage:
 
     def __get_anime_img(self, title):
         if path.exists(img_path := self.__get_anime_path(anime_title=title)[0]) or path.exists(
-                img_path := self.__get_anime_path(anime_title=title)[1]):
+                img_path := self.__get_anime_path(anime_title=title)[1]) or path.exists(
+            img_path := self.__get_anime_path(anime_title=title)[2]):
             return img_path
         self.__downloader.download(sentence_to_search=title)
         return self.__get_anime_path(anime_title=title)
 
     def __get_other_img(self, title):
         if path.exists(img_path := self.__get_other_path(artist=title)[0]) or path.exists(
-                img_path := self.__get_other_path(artist=title)[1]):
+                img_path := self.__get_other_path(artist=title)[1]) or path.exists(
+            img_path := self.__get_other_path(artist=title)[2]):
             return img_path
         self.__downloader.download(sentence_to_search=title, anime_path=False)
         return self.__get_anime_path(anime_title=title)
 
     def __get_anime_path(self, anime_title: str):
         return path.join(self.__anime_path, f"{anime_title.title()}.jpeg"), \
+               path.join(self.__anime_path, f"{anime_title.title()}.jpg"), \
                path.join(self.__anime_path, f"{anime_title.title()}.png")
 
     def __get_other_path(self, artist: str):
         return path.join(self.__other_path, f"{artist.title()}.jpeg"), \
+               path.join(self.__anime_path, f"{artist.title()}.jpg"), \
                path.join(self.__other_path, f"{artist.title()}.png")
 
 
