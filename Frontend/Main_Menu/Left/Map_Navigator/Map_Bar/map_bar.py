@@ -1,8 +1,9 @@
 from pygame import Rect, draw, image, transform
-from os import path
-from Frontend.settings import GRAY_PURPLE, PLAYER_NAME
+from Frontend.settings import GRAY_PURPLE
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 from Backend.Map_Info.Map_Infos.map_info import MapInfo
+from Backend.Map_Info import MapImage
+from .map_bar_text import MapBarText
 
 
 class MapBar:
@@ -17,13 +18,15 @@ class MapBar:
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
         self.__button_handler = ButtonEventHandler()
-        self.__profile = MapBarBackgroundPreview(pos=self.__pos)
+        self.__profile = MapBarBackgroundPreview(pos=self.__pos, image_status=self.__map_bar_info.song_name_status)
         self.__state = state
+        self.__text = MapBarText(map_info=self.__map_bar_info, pos=self.__pos)
 
-    def show(self, main_menu_surface, image, y: int):
+    def show(self, main_menu_surface, y: int):
         self.__update_rect(y=y)
         self.__draw_rect(main_menu_surface=main_menu_surface)
-        self.__profile.show_profile(main_menu_surface=main_menu_surface, image=image)
+        self.__profile.show_profile(main_menu_surface=main_menu_surface)
+        self.__text.show_text(main_menu_surface=main_menu_surface)
         self.__viewed = True
 
     def check_if_clicked(self):
@@ -62,18 +65,31 @@ class MapBarInfo:
         self.__play_rank = play_rank
         self.__star_rating = star_rating
 
+    @property
+    def song_name(self):
+        return self.__map_info.song_name
+
+    @property
+    def song_name_status(self):
+        return self.__map_info.map_background_status
+
 
 class MapBarBackgroundPreview:
-    def __init__(self, pos):
+    def __init__(self, pos, image_status):
+        name, is_an_anime = image_status
         self.__pos = BackgroundPreviewPos(pos=pos)
-        self.__profile = image.load(path.join("Frontend\Main_Menu\Img", f"{PLAYER_NAME}.jpg")).convert_alpha()
+        self.__image_checker = MapImage()
+        self.__background_image = image.load(
+            self.__image_checker.get_image(title=name, anime_song=is_an_anime)).convert_alpha()
+        self.__final_img = None
 
-    def show_profile(self, main_menu_surface, image):
-        profile_img = transform.scale(image, self.__pos.size_tuple)
-        main_menu_surface.blit(profile_img, self.__pos.img_coord)
+    def show_profile(self, main_menu_surface):
+        if self.__final_img is None:
+            self.__final_img = transform.scale(self.__background_image, self.__pos.size_tuple)
+        main_menu_surface.blit(self.__final_img, self.__pos.img_coord)
 
     def show_static_profile(self, main_menu_surface, y: int):
-        profile_img = transform.scale(self.__profile, self.__pos.size_tuple)
+        profile_img = transform.scale(self.__background_image, self.__pos.size_tuple)
         main_menu_surface.blit(profile_img, (self.__pos.img_coord[0], self.__pos.y(y=y)))
 
 
@@ -89,16 +105,16 @@ class BackgroundPreviewPos:
 
     @property
     def __x(self):
-        return self.__pos.record_x + 6
+        return self.__pos.record_x + 563
 
     def y(self, y=0):
         if not y:
-            return self.__pos.record_y + 5
+            return self.__pos.record_y + 6
         return y + 5
 
     @property
     def size_tuple(self):
-        return 125, 98
+        return 130, 94
 
 
 class RecordPos:
@@ -113,7 +129,7 @@ class RecordPos:
 
     @property
     def record_height(self):
-        return 108
+        return 107
 
     @property
     def record_size(self):

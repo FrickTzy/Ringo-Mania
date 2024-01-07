@@ -1,5 +1,6 @@
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 from .Map_Bar.map_bar import MapBar
+from random import shuffle
 
 
 class MapNavigator:
@@ -14,14 +15,15 @@ class MapNavigator:
         self.__pos = MapNavigatorPos(display=display)
         self.__state = state
 
-    def show(self, main_menu_surface, background_img):
+    def show(self, main_menu_surface):
         self.__init_leaderboard()
-        self.__show_all_map_bar(main_menu_surface=main_menu_surface, background_img=background_img)
+        self.__show_all_map_bar(main_menu_surface=main_menu_surface)
 
-    def __show_all_map_bar(self, main_menu_surface, background_img):
+    def __show_all_map_bar(self, main_menu_surface):
         for index, map_bar in enumerate(self.__map_bar_list):
-            map_bar.show(main_menu_surface=main_menu_surface, y=self.__pos.starting_record_pos(index=index),
-                         image=background_img)
+            if index > 6:
+                return
+            map_bar.show(main_menu_surface=main_menu_surface, y=self.__pos.starting_record_pos(index=index))
 
     def __init_leaderboard(self):
         if self.__initialized:
@@ -30,7 +32,9 @@ class MapNavigator:
             return
         for song in song_list:
             self.__map_bar_list.append(
-                MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos, state=self.__state))
+                MapBar(song_name=song.removesuffix(".mp3"), play_rank="A", display=self.__display, pos=self.__pos,
+                       state=self.__state))
+        shuffle(self.__map_bar_list)
         self.__initialized = True
 
     def restart(self):

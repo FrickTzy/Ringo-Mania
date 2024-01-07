@@ -106,6 +106,8 @@ class ComboCounter:
 
     @property
     def __formatted_acc(self):
+        if self.accuracy == 100:
+            return self.accuracy
         return format(self.accuracy, '.2f')
 
     def reset_all(self):
