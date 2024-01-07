@@ -48,3 +48,6 @@ class MapInfo:
     @property
     def song_info(self):
         return f"{self.song_name} - {self.song_artist}"
+
+    def set_song_name(self, song_name):
+        self.__song_file_name = song_name

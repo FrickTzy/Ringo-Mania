@@ -6,4 +6,4 @@ class SongChecker:
         self.__path = "Backend/Songs"
 
     def get_all_songs(self):
-        return glob("*.mp3", root_dir=self.__path)
+        return [song.removesuffix(".mp3") for song in glob("*.mp3", root_dir=self.__path)]

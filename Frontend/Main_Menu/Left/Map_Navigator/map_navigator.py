@@ -32,9 +32,11 @@ class MapNavigator:
             return
         for song in song_list:
             self.__map_bar_list.append(
-                MapBar(song_name=song.removesuffix(".mp3"), play_rank="A", display=self.__display, pos=self.__pos,
+                MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos,
                        state=self.__state))
         shuffle(self.__map_bar_list)
+        self.__map_bar_list[2].set_chosen()
+        self.__map_info.set_song_name(song_name=self.__map_bar_list[2].song_name)
         self.__initialized = True
 
     def restart(self):
