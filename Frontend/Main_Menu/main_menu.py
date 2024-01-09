@@ -30,12 +30,12 @@ class MainMenu(WindowInterface):
     def run(self):
         self.__display.show_cursor()
         self.__display.check_window_size()
-        self.__background.show_background(window=self.__display.window, window_size=self.__display.get_window_size,
-                                          map_background_status=self.__map_info.map_background_status)
         self.__clear_surface()
         self.__left_div.show(main_menu_surface=self.__main_menu_surface)
         self.__top_div.show(main_menu_surface=self.__main_menu_surface)
         self.__bottom_div.show(main_menu_surface=self.__main_menu_surface)
+        self.__background.show_background(window=self.__display.window, window_size=self.__display.get_window_size,
+                                          image=self.__left_div.current_background_image)
         self.__right_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.background)
         self.__display.window.blit(self.__main_menu_surface, (0, 0))
         self.__event_handler.check_events()

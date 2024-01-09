@@ -1,17 +1,18 @@
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 from .Map_Bar.map_bar import MapBar
+from .Map_Bar.map_index_manager import MapIndexManager
 from random import shuffle
 
 
 class MapNavigator:
     __map_bar_list: list[MapBar] = []
-    __current_map_index = 0
     __initialized = False
 
     def __init__(self, map_info, display, state):
         self.__map_info = map_info
         self.__song_checker = SongChecker()
         self.__display = display
+        self.__index_manager = MapIndexManager()
         self.__pos = MapNavigatorPos(display=display)
         self.__state = state
 
@@ -30,14 +31,21 @@ class MapNavigator:
             return
         if not (song_list := self.__song_checker.get_all_songs()):
             return
-        for song in song_list:
+        shuffle(song_list)
+        self.__init_bar_list(song_list=song_list)
+        self.__map_bar_list[2].set_chosen()
+        self.__map_info.set_song_name(song_name=self.__map_bar_list[self.__index_manager.current_index].song_name)
+        self.__initialized = True
+
+    def __init_bar_list(self, song_list):
+        for index, song in enumerate(song_list):
             self.__map_bar_list.append(
                 MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos,
-                       state=self.__state))
-        shuffle(self.__map_bar_list)
-        self.__map_bar_list[2].set_chosen()
-        self.__map_info.set_song_name(song_name=self.__map_bar_list[2].song_name)
-        self.__initialized = True
+                       state=self.__state, index=index, index_manager=self.__index_manager))
+
+    @property
+    def current_image(self):
+        return self.__map_bar_list[self.__index_manager.current_index].image
 
     def restart(self):
         self.__initialized = False

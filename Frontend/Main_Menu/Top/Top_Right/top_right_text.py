@@ -13,15 +13,30 @@ class Text:
         self.__pos = TextPos(display=display)
 
     def show_text(self, main_menu_surface):
-        song_name = self.__font.font(height=self.__pos.height).render(self.__map_info.song_file_name, True,
-                                                                      self.__COLOR)
-        artist = self.__font.font(height=self.__pos.height).render(f"Song by {self.__map_info.song_artist}", True,
-                                                                   self.__COLOR)
-        main_menu_surface.blit(song_name, self.__pos.song_pos)
+        self.__font.update_font(height=self.__pos.height)
+        self.__show_song_name(main_menu_surface=main_menu_surface)
+        self.__show_song_artist(main_menu_surface=main_menu_surface)
+
+    def __show_song_name(self, main_menu_surface):
+        unfiltered_name: str = self.__map_info.song_file_name
+        song_name = self.__check_song_text_conditions(song_name=unfiltered_name,
+                                                      text_width=self.__font.text_width(text=unfiltered_name))
+        song_name_font = self.__font.font.render(song_name, True,
+                                                 self.__COLOR)
+        main_menu_surface.blit(song_name_font, self.__pos.song_pos)
+
+    @staticmethod
+    def __check_song_text_conditions(song_name: str, text_width) -> str:
+        if text_width > 700:
+            if "-" in song_name:
+                index = song_name.index("-")
+                return song_name[index + 2::]
+        return song_name
+
+    def __show_song_artist(self, main_menu_surface):
+        artist = self.__font.font.render(f"Song by {self.__map_info.song_artist}", True,
+                                         self.__COLOR)
         main_menu_surface.blit(artist, self.__pos.artist_pos)
-        """self.__event_handler.check_buttons_for_clicks(starting_pos=self.__pos.text_pos,
-                                                      text_size=self.__font.text_size(text="Mania"),
-                                                      command=self.__window_manager.show_play_window)"""
 
 
 class Font:
@@ -30,9 +45,12 @@ class Font:
     def __init__(self):
         self.__font = font.SysFont("arialblack", 30)
 
-    def font(self, height):
-        self.__font = font.SysFont("arialblack", self.__font_size(height=height))
+    @property
+    def font(self):
         return self.__font
+
+    def update_font(self, height) -> None:
+        self.__font = font.SysFont("arialblack", self.__font_size(height=height))
 
     def __font_size(self, height):
         return int(height // self.__FONT_RATIO)
@@ -40,6 +58,9 @@ class Font:
     def text_size(self, text: str) -> tuple[int, int]:
         width, height = self.__font.size(text)
         return width, height
+
+    def text_width(self, text: str):
+        return self.text_size(text=text)[0]
 
 
 class TextPos:

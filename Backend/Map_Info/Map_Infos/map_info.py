@@ -2,6 +2,8 @@ from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
 class MapInfo:
+    changed = False
+
     def __init__(self, song_name: str, song_artist: str = "IDK", map_maker: str = "Dudesalp"):
         self.__song_file_name = song_name
         self.__artist = song_artist
@@ -51,3 +53,4 @@ class MapInfo:
 
     def set_song_name(self, song_name):
         self.__song_file_name = song_name
+        self.changed = True

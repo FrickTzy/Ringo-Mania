@@ -13,7 +13,7 @@ class WindowManager:
     def add_window(self, main_menu, play_window):
         self.__main_menu = main_menu
         self.__play_window = play_window
-        self.show_play_window()
+        self.show_main_menu()
 
     @property
     def current_window(self):
@@ -27,6 +27,9 @@ class WindowManager:
         self.__current_window = self.__starting_screen
 
     def show_main_menu(self):
+        if self.__current_window is None:
+            self.__current_window = self.__main_menu
+            return
         self.__transition.start_transition()
         if self.__transition.finish_fading_in:
             self.__current_window = self.__main_menu

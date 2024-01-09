@@ -7,3 +7,7 @@ class Left:
 
     def show(self, main_menu_surface):
         self.__map_navigator.show(main_menu_surface=main_menu_surface)
+
+    @property
+    def current_background_image(self):
+        return self.__map_navigator.current_image
