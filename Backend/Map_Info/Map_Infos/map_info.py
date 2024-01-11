@@ -2,7 +2,7 @@ from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
 class MapInfo:
-    changed = False
+    changed = True
 
     def __init__(self, song_name: str, song_artist: str = "IDK", map_maker: str = "Dudesalp"):
         self.__song_file_name = song_name

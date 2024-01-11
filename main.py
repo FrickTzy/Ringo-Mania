@@ -15,7 +15,7 @@ class Main:
         self.__play_tracker = PlayTracker(self.__map_info)
         self.__window_manager = WindowManager(display=self.__display)
         self.__main_menu = MainMenu(display=self.__display, window_manager=self.__window_manager,
-                                    map_info=self.__map_info, play_tracker=self.__play_tracker)
+                                    map_info=self.__map_info, play_tracker=self.__play_tracker, music=self.__music)
         self.__play_window = ManiaPlayWindow(music=self.__music, timer=self.__timer, map_manager=MapManager,
                                              play_tracker=self.__play_tracker,
                                              map_info=self.__map_info, display=self.__display,

@@ -2,10 +2,12 @@ from pygame import mixer
 from pygame import time
 from Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
 from Backend.timer import IntervalTimer
+from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 import os
 
 
 class Music:
+    __ALL_MUSIC_DICT = {}
     __SOUND_INTERVAL = 90
     __SONG_FADE_MS = 100
     __ON_HIT_SOUNDS = True
@@ -16,10 +18,16 @@ class Music:
         self.starting_ms = time.get_ticks()
         self.mini_timer: IntervalTimer = IntervalTimer(self.__SOUND_INTERVAL)
         self.__map_info = map_info
+        self.__song_checker = SongChecker()
         mixer.init()
+        self.__init_all_songs()
+
+    def __init_all_songs(self):
+        for song in self.__song_checker.get_all_songs():
+            self.__ALL_MUSIC_DICT[song] = mixer.Sound(os.path.join("Backend\Songs", f"{song}.mp3"))
 
     def set_music(self, song_name):
-        self.__music = mixer.Sound(os.path.join("Backend\Songs", f"{song_name}.mp3"))
+        self.__music = self.__ALL_MUSIC_DICT[song_name]
 
     def play_music(self):
         if self.__map_info is not None:

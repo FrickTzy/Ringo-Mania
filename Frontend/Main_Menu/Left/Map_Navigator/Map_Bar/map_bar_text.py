@@ -4,7 +4,7 @@ from Frontend.settings import WHITE
 
 class MapBarText:
     __COLOR = WHITE
-    __BLUR_OPACITY = 140
+    __BLUR_OPACITY = 100
 
     def __init__(self, map_info, pos):
         self.__font = Font()

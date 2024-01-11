@@ -13,9 +13,10 @@ class MainMenu(WindowInterface):
     __FONT_COLOR = WHITE
     __COLOR = DARK_PURPLE
 
-    def __init__(self, display, window_manager, map_info, play_tracker):
+    def __init__(self, display, window_manager, map_info, play_tracker, music):
         self.__display = display
         self.__pos = MainMenuPos(display=display)
+        self.__music = music
         self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager)
         self.__main_menu_surface = Surface(self.__display.get_window_size, SRCALPHA)
         self.__top_div = Top(display=self.__display, map_info=map_info)
@@ -28,17 +29,27 @@ class MainMenu(WindowInterface):
                                           map_info=map_info)
 
     def run(self):
+        self.__setup()
+        self.__show()
+        self.__blit()
+        self.__event_handler.check_events()
+        self.__check_if_changed_map()
+
+    def __setup(self):
         self.__display.show_cursor()
         self.__display.check_window_size()
         self.__clear_surface()
+
+    def __blit(self):
+        self.__display.window.blit(self.__main_menu_surface, (0, 0))
+
+    def __show(self):
         self.__left_div.show(main_menu_surface=self.__main_menu_surface)
         self.__top_div.show(main_menu_surface=self.__main_menu_surface)
         self.__bottom_div.show(main_menu_surface=self.__main_menu_surface)
         self.__background.show_background(window=self.__display.window, window_size=self.__display.get_window_size,
                                           image=self.__left_div.current_background_image)
         self.__right_div.show(main_menu_surface=self.__main_menu_surface, background_img=self.__background.background)
-        self.__display.window.blit(self.__main_menu_surface, (0, 0))
-        self.__event_handler.check_events()
 
     def __clear_surface(self):
         self.__main_menu_surface.fill((0, 0, 0, 0))
@@ -58,11 +69,18 @@ class MainMenu(WindowInterface):
     def restart_score_screen(self):
         self.__score_screen.restart()
 
+    def __check_if_changed_map(self):
+        if self.__map_info.changed:
+            self.__music.play_music()
+            self.__right_div.restart()
+        self.__map_info.changed = False
+
 
 class MainMenuState(State):
     __show_score_screen = False
     __leave_main_menu = False
     __leave_score_screen = False
+    __show_play_window = False
     __current_play: dict = {}
 
     def __init__(self):
@@ -89,6 +107,16 @@ class MainMenuState(State):
     def check_if_leave_score_screen(self):
         return self.__leave_score_screen
 
+    def show_play_window(self):
+        self.__show_play_window = True
+
+    def reset_play_window(self):
+        self.__show_play_window = False
+
+    @property
+    def check_if_show_play_window(self):
+        return self.__show_play_window
+
 
 class MainMenuEventHandler:
     def __init__(self, main_menu: MainMenu, window_manager):
@@ -111,6 +139,10 @@ class MainMenuEventHandler:
             if self.__state.finished_fade_out:
                 self.__state.reset_score_screen()
                 self.__main_menu.restart_score_screen()
+
+    def __check_if_show_play_window(self):
+        if self.__state.check_if_show_play_window:
+            pass
 
 
 class MainMenuPos:

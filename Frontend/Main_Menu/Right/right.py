@@ -7,3 +7,7 @@ class Right:
 
     def show(self, main_menu_surface, background_img):
         self.__leaderboard.show_leaderboard(main_menu_surface=main_menu_surface, background_img=background_img)
+
+    def restart(self):
+        self.__leaderboard.restart()
+
