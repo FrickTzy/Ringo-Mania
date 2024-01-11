@@ -1,4 +1,4 @@
-from pygame import event, MOUSEWHEEL
+from pygame import MOUSEWHEEL, event, key, K_RSHIFT
 from random import shuffle
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 from .Map_Bar.map_bar import MapBar
@@ -106,8 +106,16 @@ class MapNavigatorEventHandler:
         return False
 
     def __check_if_clicked_record(self):
-        for record in self.__map_bar_list:
-            record.check_if_clicked()
+        for map_bar in self.__map_bar_list:
+            if map_bar.is_chosen:
+                self.__check_if_enter(map_bar=map_bar)
+            map_bar.check_if_clicked()
+
+    @staticmethod
+    def __check_if_enter(map_bar):
+        key_pressed = key.get_pressed()
+        if key_pressed[K_RSHIFT]:
+            map_bar.key_hit()
 
     def __check_if_scroll(self):
         for event_occur in event.get():

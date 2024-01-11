@@ -14,7 +14,7 @@ class Music:
 
     def __init__(self, map_info=None):
         self.__music = None
-        self.song_volume = SONG_VOLUME
+        self.__song_volume = SONG_VOLUME
         self.starting_ms = time.get_ticks()
         self.mini_timer: IntervalTimer = IntervalTimer(self.__SOUND_INTERVAL)
         self.__map_info = map_info
@@ -35,12 +35,19 @@ class Music:
         self.__start_music()
         return self.__music.get_length()
 
+    @staticmethod
+    def stop_music():
+        mixer.Channel(2).stop()
+
     def restart_music(self):
-        self.song_volume = SONG_VOLUME
+        self.__song_volume = SONG_VOLUME
         self.__start_music()
 
+    def reset_volume(self):
+        self.__song_volume = SONG_VOLUME
+
     def __start_music(self):
-        mixer.Channel(2).set_volume(self.song_volume)
+        mixer.Channel(2).set_volume(self.__song_volume)
         mixer.Channel(2).stop()
         mixer.Channel(2).play(self.__music)
 
@@ -48,12 +55,16 @@ class Music:
         ms_now = time.get_ticks()
         if ms_now - self.starting_ms > self.__SONG_FADE_MS:
             self.starting_ms = ms_now
-            self.song_volume -= SONG_FADE
-            mixer.Channel(2).set_volume(self.song_volume)
+            self.__song_volume -= SONG_FADE
+            mixer.Channel(2).set_volume(self.__song_volume)
+
+    @property
+    def song_volume(self):
+        return self.__song_volume
 
     @property
     def song_finished_fade(self) -> bool:
-        if self.song_volume <= 0.1:
+        if self.__song_volume <= 0.1:
             return True
         return False
 

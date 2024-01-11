@@ -3,6 +3,7 @@ from Frontend.settings import GRAY_PURPLE, DARK_PURPLE
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 from Backend.Map_Info.Map_Infos.map_info import MapInfo
 from Backend.Map_Info import MapImage
+from Backend.timer import DelayTimer
 from .map_bar_text import MapBarText
 
 
@@ -10,6 +11,7 @@ class MapBar:
     __COLOR = GRAY_PURPLE
     __CHOSEN_COLOR = DARK_PURPLE
     __OPACITY = 190
+    __CLICK_INTERVAL = 70
     __viewed = False
 
     def __init__(self, song_name: str, play_rank: str, display, pos, state, index_manager, index):
@@ -23,10 +25,11 @@ class MapBar:
         self.__state = state
         self.__text = MapBarText(map_info=self.__map_bar_info, pos=self.__pos)
         self.__index_manager = index_manager
+        self.__timer = DelayTimer()
 
     def show(self, main_menu_surface, y: int):
         self.__update_rect(y=y)
-        if self.__is_chosen:
+        if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
             self.__show_not_chosen(main_menu_surface=main_menu_surface)
@@ -43,20 +46,26 @@ class MapBar:
         self.__text.show_text(main_menu_surface=main_menu_surface, is_chosen=False)
 
     def check_if_clicked(self):
-        if self.__is_chosen:
-            self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
-                                                           size=self.__pos.record_size,
-                                                           command=lambda: self.__state.())
+        if self.is_chosen:
+            self.__timer.check_delay_ms(self.__CLICK_INTERVAL)
+            if self.__timer.timer_finished:
+                self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
+                                                               size=self.__pos.record_size,
+                                                               command=lambda: self.__state.show_play_window())
         else:
             self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
                                                            size=self.__pos.record_size,
                                                            command=lambda: self.set_chosen())
+            self.__timer.reset_timer()
+
+    def key_hit(self):
+        self.__state.show_play_window()
 
     def set_chosen(self):
         self.__index_manager.set_index(index=self.__index)
 
     @property
-    def __is_chosen(self):
+    def is_chosen(self):
         return self.__index == self.__index_manager.current_index
 
     @property

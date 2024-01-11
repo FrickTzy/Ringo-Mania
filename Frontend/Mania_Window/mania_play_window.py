@@ -49,6 +49,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.end_screen.restart()
         self.state.un_restart()
         self.record.init_record(self.play_tracker.check_plays())
+        self.state.reset_all()
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
@@ -93,6 +94,10 @@ class PlayState(State):
 
     def un_restart(self):
         self.__restarted = False
+
+    def reset_all(self):
+        self.un_restart()
+        self.enter_playing_window()
 
 
 class ManiaEventHandler:

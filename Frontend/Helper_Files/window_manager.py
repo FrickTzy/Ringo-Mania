@@ -27,6 +27,7 @@ class WindowManager:
         self.__current_window = self.__starting_screen
 
     def show_main_menu(self):
+        self.__main_menu.reset_all()
         if self.__current_window is None:
             self.__current_window = self.__main_menu
             return
@@ -35,6 +36,7 @@ class WindowManager:
             self.__current_window = self.__main_menu
 
     def show_play_window(self):
+        self.__play_window.restart()
         self.__current_window = self.__play_window
 
     def quit(self):

@@ -1,4 +1,4 @@
-from pygame import SRCALPHA, Surface
+from pygame import SRCALPHA, Surface, key
 from Frontend.Helper_Files import WindowInterface, State
 from Frontend.Score_Screen import ScoreScreen
 from Frontend.settings import DARK_PURPLE, WHITE
@@ -75,6 +75,12 @@ class MainMenu(WindowInterface):
             self.__right_div.restart()
         self.__map_info.changed = False
 
+    def reset_all(self):
+        self.__music.reset_volume()
+        self.__music.stop_music()
+        self.__map_info.changed = True
+        self.__event_handler.reset_all()
+
 
 class MainMenuState(State):
     __show_score_screen = False
@@ -117,6 +123,10 @@ class MainMenuState(State):
     def check_if_show_play_window(self):
         return self.__show_play_window
 
+    def reset_all(self):
+        self.reset_play_window()
+        self.reset_score_screen()
+
 
 class MainMenuEventHandler:
     def __init__(self, main_menu: MainMenu, window_manager):
@@ -130,6 +140,10 @@ class MainMenuEventHandler:
 
     def check_events(self):
         self.__check_if_show_score_screen()
+        self.__check_if_show_play_window()
+
+    def reset_all(self):
+        self.__state.reset_all()
 
     def __check_if_show_score_screen(self):
         if self.__state.check_if_show_score_screen():
@@ -142,7 +156,7 @@ class MainMenuEventHandler:
 
     def __check_if_show_play_window(self):
         if self.__state.check_if_show_play_window:
-            pass
+            self.__window_manager.show_play_window()
 
 
 class MainMenuPos:

@@ -7,7 +7,7 @@ from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Pause:
-    PAUSE_INTERVAL = 150
+    __PAUSE_INTERVAL = 150
 
     def __init__(self, music: Music, mini_timer, font: Font, state):
         self.__starting_time: int = 0
@@ -30,7 +30,7 @@ class Pause:
     def check_pause(self, key_pressed) -> bool:
         current_time = time.get_ticks()
         if key_pressed[K_TAB]:
-            if current_time - self.__starting_time >= self.PAUSE_INTERVAL:
+            if current_time - self.__starting_time >= self.__PAUSE_INTERVAL:
                 self.__starting_time = current_time
                 if self.__paused:
                     self.unpause()
