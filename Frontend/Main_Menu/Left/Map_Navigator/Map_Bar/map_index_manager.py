@@ -8,7 +8,7 @@ class MapIndexManager:
 
     def set_index(self, index):
         self.__current_map_index = index
-        self.__set_change()
+        self.set_change()
 
     @property
     def changed(self):
@@ -16,5 +16,5 @@ class MapIndexManager:
         self.__changed = False
         return changed
 
-    def __set_change(self):
+    def set_change(self):
         self.__changed = True

@@ -106,7 +106,7 @@ class MapBar:
 
     @property
     def change_top_index(self):
-        return self.__pos.record_y > 90
+        return self.__pos.record_y > 80
 
 
 class MapBarInfo:

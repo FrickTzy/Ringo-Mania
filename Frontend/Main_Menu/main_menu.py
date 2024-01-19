@@ -79,6 +79,7 @@ class MainMenu(WindowInterface):
         self.__music.reset_volume()
         self.__music.stop_music()
         self.__map_info.changed = True
+        self.__left_div.update()
         self.__event_handler.reset_all()
 
 

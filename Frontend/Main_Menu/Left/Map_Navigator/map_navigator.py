@@ -26,7 +26,7 @@ class MapNavigator:
         self.__init_leaderboard()
         self.__check_if_change_index()
         self.__show_all_map_bar(main_menu_surface=main_menu_surface)
-        self.__event_handler.check_for_events()
+        self.__event_handler.check_for_events(current_index=self.__index_manager.current_index)
         self.__set_map_info()
 
     def __check_if_change_index(self):
@@ -83,6 +83,9 @@ class MapNavigator:
         self.__initialized = False
         self.__map_bar_list.clear()
 
+    def update(self):
+        self.__index_manager.set_change()
+
 
 class ViewCounter:
     MAX_BAR_VIEW = 8
@@ -99,7 +102,7 @@ class ViewCounter:
 
 
 class MapNavigatorEventHandler:
-    __CLICK_INTERVAL = 80
+    __CLICK_INTERVAL = 70
 
     def __init__(self, map_bar_list: list[MapBar], pos, view: ViewCounter):
         self.__interval_timer: IntervalTimer = IntervalTimer(interval=self.__CLICK_INTERVAL)
@@ -108,14 +111,18 @@ class MapNavigatorEventHandler:
         self.__pos = pos
         self.__button_event_handler = ButtonEventHandler()
 
-    def check_for_events(self):
+    def check_for_events(self, current_index):
         self.__check_mouse_input_events()
+        self.__check_keyboard_input_events(current_index=current_index)
 
     def __check_mouse_input_events(self):
         if not self.__check_mouse_pos_is_in_correct_position():
             return
         self.__check_if_scroll()
         self.__check_if_clicked_record()
+
+    def __check_keyboard_input_events(self, current_index):
+        self.__check_if_enter_key(map_bar=self.__map_bar_list[current_index])
 
     def __check_mouse_pos_is_in_correct_position(self):
         if self.__button_event_handler.check_if_mouse_is_in_an_area(
@@ -128,12 +135,10 @@ class MapNavigatorEventHandler:
         if not self.__interval_timer.time_interval_finished():
             return
         for map_bar in self.__map_bar_list:
-            if map_bar.is_chosen:
-                self.__check_if_enter(map_bar=map_bar)
             map_bar.check_if_clicked()
 
     @staticmethod
-    def __check_if_enter(map_bar):
+    def __check_if_enter_key(map_bar):
         key_pressed = key.get_pressed()
         if key_pressed[K_RSHIFT]:
             map_bar.key_hit()
