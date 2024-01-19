@@ -18,8 +18,8 @@ class Display:
         display.set_icon(logo_image)
 
     @staticmethod
-    def show_cursor():
-        mouse.set_visible(True)
+    def show_cursor(show=True):
+        mouse.set_visible(show)
 
     @staticmethod
     def __set_title():

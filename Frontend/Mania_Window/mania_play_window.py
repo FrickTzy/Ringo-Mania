@@ -62,6 +62,7 @@ class ManiaPlayWindow(GameModeWindow):
         music_length = self.music.play_music()
         self.timer.update_target_time(music_length, END_SONG_DELAY)
         self.record.init_record(self.play_tracker.check_plays())
+        self.display.show_cursor(show=False)
         self.__setup_finished = True
 
     def show_end_screen(self):

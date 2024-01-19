@@ -1,6 +1,7 @@
 from pygame import MOUSEWHEEL, event, key, K_RSHIFT
 from random import shuffle
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
+from Backend.timer import IntervalTimer
 from .Map_Bar.map_bar import MapBar
 from .Map_Bar.map_index_manager import MapIndexManager
 from Frontend.Helper_Files import ButtonEventHandler
@@ -23,9 +24,15 @@ class MapNavigator:
 
     def show(self, main_menu_surface):
         self.__init_leaderboard()
+        self.__check_if_change_index()
         self.__show_all_map_bar(main_menu_surface=main_menu_surface)
         self.__event_handler.check_for_events()
         self.__set_map_info()
+
+    def __check_if_change_index(self):
+        if self.__index_manager.changed:
+            self.__set_top_view()
+            self.__pos.set_y(index=self.__view_counter.current_top_view)
 
     def __show_all_map_bar(self, main_menu_surface):
         top_view_index = self.__view_counter.current_top_view
@@ -43,9 +50,18 @@ class MapNavigator:
             return
         shuffle(song_list)
         self.__init_bar_list(song_list=song_list)
-        self.__map_bar_list[2].set_chosen()
+        self.__set_index(len_of_song_list=len(song_list))
         self.__map_info.set_song_name(song_name=self.__map_bar_list[self.__index_manager.current_index].song_name)
+        self.__pos.set_y(index=self.__view_counter.current_top_view)
         self.__initialized = True
+
+    def __set_index(self, len_of_song_list):
+        if self.__index_manager.current_index is None:
+            middle_chosen_index = len_of_song_list // 2 + 2
+            self.__map_bar_list[middle_chosen_index].set_chosen()
+
+    def __set_top_view(self):
+        self.__view_counter.current_top_view = self.__index_manager.current_index - 2
 
     def __init_bar_list(self, song_list):
         for index, song in enumerate(song_list):
@@ -83,7 +99,10 @@ class ViewCounter:
 
 
 class MapNavigatorEventHandler:
+    __CLICK_INTERVAL = 80
+
     def __init__(self, map_bar_list: list[MapBar], pos, view: ViewCounter):
+        self.__interval_timer: IntervalTimer = IntervalTimer(interval=self.__CLICK_INTERVAL)
         self.__map_bar_list = map_bar_list
         self.__view = view
         self.__pos = pos
@@ -106,6 +125,8 @@ class MapNavigatorEventHandler:
         return False
 
     def __check_if_clicked_record(self):
+        if not self.__interval_timer.time_interval_finished():
+            return
         for map_bar in self.__map_bar_list:
             if map_bar.is_chosen:
                 self.__check_if_enter(map_bar=map_bar)
@@ -154,7 +175,7 @@ class MapNavigatorEventHandler:
 
 
 class MapNavigatorPos:
-    __SCROLL_SPEED = 40
+    __SCROLL_SPEED = 50
     __RECORD_INTERVAL = 8.12
 
     def __init__(self, display):
@@ -171,6 +192,9 @@ class MapNavigatorPos:
     @property
     def __leaderboard_starting_y(self):
         return 127
+
+    def set_y(self, index):
+        self.__record_starting_y = self.__leaderboard_starting_y - self.starting_record_pos(index=index)
 
     @property
     def leaderboard_x(self):

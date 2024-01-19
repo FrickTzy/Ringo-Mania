@@ -108,6 +108,7 @@ class IntervalTimer:
         if current_time - self.last_time >= self.interval:
             self.last_time = current_time
             return True
+        return False
 
     def change_interval(self, interval):
         self.interval = interval
