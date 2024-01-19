@@ -36,6 +36,8 @@ class PlayTracker:
         self.updated = True
 
     def string_to_dict(self, plays):
+        if not plays:
+            return {}
         exec(f"self.converted_dict = {plays}")
         return self.converted_dict
 

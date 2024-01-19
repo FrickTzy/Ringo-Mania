@@ -11,7 +11,7 @@ class MapBar:
     __COLOR = GRAY_PURPLE
     __CHOSEN_COLOR = DARK_PURPLE
     __OPACITY = 190
-    __CLICK_INTERVAL = 70
+    __CLICK_INTERVAL = 80
     __viewed = False
 
     def __init__(self, song_name: str, play_rank: str, display, pos, state, index_manager, index):
@@ -158,10 +158,6 @@ class MapBarBackgroundPreview:
         else:
             self.__final_img.set_alpha(self.__OPACITY)
 
-    def show_static_profile(self, main_menu_surface, y: int):
-        profile_img = transform.scale(self.__background_image, self.__pos.size_tuple)
-        main_menu_surface.blit(profile_img, (self.__pos.img_coord[0], self.__pos.y(y=y)))
-
     @property
     def image(self):
         return self.__background_image
@@ -169,34 +165,43 @@ class MapBarBackgroundPreview:
 
 class BackgroundPreviewPos:
     __SIZE_RATIO = 18
+    __X_RATIO = 1.27
+    __WIDTH_RATIO, __HEIGHT_RATIO = 5, 1.14
 
     def __init__(self, pos):
         self.__pos = pos
 
     @property
     def img_coord(self):
-        return self.__x, self.y()
+        return self.__x, self.y
 
     @property
     def chosen_img_coord(self):
-        return self.__chosen_x, self.y()
+        return self.__chosen_x, self.y
 
     @property
     def __x(self):
-        return self.__pos.record_x + 553
+        return self.__pos.record_x + self.__pos.record_width // self.__X_RATIO
 
     @property
     def __chosen_x(self):
         return self.__pos.record_x + 633
 
-    def y(self, y=0):
-        if not y:
-            return self.__pos.record_y + 6
-        return y + 5
+    @property
+    def y(self):
+        return self.__pos.record_y + 6
 
     @property
     def size_tuple(self):
-        return 140, 94
+        return self.__width, self.__height
+
+    @property
+    def __width(self):
+        return self.__pos.record_width // self.__WIDTH_RATIO
+
+    @property
+    def __height(self):
+        return self.__pos.record_height // self.__HEIGHT_RATIO
 
 
 class RecordPos:
