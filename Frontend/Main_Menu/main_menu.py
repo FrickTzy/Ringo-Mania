@@ -1,5 +1,6 @@
-from pygame import SRCALPHA, Surface
+from pygame import SRCALPHA, Surface, QUIT, KEYDOWN, event
 from Frontend.Helper_Files import WindowInterface, State
+from Frontend.Helper_Files.Interfaces import WindowEventHandler
 from Frontend.Score_Screen import ScoreScreen
 from Frontend.Settings import Color
 from .background import Background
@@ -7,6 +8,7 @@ from .Top import Top
 from .Bottom import Bottom
 from .Right import Right
 from .Left import Left
+from .Left.Map_Navigator.Search_Bar import SearchTracker
 
 
 class MainMenu(WindowInterface):
@@ -17,13 +19,16 @@ class MainMenu(WindowInterface):
         self.__display = display
         self.__pos = MainMenuPos(display=display)
         self.__music = music
-        self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager)
+        self.__search_tracker = SearchTracker()
+        self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager,
+                                                    search_tracker=self.__search_tracker)
         self.__main_menu_surface = Surface(self.__display.get_window_size, SRCALPHA)
         self.__top_div = Top(display=self.__display, map_info=map_info)
         self.__bottom_div = Bottom(display=self.__display)
         self.__right_div = Right(play_tracker=play_tracker, display=self.__display, state=self.__event_handler.state)
         self.__map_info = map_info
-        self.__left_div = Left(display=self.__display, map_info=self.__map_info, state=self.__event_handler.state)
+        self.__left_div = Left(display=self.__display, map_info=self.__map_info, state=self.__event_handler.state,
+                               search_tracker=self.__search_tracker)
         self.__background = Background()
         self.__score_screen = ScoreScreen(window_size=self.__display.get_window_size, state=self.__event_handler.state,
                                           map_info=map_info)
@@ -129,17 +134,19 @@ class MainMenuState(State):
         self.reset_score_screen()
 
 
-class MainMenuEventHandler:
-    def __init__(self, main_menu: MainMenu, window_manager):
+class MainMenuEventHandler(WindowEventHandler):
+    def __init__(self, main_menu: MainMenu, window_manager, search_tracker: SearchTracker):
         self.__main_menu = main_menu
         self.__window_manager = window_manager
         self.__state = MainMenuState()
+        self.__search_tracker = search_tracker
 
     @property
     def state(self):
         return self.__state
 
     def check_events(self):
+        self.check_window_if_quit()
         self.__check_if_show_score_screen()
         self.__check_if_show_play_window()
 
@@ -158,6 +165,13 @@ class MainMenuEventHandler:
     def __check_if_show_play_window(self):
         if self.__state.check_if_show_play_window:
             self.__window_manager.show_play_window()
+
+    def check_window_if_quit(self):
+        for event_occurrence in event.get():
+            if event_occurrence.type == KEYDOWN:
+                self.__search_tracker.add_letter(event=event_occurrence)
+            if event_occurrence.type == QUIT:
+                self.__window_manager.quit()
 
 
 class MainMenuPos:

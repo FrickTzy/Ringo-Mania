@@ -25,7 +25,7 @@ class TextButton:
         self.__run_continue_text(command=lambda: self.__state.leave_score_screen())
 
     def __run_continue_text(self, command) -> None:
-        text = self.__font.font.render(self.__CONTINUE, True, WHITE)
+        text = self.__font.font.render(self.__CONTINUE, True, self.__COLOR)
         self.__screen.blit(text, self.__pos.continue_pos)
         self.__event_handler.check_buttons_for_clicks(starting_pos=self.__pos.continue_pos,
                                                       size=self.__font.text_size(text=self.__CONTINUE),

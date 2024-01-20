@@ -1,19 +1,22 @@
-from pygame import MOUSEWHEEL, event, key, K_RSHIFT
+from pygame import MOUSEWHEEL, event, key, K_RSHIFT, K_UP, K_DOWN
 from random import shuffle
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 from Backend.timer import IntervalTimer
 from .Map_Bar.map_bar import MapBar
 from .Map_Bar.map_index_manager import MapIndexManager
 from Frontend.Helper_Files import ButtonEventHandler
+from .Search_Bar import SearchBar
 
 
 class MapNavigator:
     __map_bar_list: list[MapBar] = []
     __initialized = False
 
-    def __init__(self, map_info, display, state):
+    def __init__(self, map_info, display, state, search_tracker):
         self.__map_info = map_info
         self.__song_checker = SongChecker()
+        self.__search_tracker = search_tracker
+        self.__search_bar = SearchBar(display=display, search_tracker=search_tracker)
         self.__display = display
         self.__index_manager = MapIndexManager()
         self.__view_counter = ViewCounter()
@@ -26,6 +29,7 @@ class MapNavigator:
         self.__init_leaderboard()
         self.__check_if_change_index()
         self.__show_all_map_bar(main_menu_surface=main_menu_surface)
+        self.__search_bar.show(surface=main_menu_surface)
         self.__event_handler.check_for_events(current_index=self.__index_manager.current_index)
         self.__set_map_info()
 
@@ -122,7 +126,9 @@ class MapNavigatorEventHandler:
         self.__check_if_clicked_record()
 
     def __check_keyboard_input_events(self, current_index):
-        self.__check_if_enter_key(map_bar=self.__map_bar_list[current_index])
+        key_pressed = key.get_pressed()
+        self.__check_if_enter_key(key_pressed=key_pressed, map_bar=self.__map_bar_list[current_index])
+        self.__check_if_enter_arrow_key(key_pressed=key_pressed)
 
     def __check_mouse_pos_is_in_correct_position(self):
         if self.__button_event_handler.check_if_mouse_is_in_an_area(
@@ -138,10 +144,15 @@ class MapNavigatorEventHandler:
             map_bar.check_if_clicked()
 
     @staticmethod
-    def __check_if_enter_key(map_bar):
-        key_pressed = key.get_pressed()
+    def __check_if_enter_key(key_pressed, map_bar):
         if key_pressed[K_RSHIFT]:
             map_bar.key_hit()
+
+    def __check_if_enter_arrow_key(self, key_pressed):
+        if key_pressed[K_UP]:
+            self.__go_up()
+        if key_pressed[K_DOWN]:
+            self.__go_down()
 
     def __check_if_scroll(self):
         for event_occur in event.get():
@@ -150,15 +161,21 @@ class MapNavigatorEventHandler:
 
     def __scroll(self, event_occur):
         if event_occur.y > 0:
-            if self.__pos.record_starting_y >= 300:
-                return
-            self.__pos.change_starting_y(add=True)
-            self.__check_current_bottom_view()
+            self.__go_up()
         else:
-            if self.__view.current_top_view >= len(self.__map_bar_list) - self.__view.MAX_BAR_SCROLL:
-                return
-            self.__pos.change_starting_y(add=False)
-            self.__check_current_top_view()
+            self.__go_down()
+
+    def __go_up(self):
+        if self.__pos.record_starting_y >= 300:
+            return
+        self.__pos.change_starting_y(add=True)
+        self.__check_current_bottom_view()
+
+    def __go_down(self):
+        if self.__view.current_top_view >= len(self.__map_bar_list) - self.__view.MAX_BAR_SCROLL:
+            return
+        self.__pos.change_starting_y(add=False)
+        self.__check_current_top_view()
 
     def __check_if_out_of_bound_scroll(self):
         if not len(self.__map_bar_list) >= self.__view.MAX_BAR_VIEW:

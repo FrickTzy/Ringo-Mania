@@ -16,7 +16,7 @@ class TopRect:
 
     def show(self, screen, date_time: dict):
         self.__update_rect()
-        draw.rect(screen, DARK_PURPLE, self.__rect)
+        draw.rect(screen, self.__COLOR, self.__rect)
         self.__text.show_text(screen=screen, song_info=self.__map_info.song_info,
                               map_maker=self.__map_info.map_maker)
         self.__time.show(screen=screen, date_time=date_time)

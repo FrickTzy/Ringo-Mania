@@ -6,7 +6,7 @@ from Frontend.Mania_Window.Misc import Font, MapStatus
 from Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
 from Frontend.Mania_Window.Pause import Pause
 from Frontend.Mania_Window.End_Screen import EndScreen
-from Frontend.Helper_Files.Interfaces.state_interface import State
+from Frontend.Helper_Files.Interfaces import State, WindowEventHandler
 from Backend import IntervalTimer, Music
 
 
@@ -101,7 +101,7 @@ class PlayState(State):
         self.enter_playing_window()
 
 
-class ManiaEventHandler:
+class ManiaEventHandler(WindowEventHandler):
     def __init__(self, play_window: ManiaPlayWindow, window_manager):
         self.__play_window = play_window
         self.__window_manager = window_manager
@@ -111,7 +111,7 @@ class ManiaEventHandler:
         self.__check_window_if_restart()
         self.__check_map_if_failed()
         self.__check_if_missed()
-        self.__check_window_if_quit()
+        self.check_window_if_quit()
         self.__check_window_if_paused()
         self.__check_map_if_finished()
         self.__check_window_if_resized()
@@ -137,7 +137,7 @@ class ManiaEventHandler:
             self.__play_window.music.fade_music()
             self.__play_window.show_end_screen()
 
-    def __check_window_if_quit(self):
+    def check_window_if_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__window_manager.quit()

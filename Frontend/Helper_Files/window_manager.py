@@ -46,11 +46,6 @@ class WindowManager:
     def running(self):
         return self.__running
 
-    def check_window_if_quit(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.quit()
-
 
 class Transition:
     __start_transition = False

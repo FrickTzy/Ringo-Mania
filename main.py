@@ -28,7 +28,6 @@ class Main:
     def run(self):
         while self.__window_manager.running:
             self.__update_frame()
-            self.__window_manager.check_window_if_quit()
             self.__window_manager.run_current_window()
         pygame.quit()
 
