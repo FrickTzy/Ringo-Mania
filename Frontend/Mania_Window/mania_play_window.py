@@ -1,5 +1,5 @@
 import pygame
-from Frontend.settings import END_SONG_DELAY, KEY_BINDS
+from Frontend.Settings import END_SONG_DELAY, KEY_BINDS
 from Frontend.Mania_Window.Interfaces import GameModeWindow
 from Frontend.Mania_Window.Rectangle import Rectangle
 from Frontend.Mania_Window.Misc import Font, MapStatus

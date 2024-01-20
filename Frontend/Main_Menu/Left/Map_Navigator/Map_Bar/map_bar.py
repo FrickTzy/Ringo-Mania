@@ -1,5 +1,5 @@
 from pygame import Rect, draw, image, transform
-from Frontend.settings import GRAY_PURPLE, DARK_PURPLE
+from Frontend.Settings import Color
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 from Backend.Map_Info.Map_Infos.map_info import MapInfo
 from Backend.Map_Info import MapImage
@@ -8,8 +8,8 @@ from .map_bar_text import MapBarText
 
 
 class MapBar:
-    __COLOR = GRAY_PURPLE
-    __CHOSEN_COLOR = DARK_PURPLE
+    __COLOR = Color.GRAY_PURPLE
+    __CHOSEN_COLOR = Color.DARK_PURPLE
     __OPACITY = 190
     __CLICK_INTERVAL = 80
     __viewed = False

@@ -1,6 +1,5 @@
 from pygame import Rect, draw
-from Frontend.settings import RECT_COLOR, \
-    IMPORT_MAP
+from Frontend.Settings import IMPORT_MAP, Color
 from Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
 from Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
 from Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
@@ -8,6 +7,8 @@ from Backend.timer import IntervalTimer
 
 
 class Rectangle:
+    __RECT_COLOR = Color.PURPLE
+
     def __init__(self, *, show_acc, maps, display, combo_counter: ComboCounter,
                  mini_timer: IntervalTimer, map_status):
         self.__pos = RectanglePos(display=display)

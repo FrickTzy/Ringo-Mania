@@ -1,6 +1,6 @@
 from pygame import display, FULLSCREEN, mouse, RESIZABLE as PYRES, cursors, image
 from os import path
-from Frontend.settings import WIDTH, HEIGHT, RESIZABLE, FULL_SCREEN_VIEW
+from Frontend.Settings import WIDTH, HEIGHT, RESIZABLE, FULL_SCREEN_VIEW
 
 
 class Display:

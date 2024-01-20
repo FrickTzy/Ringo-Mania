@@ -1,10 +1,10 @@
 from Frontend.Mania_Window.Rectangle.Circles.circles import Circle
 from pygame import Rect
-from Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, HEIGHT
+from Frontend.Settings import FALLING_SPEED, HEIGHT, DEFAULT_CIRCLE_SIZE
 
 
 class FallingCircle(Circle):
-    def __init__(self, window, lane_x, circle_size=CIRCLE_SIZE, img="Purp.png"):
+    def __init__(self, window, lane_x, circle_size=DEFAULT_CIRCLE_SIZE, img="Purp.png"):
         super().__init__(circle_size, img)
         self.y = -100
         self.hit_box = Rect(lane_x, self.y, circle_size, circle_size)

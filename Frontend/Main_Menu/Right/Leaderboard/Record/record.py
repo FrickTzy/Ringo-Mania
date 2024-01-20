@@ -1,12 +1,12 @@
 from pygame import Rect, draw, image, transform
 from os import path
 from .text_stat import TextStats
-from Frontend.settings import DARK_PURPLE, PLAYER_NAME
+from Frontend.Settings import Color, PLAYER_NAME
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 
 
 class Record:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
     __OPACITY = 200
     __viewed = False
 

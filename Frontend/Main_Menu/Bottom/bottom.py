@@ -1,9 +1,9 @@
 from pygame import Rect, draw
-from Frontend.settings import DARK_PURPLE
+from Frontend.Settings import Color
 
 
 class Bottom:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, display):
         self.__pos = Pos(display=display)

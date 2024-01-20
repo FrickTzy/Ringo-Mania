@@ -5,11 +5,13 @@ from .left_side import LeftScoreScreen
 from .right_side import RightScoreScreen
 from Frontend.Helper_Files import FadeEffect, Opacity, State
 from .background import Background
-from Frontend.settings import PURPLE, DARK_PURPLE
+from Frontend.Settings import Color
 
 
 class ScoreScreen:
     __SHOW_BACKGROUND = True
+    __BACKGROUND_COLOR = Color.PURPLE
+    __BOTTOM_RECT_COLOR = Color.DARK_PURPLE
     __fade_out = True
 
     def __init__(self, window_size: tuple[int, int], state: State, map_info):
@@ -49,7 +51,7 @@ class ScoreScreen:
                     grade):
         self.__score_screen_setup(size=size)
         self.__add_bg_score_surface()
-        self.__draw_bottom_rect(color=DARK_PURPLE)
+        self.__draw_bottom_rect(color=self.__BOTTOM_RECT_COLOR)
         self.__left_screen.show(screen=self.score_screen, stats=stats)
         self.__right_screen.show(screen=self.score_screen, date_time=date_time, grade=grade)
 
@@ -75,7 +77,7 @@ class ScoreScreen:
         self.state.finished_fade_out = False
 
     def __add_bg_score_surface(self) -> None:
-        r, g, b = PURPLE
+        r, g, b = self.__BACKGROUND_COLOR
         draw.rect(self.score_screen, (r, g, b, self.__opacity.opacity), (0, 0, self.pos.width, self.pos.height))
         if self.__SHOW_BACKGROUND:
             self.__background.show_background(screen=self.score_screen, window_size=self.pos.window_size,

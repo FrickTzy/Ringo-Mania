@@ -1,11 +1,13 @@
 from pygame import Rect, draw
-from Frontend.settings import PURPLE, BLACK
+from Frontend.Settings import Color
 
 
 class LifeBar:
     __LIFE_BAR_PADDING = 25
     __LIFE_BAR_Y_PADDING = 30
     __LIFE_BAR_HEIGHT_RATIO = 1.90
+    __LIFE_BAR_COLOR = Color.PURPLE
+    __BACKGROUND_COLOR = Color.BLACK
 
     def __init__(self, display, rectangle_pos):
         self.__display = display
@@ -15,8 +17,8 @@ class LifeBar:
 
     def show_life_bar(self, life: int):
         self.update_life_bar_coord()
-        draw.rect(self.__display.window, PURPLE, self.__life_bar_coordinates)
-        draw.rect(self.__display.window, BLACK, self.get_life_bar_height(life=life))
+        draw.rect(self.__display.window, self.__LIFE_BAR_COLOR, self.__life_bar_coordinates)
+        draw.rect(self.__display.window, self.__BACKGROUND_COLOR, self.get_life_bar_height(life=life))
 
     @property
     def __life_bar_coord_x(self):

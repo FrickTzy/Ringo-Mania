@@ -1,9 +1,11 @@
 from Frontend.Mania_Window.Stats.Combo.combo import ComboInfo
 from Frontend.Mania_Window.Misc.font import Font
-from Frontend.settings import WHITE, NUM_OF_RECORD, PLAYER_NAME
+from Frontend.Settings import Color, NUMBER_OF_RECORDS, PLAYER_NAME
 
 
 class Record:
+    __COLOR = Color.WHITE
+
     def __init__(self, font: Font, display):
         self.record_list: list[ComboInfo] = []
         self.fonts = font
@@ -13,7 +15,7 @@ class Record:
     def init_record(self, record: list):
         """Adds the Record to a list"""
         self.record_list.clear()
-        for index in range(NUM_OF_RECORD):
+        for index in range(NUMBER_OF_RECORDS):
             try:
                 self.add_record(record[index])
             except IndexError:
@@ -31,9 +33,9 @@ class Record:
         return rendered_record
 
     def render_record(self, record: ComboInfo):
-        return self.fonts.record_font.render('{:,}'.format(record.score), True, WHITE), \
-               self.fonts.record_font.render(f"{record.highest_combo}x", True, WHITE), \
-               self.fonts.record_font.render(f"{PLAYER_NAME}", True, WHITE)
+        return self.fonts.record_font.render('{:,}'.format(record.score), True, self.__COLOR), \
+               self.fonts.record_font.render(f"{record.highest_combo}x", True, self.__COLOR), \
+               self.fonts.record_font.render(f"{PLAYER_NAME}", True, self.__COLOR)
 
     def show_record(self, current_rec):
         for index, record in enumerate(self.get_record(current_record=current_rec)):

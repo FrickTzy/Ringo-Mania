@@ -1,5 +1,5 @@
 from Frontend.Mania_Window.Rectangle.Circles.circles import Circle
-from Frontend.settings import CIRCLE_SIZE, FALLING_SPEED, BLACK
+from Frontend.Settings import FALLING_SPEED, Color, DEFAULT_CIRCLE_SIZE
 from Backend.timer import IntervalTimer
 from pygame import Rect, draw
 from random import randrange
@@ -7,7 +7,7 @@ from random import randrange
 
 class Sliders(Circle):
     __LEN_PER_BODY = 100
-    __SLIDER_COLOR = BLACK
+    __SLIDER_COLOR = Color.BLACK
     __SLIDER_END_PERCENTAGE = 50
     __MIN_SLIDER_LEN = 180
 
@@ -15,13 +15,13 @@ class Sliders(Circle):
     A slider consists of three parts: the starting circle, the main body, and the ending circle.
     """
 
-    def __init__(self, window, lane_x, min_slider_len, circle_size=CIRCLE_SIZE, img="Purp.png"):
+    def __init__(self, window, lane_x, min_slider_len, circle_size=DEFAULT_CIRCLE_SIZE, img="Purp.png"):
         super().__init__(circle_size, img)
         self.y = -100
-        self.slider_head_hit_box = Rect(lane_x, self.y, circle_size, CIRCLE_SIZE)
+        self.slider_head_hit_box = Rect(lane_x, self.y, circle_size, circle_size)
         self.slider_body_hit_box = Rect(lane_x + circle_size // 5.39, self.y, circle_size - circle_size // 2.92,
                                         self.__LEN_PER_BODY)
-        self.slider_tail_hit_box = Rect(lane_x, self.y - circle_size / 2, circle_size, CIRCLE_SIZE)
+        self.slider_tail_hit_box = Rect(lane_x, self.y - circle_size / 2, circle_size, circle_size)
         self.window = window
         self.out = False
         self.slider_ended = False

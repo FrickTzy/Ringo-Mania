@@ -1,9 +1,9 @@
 from pygame import font
-from Frontend.settings import WHITE, PLAYER_NAME
+from Frontend.Settings import Color, PLAYER_NAME
 
 
 class TextStats:
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, play_info, pos):
         self.__font = Font()

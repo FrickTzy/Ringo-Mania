@@ -1,7 +1,7 @@
 from pygame import draw
 from .acc_text import AccText
 from .acc_logo import AccLogo
-from Frontend.settings import DARK_PURPLE
+from Frontend.Settings import Color
 
 
 class LeftScoreScreen:
@@ -18,7 +18,7 @@ class LeftScoreScreen:
 
 
 class ScoreScreenBackground:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, pos, opacity):
         self.__pos = BackgroundRectanglePos(pos=pos)

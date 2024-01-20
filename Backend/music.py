@@ -1,6 +1,6 @@
 from pygame import mixer
 from pygame import time
-from Frontend.settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
+from Frontend.Settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
 from Backend.timer import IntervalTimer
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 import os

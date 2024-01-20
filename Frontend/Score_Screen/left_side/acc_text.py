@@ -1,11 +1,11 @@
 from pygame import Surface, SurfaceType
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 from pygame import font
 from .combo_acc import ComboAcc
 
 
 class AccText:
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, screen_surface: Surface | SurfaceType, screen_pos, opacity):
         self.__screen_surface = screen_surface

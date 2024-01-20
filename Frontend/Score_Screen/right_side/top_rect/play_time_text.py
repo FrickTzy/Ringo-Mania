@@ -1,9 +1,9 @@
 from pygame import font
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 
 
 class PlayTimeText:
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, pos):
         self.__pos = PlayTimeTextPos(pos=pos)

@@ -1,7 +1,7 @@
-from pygame import SRCALPHA, Surface, key
+from pygame import SRCALPHA, Surface
 from Frontend.Helper_Files import WindowInterface, State
 from Frontend.Score_Screen import ScoreScreen
-from Frontend.settings import DARK_PURPLE, WHITE
+from Frontend.Settings import Color
 from .background import Background
 from .Top import Top
 from .Bottom import Bottom
@@ -10,8 +10,8 @@ from .Left import Left
 
 
 class MainMenu(WindowInterface):
-    __FONT_COLOR = WHITE
-    __COLOR = DARK_PURPLE
+    __FONT_COLOR = Color.WHITE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, display, window_manager, map_info, play_tracker, music):
         self.__display = display

@@ -1,10 +1,10 @@
 from pygame import Rect, draw
-from Frontend.settings import DARK_PURPLE, PURPLE
+from Frontend.Settings import Color
 from Frontend.Main_Menu.Top.Top_Right.top_right_info import TopRight
 
 
 class Top:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, display, map_info):
         self.__pos = Pos(display=display)
@@ -41,7 +41,7 @@ class Pos:
 
 
 class Outline:
-    __OUTLINE_COLOR = PURPLE
+    __OUTLINE_COLOR = Color.PURPLE
     __OUTLINE_OPACITY = 80
     __OUTLINE_THICKNESS = 10
 

@@ -1,10 +1,10 @@
 from pygame import font
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Text:
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, map_info, display):
         self.__map_info = map_info

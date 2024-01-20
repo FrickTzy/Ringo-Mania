@@ -1,11 +1,11 @@
 from pygame import mouse
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 from Frontend.Score_Screen.button_font import ButtonFont
 
 
 class RestartButton:
     __RESTART = "Restart"
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, event_handler, end_screen, pos, state):
         self.__event_handler = event_handler
@@ -26,7 +26,7 @@ class RestartButton:
         self.__run_restart_text(command=lambda: self.__restart())
 
     def __run_restart_text(self, command) -> None:
-        text = self.__font.font.render(self.__RESTART, True, WHITE)
+        text = self.__font.font.render(self.__RESTART, True, self.__COLOR)
         self.__end_screen.blit(text, self.__pos.restart_pos)
         self.__event_handler.check_buttons_for_clicks(starting_pos=self.__pos.restart_pos,
                                                       size=self.__font.text_size(text=self.__RESTART),

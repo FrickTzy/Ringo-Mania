@@ -1,6 +1,5 @@
 from pygame import font as pyfont
-from Frontend.settings import PURPLE, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, WHITE, \
-    GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
+from Frontend.Settings import Color, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
 from Frontend.Mania_Window.Stats.Combo.date import Date
 
 
@@ -29,6 +28,8 @@ class ComboCounter:
         "Perfect": 0,
         "Amazing": 0
     }
+    __PRIMARY_COLOR = Color.PURPLE
+    __SECONDARY_COLOR = Color.WHITE
 
     def __init__(self, font):
         self.fonts = font
@@ -134,11 +135,11 @@ class ComboCounter:
     def get_play_info_text(self):
         self.info.compute_highest_combo()
         self.compute_accuracy()
-        return self.fonts.main_font.render(f"{self.info.combo}x", True, PURPLE), \
-               self.fonts.main_font.render(f"{self.info.combo}", True, WHITE), \
-               self.fonts.main_font.render(f"{self.info.score:08d}", True, PURPLE), \
-               self.fonts.acc_font.render(f"{self.__formatted_acc}%", True, PURPLE), \
-               self.fonts.main_font.render(f"{self.life}", True, PURPLE)
+        return self.fonts.main_font.render(f"{self.info.combo}x", True, self.__PRIMARY_COLOR), \
+               self.fonts.main_font.render(f"{self.info.combo}", True, self.__SECONDARY_COLOR), \
+               self.fonts.main_font.render(f"{self.info.score:08d}", True, self.__PRIMARY_COLOR), \
+               self.fonts.acc_font.render(f"{self.__formatted_acc}%", True, self.__PRIMARY_COLOR), \
+               self.fonts.main_font.render(f"{self.life}", True, self.__PRIMARY_COLOR)
 
     @property
     def combo(self):

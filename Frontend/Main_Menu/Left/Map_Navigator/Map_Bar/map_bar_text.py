@@ -1,9 +1,9 @@
 from pygame import font
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 
 
 class MapBarText:
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
     __BLUR_OPACITY = 100
 
     def __init__(self, map_info, pos):

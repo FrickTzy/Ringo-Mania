@@ -2,12 +2,13 @@ from pygame import time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse
 from Backend import Music
 from Backend import Timer
 from Frontend.Mania_Window.Misc.font import Font
-from Frontend.settings import WIDTH, HEIGHT, BLACK, WHITE
+from Frontend.Settings import WIDTH, HEIGHT, Color
 from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Pause:
     __PAUSE_INTERVAL = 150
+    __BACKGROUND_COLOR = Color.BLACK
 
     def __init__(self, music: Music, mini_timer, font: Font, state):
         self.__starting_time: int = 0
@@ -71,7 +72,7 @@ class Pause:
         self.__state.restart()
 
     def draw_to_pause_surface(self, window_size: tuple) -> None:
-        r, g, b = BLACK
+        r, g, b = self.__BACKGROUND_COLOR
         width, height = window_size
         draw.rect(self.__pause_surface, (r, g, b, self.__opacity.opacity), (0, 0, width, height))
 
@@ -93,6 +94,7 @@ class PauseText:
     __CONTINUE = "Continue"
     __RESTART = "Restart"
     __QUIT = "Quit"
+    __COLOR = Color.WHITE
 
     def __init__(self, event_handler, pause_surface, font, pos):
         self.__event_handler = event_handler
@@ -120,11 +122,11 @@ class PauseText:
 
     def __run_pause_text(self, text_coord: tuple[int, int]) -> None:
         text_x, text_y = text_coord
-        text = self.__font.main_pause_font.render(self.__PAUSE, True, WHITE)
+        text = self.__font.main_pause_font.render(self.__PAUSE, True, self.__COLOR)
         self.__pause_surface.blit(text, (text_x, self.__pos.PAUSE_Y))
 
     def __run_continue_text(self, text_coord: tuple[int, int], command) -> None:
-        text = self.__font.pause_font.render(self.__CONTINUE, True, WHITE)
+        text = self.__font.pause_font.render(self.__CONTINUE, True, self.__COLOR)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
                                                       size=self.__font.pause_text_size(self.__MINI_FONT,
@@ -134,7 +136,7 @@ class PauseText:
     def __run_restart_text(self, text_coord: tuple[int, int], command) -> None:
         text_x, text_y = text_coord
         text_coord = text_x, text_y + int(self.__pos.TEXT_POS_INTERVAL)
-        text = self.__font.pause_font.render(self.__RESTART, True, WHITE)
+        text = self.__font.pause_font.render(self.__RESTART, True, self.__COLOR)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
                                                       size=self.__font.pause_text_size(self.__MINI_FONT,
@@ -144,7 +146,7 @@ class PauseText:
     def __run_quit_text(self, text_coord: tuple[int, int]) -> None:
         text_x, text_y = text_coord
         text_coord = text_x, text_y + int(self.__pos.TEXT_POS_INTERVAL * 2)
-        text = self.__font.pause_font.render(self.__QUIT, True, WHITE)
+        text = self.__font.pause_font.render(self.__QUIT, True, self.__COLOR)
         self.__pause_surface.blit(text, text_coord)
         self.__event_handler.check_buttons_for_clicks(starting_pos=text_coord,
                                                       size=self.__font.pause_text_size(self.__MINI_FONT,

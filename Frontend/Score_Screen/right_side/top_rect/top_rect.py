@@ -1,11 +1,11 @@
 from pygame import Rect, draw
 from .top_rect_text import TopRectText
 from .play_time_text import PlayTimeText
-from Frontend.settings import DARK_PURPLE
+from Frontend.Settings import Color
 
 
 class TopRect:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, pos, map_info):
         self.__pos = TopRectPos(pos=pos)

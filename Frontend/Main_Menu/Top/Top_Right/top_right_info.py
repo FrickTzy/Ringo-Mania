@@ -1,10 +1,10 @@
 from pygame import Rect, draw
-from Frontend.settings import DARK_PURPLE
+from Frontend.Settings import Color
 from Frontend.Main_Menu.Top.Top_Right.top_right_text import Text
 
 
 class TopRight:
-    __COLOR = DARK_PURPLE
+    __COLOR = Color.DARK_PURPLE
 
     def __init__(self, display, map_info, outline):
         self.__pos = Pos(display=display)

@@ -1,10 +1,10 @@
 from Frontend.Score_Screen.button_font import ButtonFont
-from Frontend.settings import WHITE
+from Frontend.Settings import Color
 
 
 class TextButton:
     __CONTINUE = "Continue"
-    __COLOR = WHITE
+    __COLOR = Color.WHITE
 
     def __init__(self, event_handler, screen, pos, state):
         self.__event_handler = event_handler
