@@ -29,7 +29,7 @@ class MapImageDownloader:
 
     def download(self, sentence_to_search: str, anime_path: bool = True):
         title = sentence_to_search.title().replace("'S", "'s")
-        sentence_to_search = f"{title}{self.__MAP_SEARCH_PADDING}"
+        sentence_to_search = f"{title}{self.__MAP_SEARCH_PADDING}" if anime_path else title
         image_url_extension = '&biw=1536&bih=674&tbm=isch&sxsrf=ACYBGNSXXpS6YmAKUiLKKBs6xWb4uUY5gA:1581168823770&' \
                               'source=lnms&sa=X&ved=0ahUKEwioj8jwiMLnAhW9AhAIHbXTBMMQ_AUI3QUoAQ'
         url = 'https://www.google.com/search?q=' + quote(sentence_to_search.encode('utf-8')) + image_url_extension

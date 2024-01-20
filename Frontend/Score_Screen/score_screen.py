@@ -81,7 +81,7 @@ class ScoreScreen:
         draw.rect(self.score_screen, (r, g, b, self.__opacity.opacity), (0, 0, self.pos.width, self.pos.height))
         if self.__SHOW_BACKGROUND:
             self.__background.show_background(screen=self.score_screen, window_size=self.pos.window_size,
-                                              map_background_status=self.__map_info.map_background_status)
+                                              background_image=self.__map_info.current_background_image)
 
     def __score_screen_setup(self, size: tuple[int, int]):
         width, height = size

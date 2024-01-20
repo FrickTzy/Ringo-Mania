@@ -11,9 +11,8 @@ class Background:
         self.__image_checker = MapImage()
         self.__image = None
 
-    def show_background(self, map_background_status: tuple, screen, window_size: tuple):
-        self.__check_if_change_background(map_background_status=map_background_status)
-        background = transform.scale(self.__image, window_size)
+    def show_background(self, background_image, screen, window_size: tuple):
+        background = transform.scale(background_image, window_size)
         background.set_alpha(self.__OPACITY)
         screen.blit(background, (0, 0))
 

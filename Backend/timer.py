@@ -16,6 +16,12 @@ class Timer:
         else:
             self.target_time += int(target_time) - end_song_delay
 
+    def set_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
+        if ms:
+            self.target_time = target_time - end_song_delay
+        else:
+            self.target_time = int(target_time) - end_song_delay
+
     def reset_time(self):
         self.starting_time = 0
         self.ending_time = 0
@@ -32,7 +38,7 @@ class Timer:
     def current_time(self):
         return self.ms_to_second(time.get_ticks()) - self.seconds_restarted
 
-    def compute_time(self):
+    def compute_if_finish_timer(self):
         if self.current_time == self.target_time:
             self.timer_finished = True
 
@@ -55,6 +61,10 @@ class Timer:
     def compute_ms_time(self):
         if self.get_current_ms >= self.target_time:
             self.timer_finished = True
+
+    def debug(self):
+        print(self.target_time)
+        print(self.current_time)
 
 
 class DelayTimer:

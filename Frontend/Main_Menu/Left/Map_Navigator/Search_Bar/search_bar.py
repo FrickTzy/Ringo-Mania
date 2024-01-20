@@ -12,13 +12,13 @@ class SearchBar:
         self.__font = Font()
 
     def show(self, surface):
-        text = self.__font.font_object(height=self.__pos.height).render(f"{self.__tracker.current_search}", True,
-                                                                        self.__COLOR)
+        text = self.__font.font_object(height=self.__pos.height).render(f"Search: {self.__tracker.current_search}",
+                                                                        True, self.__COLOR)
         surface.blit(text, self.__pos.text_pos)
 
 
 class Font:
-    __MAP_MAKER_FONT_RATIO = 40
+    __MAP_MAKER_FONT_RATIO = 49
 
     def font_object(self, height):
         return font.SysFont("Arialblack", self.__font_size(height=height))
@@ -37,7 +37,7 @@ class Pos:
 
     @property
     def text_pos(self):
-        return 100, 200
+        return 30, 135
 
     @property
     def get_window_size(self):

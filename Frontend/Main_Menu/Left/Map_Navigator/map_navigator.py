@@ -10,6 +10,7 @@ from .Search_Bar import SearchBar
 
 class MapNavigator:
     __map_bar_list: list[MapBar] = []
+    __filtered_map_bar_list: list[MapBar] = []
     __initialized = False
 
     def __init__(self, map_info, display, state, search_tracker):
@@ -31,7 +32,7 @@ class MapNavigator:
         self.__show_all_map_bar(main_menu_surface=main_menu_surface)
         self.__search_bar.show(surface=main_menu_surface)
         self.__event_handler.check_for_events(current_index=self.__index_manager.current_index)
-        self.__set_map_info()
+        self.__check_if_set_map_info_and_image()
 
     def __check_if_change_index(self):
         if self.__index_manager.changed:
@@ -47,6 +48,9 @@ class MapNavigator:
             except IndexError:
                 break
 
+    def __filter_map_bar(self):
+        pass
+
     def __init_leaderboard(self):
         if self.__initialized:
             return
@@ -55,7 +59,7 @@ class MapNavigator:
         shuffle(song_list)
         self.__init_bar_list(song_list=song_list)
         self.__set_index(len_of_song_list=len(song_list))
-        self.__map_info.set_song_name(song_name=self.__map_bar_list[self.__index_manager.current_index].song_name)
+        self.__set_map_info_and_image()
         self.__pos.set_y(index=self.__view_counter.current_top_view)
         self.__initialized = True
 
@@ -77,11 +81,17 @@ class MapNavigator:
     def current_image(self):
         return self.__map_bar_list[self.__index_manager.current_index].image
 
-    def __set_map_info(self):
+    def __check_if_set_map_info_and_image(self):
         current_song_name = self.__map_bar_list[self.__index_manager.current_index].song_file_name
         if self.__map_info.song_file_name == current_song_name:
             return
+        self.__set_map_info_and_image()
+
+    def __set_map_info_and_image(self):
+        current_image = self.__map_bar_list[self.__index_manager.current_index].image
+        current_song_name = self.__map_bar_list[self.__index_manager.current_index].song_file_name
         self.__map_info.set_song_name(song_name=current_song_name)
+        self.__map_info.set_background(image=current_image)
 
     def restart(self):
         self.__initialized = False
@@ -106,7 +116,7 @@ class ViewCounter:
 
 
 class MapNavigatorEventHandler:
-    __CLICK_INTERVAL = 70
+    __CLICK_INTERVAL = 80
 
     def __init__(self, map_bar_list: list[MapBar], pos, view: ViewCounter):
         self.__interval_timer: IntervalTimer = IntervalTimer(interval=self.__CLICK_INTERVAL)

@@ -44,6 +44,7 @@ class MainMenu(WindowInterface):
         self.__display.show_cursor()
         self.__display.check_window_size()
         self.__clear_surface()
+        self.__music.check_if_repeat()
 
     def __blit(self):
         self.__display.window.blit(self.__main_menu_surface, (0, 0))

@@ -2,9 +2,10 @@ from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
 class MapInfo:
+    __current_background_image = None
     changed = True
 
-    def __init__(self, song_name: str, song_artist: str = "IDK", map_maker: str = "Dudesalp"):
+    def __init__(self, song_name: str = None, song_artist: str = "IDK", map_maker: str = "Dudesalp"):
         self.__song_file_name = song_name
         self.__artist = song_artist
         self.__map_maker = map_maker
@@ -50,6 +51,13 @@ class MapInfo:
     @property
     def song_info(self):
         return f"{self.song_name} - {self.song_artist}"
+
+    @property
+    def current_background_image(self):
+        return self.__current_background_image
+
+    def set_background(self, image):
+        self.__current_background_image = image
 
     def set_song_name(self, song_name):
         self.__song_file_name = song_name
