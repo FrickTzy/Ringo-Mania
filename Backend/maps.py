@@ -20,7 +20,7 @@ class MapManager:
 
     @property
     def __path(self):
-        return path.join("Backend\Maps", f"{self.__map_info.song_file_name}.rin")
+        return path.join("Backend\Maps", f"{self.__map_info.song_name}.rin")
 
     def import_map(self):
         self.__map_list.clear()

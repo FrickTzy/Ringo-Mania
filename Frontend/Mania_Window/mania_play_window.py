@@ -49,6 +49,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.end_screen.restart()
         self.state.un_restart()
         self.record.init_record(self.play_tracker.check_plays())
+        self.play_tracker.restart()
         self.state.reset_all()
 
     def show_stats_and_etc(self):

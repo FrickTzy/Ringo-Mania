@@ -1,4 +1,4 @@
-from pygame import K_BACKSPACE
+from pygame import K_BACKSPACE, K_TAB
 
 
 class SearchTracker:
@@ -14,7 +14,9 @@ class SearchTracker:
         self.__current_search = value
 
     def add_letter(self, event):
-        if event.key == K_BACKSPACE:
+        if event.key == K_TAB:
+            return
+        elif event.key == K_BACKSPACE:
             self.__current_search = self.__current_search[:-1]
         else:
             self.__current_search += event.dict.get("unicode", "")

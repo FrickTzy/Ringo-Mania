@@ -4,7 +4,7 @@ from Frontend.Settings import Color
 
 
 class SearchBar:
-    __COLOR = Color.DARK_PURPLE
+    __COLOR = Color.WHITE
 
     def __init__(self, search_tracker: SearchTracker, display):
         self.__tracker = search_tracker

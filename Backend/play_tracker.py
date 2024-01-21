@@ -58,6 +58,11 @@ class PlayTracker:
         with open(self.path, 'w') as file:
             file.writelines("")
 
+    def restart(self):
+        self.updated = False
+        self.sorted_plays.clear()
+        self.converted_dict.clear()
+
 
 if __name__ == "__main__":
     play_history = PlayTracker("Wotakoi")
