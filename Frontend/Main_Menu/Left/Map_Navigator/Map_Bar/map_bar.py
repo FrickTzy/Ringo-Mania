@@ -73,7 +73,7 @@ class MapBar:
         return self.__viewed
 
     def __check_if_out_of_bounds(self):
-        if self.__pos.record_y >= 800 or self.__pos.record_y <= 25:
+        if self.__pos.record_y >= 800 or self.__pos.record_y <= 10:
             self.__viewed = False
         else:
             self.__viewed = True
@@ -106,7 +106,8 @@ class MapBar:
 
     @property
     def change_top_index(self):
-        return self.__pos.record_y > 80
+        """This is what to change when top bar not showing"""
+        return self.__pos.record_y > 50
 
 
 class MapBarInfo:

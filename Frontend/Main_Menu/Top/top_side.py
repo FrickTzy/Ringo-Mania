@@ -18,10 +18,13 @@ class Top:
     def show(self, main_menu_surface):
         self.__update_rect()
         self.__top_right_div.show(main_menu_surface=main_menu_surface)
+        self.__show_outline(main_menu_surface=main_menu_surface)
         self.__show_rect(main_menu_surface=main_menu_surface)
 
-    def __show_rect(self, main_menu_surface):
+    def __show_outline(self, main_menu_surface):
         self.__outline.show_outline(main_menu_surface=main_menu_surface, rect=self.__top_rect)
+
+    def __show_rect(self, main_menu_surface):
         draw.rect(main_menu_surface, self.__COLOR, self.__top_rect)
 
 

@@ -207,7 +207,7 @@ class MapNavigatorEventHandler:
 
 
 class MapNavigatorPos:
-    __SCROLL_SPEED = 50
+    __SCROLL_SPEED = 60
     __RECORD_INTERVAL = 8.12
 
     def __init__(self, display):

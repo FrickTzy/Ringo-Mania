@@ -130,7 +130,7 @@ class LeaderboardEventHandler:
 
 
 class Pos:
-    __SCROLL_SPEED = 20
+    __SCROLL_SPEED = 30
     __RECORD_INTERVAL = 12.86
 
     def __init__(self, display):
