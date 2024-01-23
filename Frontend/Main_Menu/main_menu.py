@@ -169,10 +169,13 @@ class MainMenuEventHandler(WindowEventHandler):
 
     def check_window_if_quit(self):
         for event_occurrence in event.get():
-            if event_occurrence.type == KEYDOWN:
-                self.__search_tracker.add_letter(event=event_occurrence)
+            self.__check_if_key_down(event_occurrence=event_occurrence)
             if event_occurrence.type == QUIT:
                 self.__window_manager.quit()
+
+    def __check_if_key_down(self, event_occurrence):
+        if event_occurrence.type == KEYDOWN:
+            self.__search_tracker.add_letter(event=event_occurrence)
 
 
 class MainMenuPos:

@@ -47,7 +47,6 @@ class ManiaPlayWindow(GameModeWindow):
         self.map_status.restart()
         self.rectangle.restart()
         self.end_screen.restart()
-        self.state.un_restart()
         self.record.init_record(self.play_tracker.check_plays())
         self.play_tracker.restart()
         self.state.reset_all()
@@ -81,9 +80,6 @@ class PlayState(State):
     def leave_mania(self):
         return self.__leave_mania
 
-    def enter_playing_window(self):
-        self.__leave_mania = False
-
     def leave_score_screen(self):
         self.__leave_mania = True
 
@@ -94,12 +90,9 @@ class PlayState(State):
     def restart(self):
         self.__restarted = True
 
-    def un_restart(self):
-        self.__restarted = False
-
     def reset_all(self):
-        self.un_restart()
-        self.enter_playing_window()
+        self.__restarted = False
+        self.__leave_mania = False
 
 
 class ManiaEventHandler(WindowEventHandler):

@@ -15,14 +15,14 @@ class TopRight:
     def __update_rect(self):
         self.__top_right_rect = Rect(self.__pos.x, 0, self.__pos.width, self.__pos.top_rect_height)
 
-    def show(self, main_menu_surface):
+    def show(self, surface):
         self.__update_rect()
-        self.__show_rect(main_menu_surface=main_menu_surface)
-        self.__text.show_text(main_menu_surface=main_menu_surface)
+        self.__show_rect(surface=surface)
+        self.__text.show_text(surface=surface)
 
-    def __show_rect(self, main_menu_surface):
-        self.__outline.show_outline(main_menu_surface=main_menu_surface, rect=self.__top_right_rect)
-        draw.rect(main_menu_surface, self.__COLOR, self.__top_right_rect)
+    def __show_rect(self, surface):
+        self.__outline.show_outline(surface=surface, rect=self.__top_right_rect)
+        draw.rect(surface, self.__COLOR, self.__top_right_rect)
 
 
 class Pos:

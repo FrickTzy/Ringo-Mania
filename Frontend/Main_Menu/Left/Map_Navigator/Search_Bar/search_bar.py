@@ -4,7 +4,8 @@ from Frontend.Settings import Color
 
 
 class SearchBar:
-    __COLOR = Color.WHITE
+    __COLOR = Color.PURPLE
+    __EMPTY_SEARCH_OPACITY = 100
 
     def __init__(self, search_tracker: SearchTracker, display):
         self.__tracker = search_tracker
@@ -12,9 +13,15 @@ class SearchBar:
         self.__font = Font()
 
     def show(self, surface):
-        text = self.__font.font_object(height=self.__pos.height).render(f"Search: {self.__tracker.current_search}",
+        current_search = self.__tracker.current_search
+        text = self.__font.font_object(height=self.__pos.height).render(f"Search: {current_search}",
                                                                         True, self.__COLOR)
+        self.__check_if_change_opacity(text=text, current_search=current_search)
         surface.blit(text, self.__pos.text_pos)
+
+    def __check_if_change_opacity(self, text, current_search):
+        if not current_search:
+            text.set_alpha(self.__EMPTY_SEARCH_OPACITY)
 
 
 class Font:

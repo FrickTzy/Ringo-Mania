@@ -1,4 +1,4 @@
-from pygame import Rect, draw
+from pygame import Rect, draw, Surface, SRCALPHA
 from Frontend.Settings import Color
 from Frontend.Main_Menu.Top.Top_Right.top_right_info import TopRight
 
@@ -10,6 +10,7 @@ class Top:
         self.__pos = Pos(display=display)
         self.__top_rect = Rect(0, 0, self.__pos.width, self.__pos.top_rect_height)
         self.__outline = Outline()
+        self.__top_surface = Surface(self.__pos.get_window_size, SRCALPHA)
         self.__top_right_div = TopRight(display=display, map_info=map_info, outline=self.__outline)
 
     def __update_rect(self):
@@ -17,15 +18,16 @@ class Top:
 
     def show(self, main_menu_surface):
         self.__update_rect()
-        self.__top_right_div.show(main_menu_surface=main_menu_surface)
-        self.__show_outline(main_menu_surface=main_menu_surface)
-        self.__show_rect(main_menu_surface=main_menu_surface)
+        self.__top_right_div.show(surface=self.__top_surface)
+        self.__show_outline(surface=self.__top_surface)
+        self.__show_rect(surface=self.__top_surface)
+        main_menu_surface.blit(self.__top_surface, (0, 0))
 
-    def __show_outline(self, main_menu_surface):
-        self.__outline.show_outline(main_menu_surface=main_menu_surface, rect=self.__top_rect)
+    def __show_outline(self, surface):
+        self.__outline.show_outline(surface=surface, rect=self.__top_rect)
 
-    def __show_rect(self, main_menu_surface):
-        draw.rect(main_menu_surface, self.__COLOR, self.__top_rect)
+    def __show_rect(self, surface):
+        draw.rect(surface, self.__COLOR, self.__top_rect)
 
 
 class Pos:
@@ -42,15 +44,19 @@ class Pos:
     def top_rect_height(self):
         return self.__display.height // self.__HEIGHT_RATIO
 
+    @property
+    def get_window_size(self):
+        return self.__display.get_window_size
+
 
 class Outline:
     __OUTLINE_COLOR = Color.PURPLE
     __OUTLINE_OPACITY = 80
     __OUTLINE_THICKNESS = 10
 
-    def show_outline(self, main_menu_surface, rect: Rect):
+    def show_outline(self, surface, rect: Rect):
         outline = Rect(rect.x - self.__OUTLINE_THICKNESS, self.__OUTLINE_THICKNESS,
                        rect.width + self.__OUTLINE_THICKNESS,
                        rect.height)
         r, g, b = self.__OUTLINE_COLOR
-        draw.rect(main_menu_surface, (r, g, b, self.__OUTLINE_OPACITY), outline)
+        draw.rect(surface, (r, g, b, self.__OUTLINE_OPACITY), outline)

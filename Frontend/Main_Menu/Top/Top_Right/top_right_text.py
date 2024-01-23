@@ -12,18 +12,18 @@ class Text:
         self.__font = Font()
         self.__pos = TextPos(display=display)
 
-    def show_text(self, main_menu_surface):
+    def show_text(self, surface):
         self.__font.update_font(height=self.__pos.height)
-        self.__show_song_name(main_menu_surface=main_menu_surface)
-        self.__show_song_artist(main_menu_surface=main_menu_surface)
+        self.__show_song_name(surface=surface)
+        self.__show_song_artist(surface=surface)
 
-    def __show_song_name(self, main_menu_surface):
+    def __show_song_name(self, surface):
         unfiltered_name: str = self.__map_info.song_file_name
         song_name = self.__check_song_text_conditions(song_name=unfiltered_name,
                                                       text_width=self.__font.text_width(text=unfiltered_name))
         song_name_font = self.__font.font.render(song_name, True,
                                                  self.__COLOR)
-        main_menu_surface.blit(song_name_font, self.__pos.song_pos)
+        surface.blit(song_name_font, self.__pos.song_pos)
 
     @staticmethod
     def __check_song_text_conditions(song_name: str, text_width) -> str:
@@ -33,10 +33,10 @@ class Text:
                 return song_name[index + 2::]
         return song_name
 
-    def __show_song_artist(self, main_menu_surface):
+    def __show_song_artist(self, surface):
         artist = self.__font.font.render(f"Song by {self.__map_info.song_artist}", True,
                                          self.__COLOR)
-        main_menu_surface.blit(artist, self.__pos.artist_pos)
+        surface.blit(artist, self.__pos.artist_pos)
 
 
 class Font:

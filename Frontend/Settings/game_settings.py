@@ -35,8 +35,8 @@ GRADE_ACC = {
 
 MULTIPLE_CIRCLE_FREQ = {
     "2": 2,
-    "3": 6,
-    "4": 8
+    "3": 5,
+    "4": 7
 }
 
 ACC_CATEGORIES_POINTS = {

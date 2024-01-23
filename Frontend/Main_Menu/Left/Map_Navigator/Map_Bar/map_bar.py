@@ -27,8 +27,16 @@ class MapBar:
         self.__index_manager = index_manager
         self.__timer = DelayTimer()
 
-    def show(self, main_menu_surface, y: int):
-        self.__update_rect(y=y)
+    def show(self, main_menu_surface):
+        self.__update_rect()
+        if self.is_chosen:
+            self.__show_chosen(main_menu_surface=main_menu_surface)
+        else:
+            self.__show_not_chosen(main_menu_surface=main_menu_surface)
+        self.__check_if_out_of_bounds()
+
+    def show_filtered(self, main_menu_surface, index: int):
+        self.__update_filtered_rect(index=index)
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
@@ -87,14 +95,19 @@ class MapBar:
             r, g, b = self.__COLOR
             draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
 
-    def __update_rect(self, y: int):
+    def __update_rect(self):
         self.__pos.set_record_y()
+        self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
+                           self.__pos.record_height)
+
+    def __update_filtered_rect(self, index):
+        self.__pos.set_record_y_filter(index=index)
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
 
     @property
     def song_name(self):
-        return self.__map_bar_info.song_file_name
+        return self.__map_bar_info.song_name
 
     @property
     def song_file_name(self):
@@ -107,7 +120,7 @@ class MapBar:
     @property
     def change_top_index(self):
         """This is what to change when top bar not showing"""
-        return self.__pos.record_y > 50
+        return self.__pos.record_y > 30
 
 
 class MapBarInfo:
@@ -234,6 +247,9 @@ class RecordPos:
 
     def set_record_y(self):
         self.__record_y = self.__pos.record_starting_y + self.__pos.starting_record_pos(index=self.__index)
+
+    def set_record_y_filter(self, index):
+        self.__record_y = self.__pos.filtered_starting_y + self.__pos.starting_record_pos(index=index)
 
     @property
     def record_y(self):
