@@ -29,15 +29,27 @@ class ButtonEventHandler:
         :return bool:
         """
 
+        x_1, y_1 = starting_pos_1
+        x_2, y_2 = starting_pos_2
+
         ending_pos_x_1, ending_pos_y_1 = cls.__get_ending_pos(starting_pos=starting_pos_1, size=size_1)
         ending_pos_x_2, ending_pos_y_2 = cls.__get_ending_pos(starting_pos=starting_pos_2, size=size_2)
+
+        second_object_x_inside_first_object_x = x_1 <= x_2
+        second_object_y_inside_first_object_y = y_1 <= y_2
 
         object_2_inside_object_1 = ending_pos_y_1 >= ending_pos_y_2 and ending_pos_x_1 >= ending_pos_x_2
 
         if not object_2_inside_object_1:
             return False
-        if not cls.__check_if_an_object_comes_contact_with_another_object(starting_pos_1=starting_pos_1, size_1=size_1,
-                                                                          starting_pos_2=starting_pos_2, size_2=size_2):
+        elif not second_object_y_inside_first_object_y:
+            return False
+        elif not second_object_x_inside_first_object_x:
+            return False
+        elif not cls.__check_if_an_object_comes_contact_with_another_object(starting_pos_1=starting_pos_1,
+                                                                            size_1=size_1,
+                                                                            starting_pos_2=starting_pos_2,
+                                                                            size_2=size_2):
             return False
 
         return True
@@ -55,17 +67,20 @@ class ButtonEventHandler:
         """
 
         ending_pos_x_1, ending_pos_y_1 = cls.__get_ending_pos(starting_pos=starting_pos_1, size=size_1)
+        ending_pos_x_2, ending_pos_y_2 = cls.__get_ending_pos(starting_pos=starting_pos_2, size=size_2)
+
+        width_2, height_2 = size_2
+
+        x_1, y_1 = starting_pos_1
         x_2, y_2 = starting_pos_2
 
-        object_2_crosses_object_1 = ending_pos_y_1 >= y_2 and ending_pos_x_1 >= x_2
+        crossing_up = ending_pos_y_1 + height_2 // 2 >= ending_pos_y_2 >= y_1
+        crossing_down = ending_pos_y_2 >= ending_pos_y_1 >= y_2 + height_2 // 2
 
-        if not cls.__check_if_an_object_comes_contact_with_another_object(starting_pos_1=starting_pos_1, size_1=size_1,
-                                                                          starting_pos_2=starting_pos_2, size_2=size_2):
-            return False
-        if not object_2_crosses_object_1:
-            return False
+        if crossing_up or crossing_down:
+            return True
 
-        return True
+        return False
 
     @classmethod
     def __check_if_an_object_comes_contact_with_another_object(cls, starting_pos_1: tuple[int, int],
@@ -81,23 +96,16 @@ class ButtonEventHandler:
                :return bool:
                """
 
-        x_1, y_1 = starting_pos_1
         x_2, y_2 = starting_pos_2
 
         ending_pos_x_1, ending_pos_y_1 = cls.__get_ending_pos(starting_pos=starting_pos_1, size=size_1)
         ending_pos_x_2, ending_pos_y_2 = cls.__get_ending_pos(starting_pos=starting_pos_2, size=size_2)
 
-        second_object_x_inside_first_object_x = x_1 <= x_2
         second_object_x_inside_first_object_ending_x = x_2 <= ending_pos_x_1
 
-        second_object_y_inside_first_object_y = y_1 <= y_2
         second_object_y_inside_first_object_ending_y = y_2 <= ending_pos_y_2
 
-        if not second_object_x_inside_first_object_x:
-            return False
-        elif not second_object_x_inside_first_object_ending_x:
-            return False
-        elif not second_object_y_inside_first_object_y:
+        if not second_object_x_inside_first_object_ending_x:
             return False
         elif not second_object_y_inside_first_object_ending_y:
             return False
