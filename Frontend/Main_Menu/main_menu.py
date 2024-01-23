@@ -1,4 +1,4 @@
-from pygame import SRCALPHA, Surface, QUIT, KEYDOWN, event
+from pygame import SRCALPHA, Surface, QUIT, KEYDOWN, MOUSEWHEEL, event as pyevent
 from Frontend.Helper_Files import WindowInterface, State
 from Frontend.Helper_Files.Interfaces import WindowEventHandler
 from Frontend.Score_Screen import ScoreScreen
@@ -20,15 +20,16 @@ class MainMenu(WindowInterface):
         self.__pos = MainMenuPos(display=display)
         self.__music = music
         self.__search_tracker = SearchTracker()
+        self.__notifier = EventHandlerNotifier()
         self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager,
-                                                    search_tracker=self.__search_tracker)
+                                                    search_tracker=self.__search_tracker, notifier=self.__notifier)
         self.__main_menu_surface = Surface(self.__display.get_window_size, SRCALPHA)
         self.__top_div = Top(display=self.__display, map_info=map_info)
         self.__bottom_div = Bottom(display=self.__display)
         self.__right_div = Right(play_tracker=play_tracker, display=self.__display, state=self.__event_handler.state)
         self.__map_info = map_info
         self.__left_div = Left(display=self.__display, map_info=self.__map_info, state=self.__event_handler.state,
-                               search_tracker=self.__search_tracker)
+                               search_tracker=self.__search_tracker, notifier=self.__notifier)
         self.__background = Background()
         self.__score_screen = ScoreScreen(window_size=self.__display.get_window_size, state=self.__event_handler.state,
                                           map_info=map_info)
@@ -136,11 +137,13 @@ class MainMenuState(State):
 
 
 class MainMenuEventHandler(WindowEventHandler):
-    def __init__(self, main_menu: MainMenu, window_manager, search_tracker: SearchTracker):
+    def __init__(self, main_menu: MainMenu, window_manager, search_tracker: SearchTracker,
+                 notifier):
         self.__main_menu = main_menu
         self.__window_manager = window_manager
         self.__state = MainMenuState()
         self.__search_tracker = search_tracker
+        self.__notifier = notifier
 
     @property
     def state(self):
@@ -168,14 +171,44 @@ class MainMenuEventHandler(WindowEventHandler):
             self.__window_manager.show_play_window()
 
     def check_window_if_quit(self):
-        for event_occurrence in event.get():
+        for event_occurrence in pyevent.get():
             self.__check_if_key_down(event_occurrence=event_occurrence)
-            if event_occurrence.type == QUIT:
-                self.__window_manager.quit()
+            self.__check_if_scroll(event_occurrence=event_occurrence)
+            self.__check_if_quit(event_occurrence=event_occurrence)
 
     def __check_if_key_down(self, event_occurrence):
         if event_occurrence.type == KEYDOWN:
             self.__search_tracker.add_letter(event=event_occurrence)
+
+    def __check_if_quit(self, event_occurrence):
+        if event_occurrence.type == QUIT:
+            self.__window_manager.quit()
+
+    def __check_if_scroll(self, event_occurrence):
+        if event_occurrence.type == MOUSEWHEEL:
+            self.__notifier.set_scroll()
+            self.__notifier.set_event(event=event_occurrence)
+
+
+class EventHandlerNotifier:
+    __scrolled = False
+    __event = None
+
+    @property
+    def scrolled(self):
+        scrolled = self.__scrolled
+        self.__scrolled = False
+        return scrolled
+
+    @property
+    def event(self):
+        return self.__event
+
+    def set_scroll(self):
+        self.__scrolled = True
+
+    def set_event(self, event):
+        self.__event = event
 
 
 class MainMenuPos:

@@ -1,4 +1,4 @@
-from pygame import K_BACKSPACE, K_TAB
+from pygame import K_BACKSPACE, K_TAB, K_DOWN, K_UP
 
 
 class SearchTracker:
@@ -23,6 +23,8 @@ class SearchTracker:
 
     def add_letter(self, event):
         if event.key == K_TAB:
+            return
+        elif event.key == K_DOWN or event.key == K_UP:
             return
         elif event.key == K_BACKSPACE:
             self.__current_search = self.__current_search[:-1]

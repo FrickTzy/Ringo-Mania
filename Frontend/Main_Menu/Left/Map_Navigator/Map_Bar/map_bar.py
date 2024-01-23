@@ -114,6 +114,10 @@ class MapBar:
         return self.__map_bar_info.song_file_name
 
     @property
+    def song_artist(self):
+        return self.__map_bar_info.song_artist
+
+    @property
     def image(self):
         return self.__profile.image
 
@@ -121,6 +125,13 @@ class MapBar:
     def change_top_index(self):
         """This is what to change when top bar not showing"""
         return self.__pos.record_y > 30
+
+    @property
+    def position(self):
+        return self.__pos.record_x, self.__pos.record_y
+
+    def reset_pos(self):
+        self.__pos.reset_y()
 
 
 class MapBarInfo:
@@ -231,11 +242,11 @@ class RecordPos:
 
     @property
     def record_height(self):
-        return 107
+        return self.__pos.record_height
 
     @property
     def chosen_record_width(self):
-        return 780
+        return self.__pos.chosen_record_width
 
     @property
     def record_size(self):
@@ -250,6 +261,9 @@ class RecordPos:
 
     def set_record_y_filter(self, index):
         self.__record_y = self.__pos.filtered_starting_y + self.__pos.starting_record_pos(index=index)
+
+    def reset_y(self):
+        self.__record_y = 0
 
     @property
     def record_y(self):
