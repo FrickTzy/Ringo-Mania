@@ -164,9 +164,12 @@ class MapBarBackgroundPreview:
         name, is_an_anime = image_status
         self.__pos = BackgroundPreviewPos(pos=pos)
         self.__image_checker = MapImage()
-        self.__background_image = image.load(
-            self.__image_checker.get_image(title=name, anime_song=is_an_anime)).convert_alpha()
+        self.__background_image = self.__load_image(title=name, anime_song=is_an_anime)
         self.__final_img = None
+
+    def __load_image(self, title, anime_song):
+        return image.load(
+            self.__image_checker.get_image(title=title, anime_song=anime_song)).convert_alpha()
 
     def show_profile(self, main_menu_surface, is_chosen: bool):
         self.__image_setup(chosen=is_chosen)

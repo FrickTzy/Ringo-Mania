@@ -22,6 +22,9 @@ class MapNavigator:
         self.__state = state
         self.__event_handler = MapNavigatorEventHandler(list_manager=self.__list_manager, pos=self.__pos,
                                                         view=self.__view_counter, notifier=notifier)
+        self.__search_filter = FilteredSearchManager(map_nav_pos=self.__pos, search_tracker=search_tracker,
+                                                     list_manager=self.__list_manager,
+                                                     view_counter=self.__view_counter)
 
     def show(self, main_menu_surface):
         self.__init_leaderboard()
@@ -39,12 +42,12 @@ class MapNavigator:
 
     def __show_all_map_bar(self, main_menu_surface):
         if self.__search_tracker.current_search:
-            self.__filter_map_bar(main_menu_surface=main_menu_surface)
+            self.__search_filter.filter_map_bar(main_menu_surface=main_menu_surface)
         else:
             self.__show_unfiltered_map_bar(main_menu_surface=main_menu_surface)
 
     def __show_unfiltered_map_bar(self, main_menu_surface):
-        self.__reset_filter()
+        self.__search_filter.reset_filter()
         self.__list_manager.using_filter = False
         top_view_index = self.__view_counter.current_top_view
         for index in range(top_view_index - 1, top_view_index + self.__view_counter.MAX_BAR_VIEW):
@@ -52,34 +55,6 @@ class MapNavigator:
                 self.__list_manager.map_bar_list[index].show(main_menu_surface=main_menu_surface)
             except IndexError:
                 break
-
-    def __reset_filter(self):
-        self.__pos.reset_filtered_y()
-        self.__view_counter.reset_filtered_view()
-
-    def __filter_map_bar(self, main_menu_surface):
-        if self.__search_tracker.changed:
-            self.__reset_filter()
-            self.__reset_pos()
-        search = self.__search_tracker.current_search.lower()
-        self.__list_manager.using_filter = True
-        self.__init_filtered_map_bar_list(search=search)
-        top_view_index = self.__view_counter.filtered_top_view
-        for index in range(top_view_index, top_view_index + self.__view_counter.MAX_BAR_VIEW):
-            try:
-                self.__list_manager.filtered_map_bar_list[index].show_filtered(main_menu_surface=main_menu_surface,
-                                                                               index=index)
-            except IndexError:
-                break
-
-    def __reset_pos(self):
-        for map_bar in self.__list_manager.map_bar_list:
-            map_bar.reset_pos()
-
-    def __init_filtered_map_bar_list(self, search: str):
-        self.__list_manager.filtered_map_bar_list = [map_bar for map_bar in self.__list_manager.map_bar_list if
-                                                     search in map_bar.song_file_name.lower() or
-                                                     search in map_bar.song_artist.lower()]
 
     def __init_leaderboard(self):
         if self.__initialized:
@@ -103,9 +78,12 @@ class MapNavigator:
 
     def __init_bar_list(self, song_list):
         for index, song in enumerate(song_list):
-            self.__list_manager.map_bar_list.append(
-                MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos,
-                       state=self.__state, index=index, index_manager=self.__index_manager))
+            self.__append_list(index=index, song=song)
+
+    def __append_list(self, index, song):
+        self.__list_manager.map_bar_list.append(
+            MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos,
+                   state=self.__state, index=index, index_manager=self.__index_manager))
 
     @property
     def current_image(self):
@@ -129,6 +107,45 @@ class MapNavigator:
 
     def update(self):
         self.__index_manager.set_change()
+
+
+class FilteredSearchManager:
+    def __init__(self, map_nav_pos, search_tracker, list_manager, view_counter):
+        self.__search_tracker = search_tracker
+        self.__list_manager = list_manager
+        self.__view_counter = view_counter
+        self.__pos = map_nav_pos
+
+    def filter_map_bar(self, main_menu_surface):
+        if self.__search_tracker.changed:
+            self.reset_filter()
+            self.__reset_pos()
+            self.__update_filtered_list()
+        top_view_index = self.__view_counter.filtered_top_view
+        for index in range(top_view_index, top_view_index + self.__view_counter.MAX_BAR_VIEW):
+            try:
+                self.__list_manager.filtered_map_bar_list[index].show_filtered(main_menu_surface=main_menu_surface,
+                                                                               index=index)
+            except IndexError:
+                break
+
+    def __update_filtered_list(self) -> None:
+        search = self.__search_tracker.current_search.lower()
+        self.__list_manager.using_filter = True
+        self.__init_filtered_map_bar_list(search=search)
+
+    def __reset_pos(self):
+        for map_bar in self.__list_manager.map_bar_list:
+            map_bar.reset_pos()
+
+    def __init_filtered_map_bar_list(self, search: str):
+        self.__list_manager.filtered_map_bar_list = [map_bar for map_bar in self.__list_manager.map_bar_list if
+                                                     search in map_bar.song_file_name.lower() or
+                                                     search in map_bar.song_artist.lower()]
+
+    def reset_filter(self):
+        self.__pos.reset_filtered_y()
+        self.__view_counter.reset_filtered_view()
 
 
 class ViewCounter:

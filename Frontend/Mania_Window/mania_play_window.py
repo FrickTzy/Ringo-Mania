@@ -50,6 +50,7 @@ class ManiaPlayWindow(GameModeWindow):
         self.record.init_record(self.play_tracker.check_plays())
         self.play_tracker.restart()
         self.state.reset_all()
+        self.__setup_finished = False
 
     def show_stats_and_etc(self):
         self.font.update_all_font(self.display.height)
