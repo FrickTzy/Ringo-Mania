@@ -11,7 +11,3 @@ class Left:
 
     def update(self):
         self.__map_navigator.update()
-
-    @property
-    def current_background_image(self):
-        return self.__map_navigator.current_image

@@ -11,10 +11,9 @@ class Background:
         self.__image_checker = MapImage()
         self.__image = None
 
-    def show_background(self, background_image, screen, window_size: tuple):
-        background = transform.scale(background_image, window_size)
-        background.set_alpha(self.__OPACITY)
-        screen.blit(background, (0, 0))
+    def show_background(self, background_image, screen):
+        background_image.set_alpha(self.__OPACITY)
+        screen.blit(background_image, (0, 0))
 
     def __check_if_change_background(self, map_background_status: tuple):
         name, is_an_anime = map_background_status

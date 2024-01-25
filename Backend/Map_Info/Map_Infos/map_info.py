@@ -1,3 +1,4 @@
+from pygame import transform
 from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
@@ -56,8 +57,8 @@ class MapInfo:
     def current_background_image(self):
         return self.__current_background_image
 
-    def set_background(self, image):
-        self.__current_background_image = image
+    def set_background(self, image, window_size):
+        self.__current_background_image = transform.scale(image, window_size)
 
     def set_song_name(self, song_name):
         self.__song_file_name = song_name
