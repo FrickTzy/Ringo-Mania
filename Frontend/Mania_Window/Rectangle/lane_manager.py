@@ -1,4 +1,5 @@
 from Frontend.Mania_Window.Rectangle.lane import Lane
+from .Circles import CircleImage
 from random import randrange, getrandbits
 from Backend.timer import IntervalTimer
 
@@ -15,8 +16,12 @@ class LaneManager:
     def __init__(self, window, display, rectangle_pos, timer: IntervalTimer):
         self.lane_circle_manager = LaneCircleManager(display=display, rectangle_pos=rectangle_pos)
         self.lanes_taken = []
+        self.__circle_image_manager = CircleImage()
         lane_coord = self.lane_circle_manager.circle_position
-        self.lanes: [Lane] = [Lane(lane_coord[0]), Lane(lane_coord[1]), Lane(lane_coord[2]), Lane(lane_coord[3])]
+        self.lanes: [Lane] = [Lane(x=lane_coord[0], circle_image_manager=self.__circle_image_manager),
+                              Lane(x=lane_coord[1], circle_image_manager=self.__circle_image_manager),
+                              Lane(x=lane_coord[2], circle_image_manager=self.__circle_image_manager),
+                              Lane(x=lane_coord[3], circle_image_manager=self.__circle_image_manager)]
         self.window = window
         self.mini_timer: IntervalTimer = timer
         self.set_up_timer_interval()

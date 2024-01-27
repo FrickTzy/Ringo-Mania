@@ -1,22 +1,17 @@
-import pygame
-import os
+from pygame import transform
 from Frontend.Settings import DEFAULT_CIRCLE_SIZE
 
 
 class Circle:
-    def __init__(self, size=DEFAULT_CIRCLE_SIZE, img="Purp.png"):
-        self.__circle_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", img)).convert_alpha(),
-            (size, size))
-        self.__img = img
+    def __init__(self, circle_image_manager, circle_size=DEFAULT_CIRCLE_SIZE):
+        self.__circle_image_manager = circle_image_manager
+        self.__circle_img = transform.scale(self.__circle_image_manager.circle_image, (circle_size, circle_size))
 
     def draw_circles(self, window, x: int, y: int) -> None:
         window.blit(self.__circle_img, (x, y))
 
     def change_size(self, size) -> None:
-        self.__circle_img = pygame.transform.scale(
-            pygame.image.load(os.path.join("Frontend\Mania_Window\Img", self.__img)).convert_alpha(),
-            (size, size))
+        self.__circle_img = transform.scale(self.__circle_image_manager.circle_image, (size, size))
 
     @property
     def circle_img(self):

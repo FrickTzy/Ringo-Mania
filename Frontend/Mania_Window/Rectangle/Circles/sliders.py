@@ -15,8 +15,8 @@ class Sliders(Circle):
     A slider consists of three parts: the starting circle, the main body, and the ending circle.
     """
 
-    def __init__(self, window, lane_x, min_slider_len, circle_size=DEFAULT_CIRCLE_SIZE, img="Purp.png"):
-        super().__init__(circle_size, img)
+    def __init__(self, window, lane_x, min_slider_len, circle_image_manager, circle_size=DEFAULT_CIRCLE_SIZE):
+        super().__init__(circle_image_manager=circle_image_manager, circle_size=circle_size)
         self.y = -100
         self.slider_head_hit_box = Rect(lane_x, self.y, circle_size, circle_size)
         self.slider_body_hit_box = Rect(lane_x + circle_size // 5.39, self.y, circle_size - circle_size // 2.92,

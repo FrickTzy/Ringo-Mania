@@ -3,7 +3,7 @@ from Frontend.Helper_Files import WindowInterface, State
 from Frontend.Helper_Files.Interfaces import WindowEventHandler
 from Frontend.Score_Screen import ScoreScreen
 from Frontend.Settings import Color
-from .background import Background
+from .Helper_Files import MainMenuPos, EventHandlerNotifier, Background
 from .Top import Top
 from .Bottom import Bottom
 from .Right import Right
@@ -189,29 +189,3 @@ class MainMenuEventHandler(WindowEventHandler):
         if event_occurrence.type == MOUSEWHEEL:
             self.__notifier.set_scroll()
             self.__notifier.set_event(event=event_occurrence)
-
-
-class EventHandlerNotifier:
-    __scrolled = False
-    __event = None
-
-    @property
-    def scrolled(self):
-        scrolled = self.__scrolled
-        self.__scrolled = False
-        return scrolled
-
-    @property
-    def event(self):
-        return self.__event
-
-    def set_scroll(self):
-        self.__scrolled = True
-
-    def set_event(self, event):
-        self.__event = event
-
-
-class MainMenuPos:
-    def __init__(self, display):
-        self.__display = display

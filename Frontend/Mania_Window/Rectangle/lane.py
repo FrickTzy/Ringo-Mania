@@ -4,17 +4,20 @@ from Frontend.Mania_Window.Rectangle.Circles.sliders import Sliders
 
 
 class Lane:
-    def __init__(self, x):
+    def __init__(self, x, circle_image_manager):
         self.__x = x
+        self.__circle_image_manager = circle_image_manager
         self.current_circles: list[FallingCircle] = []
-        self.hitting_circle = Circle()
+        self.hitting_circle = Circle(circle_image_manager=circle_image_manager)
         self.sliders: list[Sliders] = []
 
     def add_fall_circle(self, window, size):
-        self.current_circles.append(FallingCircle(window=window, lane_x=self.__x, circle_size=size))
+        self.current_circles.append(FallingCircle(window=window, lane_x=self.__x, circle_size=size,
+                                                  circle_image_manager=self.__circle_image_manager))
 
     def add_sliders(self, window, size, min_len):
-        self.sliders.append(Sliders(window=window, lane_x=self.__x, circle_size=size, min_slider_len=min_len))
+        self.sliders.append(Sliders(window=window, lane_x=self.__x, circle_size=size, min_slider_len=min_len,
+                                    circle_image_manager=self.__circle_image_manager))
 
     def show_fall_circles(self, height, speed, pause: bool):
         for circles in self.current_circles:
@@ -41,9 +44,9 @@ class Lane:
 
     def check_circles_if_hit(self, first_hit_window, last_hit_window):
         for circle in self.current_circles:
-            if last_hit_window >= circle.hit_box.y > first_hit_window:
+            if circle_y := circle.check_if_hit(first_hit_window=first_hit_window, last_hit_window=last_hit_window):
                 self.current_circles.remove(circle)
-                return circle.hit_box.y
+                return circle_y
         return False
 
     def check_sliders_if_out(self):
