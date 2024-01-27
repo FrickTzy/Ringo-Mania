@@ -1,9 +1,9 @@
 from pygame import transform
+from copy import copy
 from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
 
 
 class MapInfo:
-    __current_background_image = None
     changed = True
 
     def __init__(self, song_name: str = None, song_artist: str = "IDK", map_maker: str = "Dudesalp"):
@@ -11,6 +11,7 @@ class MapInfo:
         self.__artist = song_artist
         self.__map_maker = map_maker
         self.__info_checker = MapInfoChecker()
+        self.__image_manager = ImageManager()
 
     @property
     def song_file_name(self):
@@ -53,13 +54,35 @@ class MapInfo:
     def song_info(self):
         return f"{self.song_name} - {self.song_artist}"
 
+    def set_song_name(self, song_name):
+        self.__song_file_name = song_name
+        self.changed = True
+
+    @property
+    def current_background_image(self):
+        return self.__image_manager.current_background_image
+
+    @property
+    def low_opacity_background_image(self):
+        return self.__image_manager.low_opacity_background_image
+
+    def set_background(self, image, window_size):
+        self.__image_manager.set_background(image=image, window_size=window_size)
+
+
+class ImageManager:
+    __current_background_image = None
+    __low_opacity_background_image = None
+
+    @property
+    def low_opacity_background_image(self):
+        return self.__low_opacity_background_image
+
     @property
     def current_background_image(self):
         return self.__current_background_image
 
     def set_background(self, image, window_size):
         self.__current_background_image = transform.scale(image, window_size)
-
-    def set_song_name(self, song_name):
-        self.__song_file_name = song_name
-        self.changed = True
+        self.__low_opacity_background_image = copy(self.__current_background_image)
+        self.__low_opacity_background_image.set_alpha(15)

@@ -8,6 +8,7 @@ class A:
 
     def do_something(self, index):
         sleep(0.1)
+        print(index)
         self.list.append(index)
 
     def print_final(self):
