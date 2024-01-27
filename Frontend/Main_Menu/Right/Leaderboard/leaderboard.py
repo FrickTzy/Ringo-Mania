@@ -1,12 +1,12 @@
 from .Record import Record
-from pygame import Surface, event, MOUSEWHEEL
+from pygame import Surface
 from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Leaderboard:
     __initialized = False
 
-    def __init__(self, play_tracker, display, state):
+    def __init__(self, play_tracker, display, state, notifier):
         self.__play_tracker = play_tracker
         self.__display = display
         self.__pos = Pos(display=display)
@@ -16,7 +16,7 @@ class Leaderboard:
         self.__best_play: Record
         self.__hidden_background = HiddenBackground()
         self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos,
-                                                       view=self.__view_counter)
+                                                       view=self.__view_counter, notifier=notifier)
 
     def show_leaderboard(self, main_menu_surface, background_img):
         self.__init_leaderboard()
@@ -81,10 +81,11 @@ class HiddenBackground:
 
 
 class LeaderboardEventHandler:
-    def __init__(self, record_list: list[Record], pos, view: ViewCounter):
+    def __init__(self, record_list: list[Record], pos, view: ViewCounter, notifier):
         self.__record_list = record_list
         self.__view = view
         self.__pos = pos
+        self.__notifier = notifier
         self.__button_event_handler = ButtonEventHandler()
 
     def check_for_events(self):
@@ -108,9 +109,8 @@ class LeaderboardEventHandler:
             record.check_if_clicked()
 
     def __check_if_scroll(self):
-        for event_occur in event.get():
-            if event_occur.type == MOUSEWHEEL:
-                self.__scroll(event_occur=event_occur)
+        if self.__notifier.scrolled:
+            self.__scroll(event_occur=self.__notifier.event)
 
     def __scroll(self, event_occur):
         if event_occur.y > 0:

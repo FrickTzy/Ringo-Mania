@@ -9,9 +9,8 @@ def smooth_in_animation(seconds_time: float):
 
 
 seconds = 0
-total_output = 1000
+total_output = 255
 
 while seconds < 1.01:
     print(format(smooth_in_animation(seconds_time=seconds) * total_output, ".2f"))
-    seconds += .1
-    sleep(.1)
+    seconds += .02
