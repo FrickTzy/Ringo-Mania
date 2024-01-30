@@ -2,12 +2,12 @@ from pygame import Rect, draw
 from Backend.timer import DelayTimer
 from Frontend.Settings import Color
 from Frontend.Helper_Files.Transition.opacity import Opacity
-from Frontend.Helper_Files.animation import Animation
+from Frontend.Helper_Files.Transition.animation import Animation
 
 
 class FadeEffect:
     __COLOR = Color.BLACK
-    __FADE_LEN_MS = 450
+    __FADE_LEN_MS = 400
     __FADE_SPEED = 15
     __USING_SMOOTH_FADE = True
 

@@ -31,7 +31,13 @@ class MapNavigatorPos:
         return 127
 
     def set_y(self, index):
-        self.__record_starting_y = self.__leaderboard_starting_y - self.starting_record_pos(index=index)
+        self.__record_starting_y = self.get_target_y(index=index)
+
+    def get_target_y(self, index):
+        return self.__leaderboard_starting_y - self.starting_record_pos(index=index)
+
+    def set_exact_y(self, y):
+        self.__record_starting_y = y
 
     @property
     def leaderboard_x(self):
