@@ -14,6 +14,10 @@ class PlayTracker:
     def path(self):
         return path.join("Backend\Map_History", f"{self.map_info.song_name}.rinh")
 
+    @property
+    def name(self):
+        return self.map_info.song_name
+
     def check_plays(self) -> list:
         plays_history = []
         if not path.exists(self.path):

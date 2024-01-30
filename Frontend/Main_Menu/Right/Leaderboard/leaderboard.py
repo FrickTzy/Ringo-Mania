@@ -5,6 +5,7 @@ from Frontend.Helper_Files import ButtonEventHandler
 
 class Leaderboard:
     __initialized = False
+    __map_records_dict = {}
 
     def __init__(self, play_tracker, display, state, notifier):
         self.__play_tracker = play_tracker
@@ -35,14 +36,29 @@ class Leaderboard:
     def __init_leaderboard(self):
         if self.__initialized:
             return
-        play_list = self.__play_tracker.check_plays()
-        if not play_list:
+        if not (play_list := self.__get_records()):
             return
-        self.__best_play = Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos)
-        for play in play_list:
-            self.__record_list.append(
-                Record(play_dict=play, display=self.__display, state=self.__state, pos=self.__pos))
+        self.__best_play = play_list["best play"]
+        for record in play_list["all records"]:
+            self.__record_list.append(record)
         self.__initialized = True
+
+    def __get_records(self):
+        if (name := self.__play_tracker.name) not in self.__map_records_dict:
+            play_list = self.__play_tracker.check_plays()
+            self.__map_records_dict[name] = self.__get_all_map_bars(play_list=play_list)
+        return self.__map_records_dict[name]
+
+    def __get_all_map_bars(self, play_list):
+        record_list = []
+        if not play_list:
+            return {}
+        for play in play_list:
+            record_list.append(Record(play_dict=play, display=self.__display, state=self.__state, pos=self.__pos))
+        return {
+            "best play": Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos),
+            "all records": record_list
+        }
 
     def restart(self):
         self.__initialized = False
