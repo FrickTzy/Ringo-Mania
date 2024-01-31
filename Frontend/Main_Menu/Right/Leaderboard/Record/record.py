@@ -1,7 +1,6 @@
-from pygame import Rect, draw, image, transform
-from os import path
+from pygame import Rect, draw
 from .text_stat import TextStats
-from Frontend.Settings import Color, PLAYER_NAME
+from Frontend.Settings import Color
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 
 
@@ -10,14 +9,14 @@ class Record:
     __OPACITY = 200
     __viewed = False
 
-    def __init__(self, play_dict, display, pos, state):
+    def __init__(self, play_dict, display, pos, state, profile_image):
         self.__pos = RecordPos(display=display, pos=pos)
         self.__play_dict = play_dict
         self.__text_stats = TextStats(play_info=play_dict, pos=self.__pos)
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
         self.__button_handler = ButtonEventHandler()
-        self.__profile = RecordProfile(pos=self.__pos)
+        self.__profile = RecordProfile(pos=self.__pos, profile_image=profile_image)
         self.__state = state
 
     def show(self, main_menu_surface, y: int):
@@ -60,22 +59,30 @@ class Record:
 
     def __update_rect(self, y: int):
         self.__pos.set_record_y(padding=y)
-        self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
-                           self.__pos.record_height)
+        self.__rect.x = self.__pos.record_x
+        self.__rect.y = self.__pos.record_y
+        self.__rect.width = self.__pos.record_width
+        self.__rect.height = self.__pos.record_height
+
+    @property
+    def profile_size_tuple(self):
+        return self.__profile.profile_size_tuple
 
 
 class RecordProfile:
-    def __init__(self, pos):
+    def __init__(self, pos, profile_image):
         self.__pos = ProfilePos(pos=pos)
-        self.__profile = image.load(path.join("Frontend\Main_Menu\Img", f"{PLAYER_NAME}.jpg")).convert_alpha()
+        self.__profile_image = profile_image
 
     def show_profile(self, main_menu_surface):
-        profile_img = transform.scale(self.__profile, self.__pos.size_tuple)
-        main_menu_surface.blit(profile_img, self.__pos.img_coord)
+        main_menu_surface.blit(self.__profile_image.profile_image, self.__pos.img_coord)
 
     def show_static_profile(self, main_menu_surface, y: int):
-        profile_img = transform.scale(self.__profile, self.__pos.size_tuple)
-        main_menu_surface.blit(profile_img, (self.__pos.img_coord[0], self.__pos.y(y=y)))
+        main_menu_surface.blit(self.__profile_image.profile_image, (self.__pos.img_coord[0], self.__pos.y(y=y)))
+
+    @property
+    def profile_size_tuple(self):
+        return self.__pos.size_tuple
 
 
 class ProfilePos:

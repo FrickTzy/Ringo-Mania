@@ -11,9 +11,10 @@ class TextStats:
         self.__play_info: dict = play_info
 
     def show_text(self, main_menu_surface):
-        player_name = self.__font.font(height=self.__pos.height).render(PLAYER_NAME, True, self.__COLOR)
-        score = self.__font.font(height=self.__pos.height).render(f"{self.__play_info['score']}", True, self.__COLOR)
-        accuracy = self.__font.font(height=self.__pos.height).render(
+        self.__font.check_if_change_font(height=self.__pos.height)
+        player_name = self.__font.font.render(PLAYER_NAME, True, self.__COLOR)
+        score = self.__font.font.render(f"{self.__play_info['score']}", True, self.__COLOR)
+        accuracy = self.__font.font.render(
             f"{format(float(str(self.__play_info['accuracy']).removesuffix('%')), '.2f')}%",
             True, self.__COLOR)
         main_menu_surface.blit(player_name, self.__pos.name_pos())
@@ -21,10 +22,11 @@ class TextStats:
         main_menu_surface.blit(accuracy, self.__pos.acc_pos())
 
     def show_static_text(self, main_menu_surface, y):
-        player_name = self.__font.font(height=self.__pos.height).render(PLAYER_NAME, True, self.__COLOR)
-        score = self.__font.font(height=self.__pos.height).render(str(self.__play_info["score"]), True, self.__COLOR)
-        accuracy = self.__font.font(height=self.__pos.height).render(str(self.__play_info["accuracy"]), True,
-                                                                     self.__COLOR)
+        self.__font.check_if_change_font(height=self.__pos.height)
+        player_name = self.__font.font.render(PLAYER_NAME, True, self.__COLOR)
+        score = self.__font.font.render(str(self.__play_info["score"]), True, self.__COLOR)
+        accuracy = self.__font.font.render(str(self.__play_info["accuracy"]), True,
+                                           self.__COLOR)
         main_menu_surface.blit(player_name, self.__pos.name_pos(y=y))
         main_menu_surface.blit(score, self.__pos.score_pos(y=y))
         main_menu_surface.blit(accuracy, self.__pos.acc_pos(y=y))
@@ -32,13 +34,23 @@ class TextStats:
 
 class Font:
     __FONT_RATIO = 50
+    __current_height = 0
 
     def __init__(self):
         self.__font = font.SysFont("arialblack", 30)
 
-    def font(self, height):
-        self.__font = font.SysFont("arialblack", self.__font_size(height=height))
+    @property
+    def font(self):
         return self.__font
+
+    def __set_font(self, height):
+        self.__font = font.SysFont("arialblack", self.__font_size(height=height))
+
+    def check_if_change_font(self, height):
+        if self.__current_height == height:
+            return
+        self.__set_font(height=height)
+        self.__current_height = height
 
     def __font_size(self, height):
         return int(height // self.__FONT_RATIO)

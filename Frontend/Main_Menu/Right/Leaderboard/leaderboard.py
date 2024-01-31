@@ -1,4 +1,4 @@
-from .Record import Record
+from .Record import Record, RecordProfileImage
 from pygame import Surface
 from Frontend.Helper_Files import ButtonEventHandler
 
@@ -18,6 +18,7 @@ class Leaderboard:
         self.__hidden_background = HiddenBackground()
         self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos,
                                                        view=self.__view_counter, notifier=notifier)
+        self.__profile_image = RecordProfileImage()
 
     def show_leaderboard(self, main_menu_surface, background_img):
         self.__init_leaderboard()
@@ -41,6 +42,7 @@ class Leaderboard:
         self.__best_play = play_list["best play"]
         for record in play_list["all records"]:
             self.__record_list.append(record)
+        self.change_record_size()
         self.__initialized = True
 
     def __get_records(self):
@@ -54,11 +56,18 @@ class Leaderboard:
         if not play_list:
             return {}
         for play in play_list:
-            record_list.append(Record(play_dict=play, display=self.__display, state=self.__state, pos=self.__pos))
+            record_list.append(Record(play_dict=play, display=self.__display, state=self.__state, pos=self.__pos,
+                                      profile_image=self.__profile_image))
         return {
-            "best play": Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos),
+            "best play": Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos,
+                                profile_image=self.__profile_image),
             "all records": record_list
         }
+
+    def change_record_size(self):
+        if not self.__record_list:
+            return
+        self.__profile_image.set_size(self.__record_list[0].profile_size_tuple)
 
     def restart(self):
         self.__initialized = False
