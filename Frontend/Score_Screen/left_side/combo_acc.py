@@ -10,18 +10,19 @@ class ComboAcc:
         self.__font = Font()
 
     def show(self, screen, combo, acc):
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__show_combo(screen=screen, combo=combo)
         self.__show_accuracy(screen=screen, acc=acc)
 
     def __show_combo(self, screen, combo) -> None:
-        text = self.__font.font(height=self.__pos.height).render(f"{combo}x", True, self.__COLOR)
-        label = self.__font.label_font(height=self.__pos.height).render("Combo", True, self.__COLOR)
+        text = self.__font.value_font.render(f"{combo}x", True, self.__COLOR)
+        label = self.__font.label_font.render("Combo", True, self.__COLOR)
         screen.blit(text, self.__pos.combo_text_pos)
         screen.blit(label, self.__pos.combo_label_pos)
 
     def __show_accuracy(self, screen, acc) -> None:
-        text = self.__font.font(height=self.__pos.height).render(f"{acc}", True, self.__COLOR)
-        label = self.__font.label_font(height=self.__pos.height).render("Acc", True, self.__COLOR)
+        text = self.__font.value_font.render(f"{acc}", True, self.__COLOR)
+        label = self.__font.label_font.render("Acc", True, self.__COLOR)
         screen.blit(label, self.__pos.acc_label_pos)
         if self.__check_if_acc_is_small(acc=acc):
             screen.blit(text, self.__pos.small_acc_text_pos())
@@ -98,19 +99,38 @@ class Pos:
         return self.__pos.height
 
 
-def combo_text_pos(self) -> tuple[int, int]:
-    return self.__combo_x, self.__bottom_text_y
-
-
 class Font:
     __FONT_RATIO = 16
     __LABEL_RATIO = 35
+    __current_height = 0
 
-    def font(self, height):
-        return font.SysFont("arialblack", self.__font_size(height=height))
+    def __init__(self):
+        self.__value_font = font.SysFont("arialblack", 20)
+        self.__label_font = font.SysFont("arialblack", 30)
 
-    def label_font(self, height):
-        return font.SysFont("arialblack", self.__label_size(height=height))
+    def __update_font(self, height: int):
+        self.__set_label_font(height=height)
+        self.__set_value_font(height=height)
+
+    def check_if_update_font(self, height: int):
+        if self.__current_height == height:
+            return
+        self.__update_font(height=height)
+        self.__current_height = height
+
+    def __set_label_font(self, height):
+        self.__label_font = font.SysFont("arialblack", self.__label_size(height=height))
+
+    def __set_value_font(self, height):
+        self.__value_font = font.SysFont("arialblack", self.__font_size(height=height))
+
+    @property
+    def value_font(self):
+        return self.__value_font
+
+    @property
+    def label_font(self):
+        return self.__label_font
 
     def __font_size(self, height: int):
         return height // self.__FONT_RATIO

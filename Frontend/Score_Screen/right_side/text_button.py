@@ -15,7 +15,7 @@ class TextButton:
 
     def show_text(self, screen) -> None:
         self.__update_surface(screen=screen)
-        self.__font.update_font(height=self.__pos.height)
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__run_text()
 
     def __update_surface(self, screen):

@@ -12,13 +12,14 @@ class MapBarText:
         self.__map_info = map_info
 
     def show_text(self, main_menu_surface, is_chosen: bool):
+        self.__font.check_if_change_font(height=self.__pos.height)
         self.__show_song_name_text(main_menu_surface=main_menu_surface, is_chosen=is_chosen)
         self.__show_song_artist_text(main_menu_surface=main_menu_surface, is_chosen=is_chosen)
 
     def __show_song_name_text(self, main_menu_surface, is_chosen: bool = False):
         song_name = self.__map_info.song_name.removesuffix(".mp3")
-        song_name_text = self.__font.song_font(height=self.__pos.height).render(song_name,
-                                                                                True, self.__COLOR)
+        song_name_text = self.__font.song_font.render(song_name,
+                                                      True, self.__COLOR)
         self.__check_if_blur(text_object=song_name_text, not_blur=is_chosen)
         if is_chosen:
             main_menu_surface.blit(song_name_text,
@@ -31,8 +32,8 @@ class MapBarText:
 
     def __show_song_artist_text(self, main_menu_surface, is_chosen: bool = False):
         song_artist = self.__map_info.song_artist
-        song_artist_text = self.__font.artist_font(height=self.__pos.height).render(song_artist,
-                                                                                    True, self.__COLOR)
+        song_artist_text = self.__font.artist_font.render(song_artist,
+                                                          True, self.__COLOR)
         self.__check_if_blur(text_object=song_artist_text, not_blur=is_chosen)
         if is_chosen:
             main_menu_surface.blit(song_artist_text,
@@ -53,18 +54,29 @@ class MapBarText:
 class Font:
     __SONG_FONT_RATIO = 43
     __ARTIST_FONT_RATIO = 60
+    __current_height = 0
 
     def __init__(self):
         self.__song_font = font.SysFont("arialblack", 30)
         self.__artist_font = font.SysFont("arialblack", 20)
 
-    def song_font(self, height):
-        self.__song_font = font.SysFont("arialblack", self.__song_font_size(height=height))
+    @property
+    def song_font(self):
         return self.__song_font
 
-    def artist_font(self, height):
-        self.__artist_font = font.SysFont("arialblack", self.__artist_font_size(height=height))
+    @property
+    def artist_font(self):
         return self.__artist_font
+
+    def __set_all_font(self, height):
+        self.__song_font = font.SysFont("arialblack", self.__song_font_size(height=height))
+        self.__artist_font = font.SysFont("arialblack", self.__artist_font_size(height=height))
+
+    def check_if_change_font(self, height):
+        if self.__current_height == height:
+            return
+        self.__set_all_font(height=height)
+        self.__current_height = height
 
     def __song_font_size(self, height):
         return int(height // self.__SONG_FONT_RATIO)

@@ -32,7 +32,7 @@ class SearchBar:
         return self.__COLOR
 
     def __update_text(self, current_search):
-        self.__font.update_font(height=self.__pos.height)
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__set_current_text(current_search=current_search)
 
     def __set_current_text(self, current_search):
@@ -55,11 +55,18 @@ class SearchBar:
 
 class Font:
     __MAP_MAKER_FONT_RATIO = 49
+    __current_height = 0
 
     def __init__(self):
         self.__font = font.SysFont("Arialblack", 20)
 
-    def update_font(self, height) -> None:
+    def check_if_update_font(self, height) -> None:
+        if self.__current_height == height:
+            return
+        self.__update_font(height=height)
+        self.__current_height = height
+
+    def __update_font(self, height) -> None:
         self.__font = font.SysFont("Arialblack", self.__font_size(height=height))
 
     @property

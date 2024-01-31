@@ -13,7 +13,7 @@ class Text:
         self.__pos = TextPos(display=display)
 
     def show_text(self, surface):
-        self.__font.update_font(height=self.__pos.height)
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__show_song_name(surface=surface)
         self.__show_song_artist(surface=surface)
 
@@ -41,6 +41,7 @@ class Text:
 
 class Font:
     __FONT_RATIO = 26.67
+    __current_height = 0
 
     def __init__(self):
         self.__font = font.SysFont("arialblack", 30)
@@ -49,8 +50,14 @@ class Font:
     def font(self):
         return self.__font
 
-    def update_font(self, height) -> None:
+    def __update_font(self, height) -> None:
         self.__font = font.SysFont("arialblack", self.__font_size(height=height))
+
+    def check_if_update_font(self, height):
+        if self.__current_height == height:
+            return
+        self.__update_font(height=height)
+        self.__current_height = height
 
     def __font_size(self, height):
         return int(height // self.__FONT_RATIO)

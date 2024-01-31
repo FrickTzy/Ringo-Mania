@@ -16,7 +16,7 @@ class AccText:
 
     def show_text(self, screen_surface, stats: dict) -> None:
         self.__update_surface(screen_surface=screen_surface)
-        self.__font.update_font(height=self.__pos.height)
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__blit_score(score=stats["score"])
         self.__blit_stats(stats=stats["acc_dict"])
         self.__combo_acc.show(screen=screen_surface, acc=stats["accuracy"], combo=stats["highest_combo"])
@@ -68,16 +68,23 @@ class Font:
     __FONT_RATIO = 15
     __SCORE_FONT_RATIO = 20
     __SCORE_LABEL_RATIO = 40
+    __current_height = 0
 
     def __init__(self):
         self.font = font.SysFont("arialblack", 15, bold=True)
         self.score_font = font.SysFont("arialblack", 15, bold=True)
         self.score_label_font = font.SysFont("arialblack", 12, bold=True)
 
-    def update_font(self, height: int):
+    def __update_font(self, height: int):
         self.font = font.SysFont("arialblack", self.__font_size(height=height))
         self.score_font = font.SysFont("arialblack", self.__score_size(height=height))
         self.score_label_font = font.SysFont("arialblack", self.__score_label_size(height=height))
+
+    def check_if_update_font(self, height: int):
+        if self.__current_height == height:
+            return
+        self.__update_font(height=height)
+        self.__current_height = height
 
     def __font_size(self, height: int):
         return height // self.__FONT_RATIO
