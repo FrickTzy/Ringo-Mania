@@ -5,7 +5,8 @@ from .Map_Bar.map_index_manager import MapIndexManager
 from .Search_Bar import SearchBar
 from .Event_Handler import MapNavigatorEventHandler
 from .Search_Manager import SearchManager
-from .Helper_Files import MapBarListManager, MapNavigatorPos, ViewCounter, MapNavSmoothYInAnimation
+from .Helper_Files import MapBarListManager, MapNavigatorPos, ViewCounter
+from .Animation import AnimationManager
 from Backend.Map_Info.Map_Infos.map_info import MapInfo
 
 
@@ -30,13 +31,13 @@ class MapNavigator:
                                                list_manager=self.__list_manager, display=display,
                                                index_manager=self.__index_manager, pos=self.__pos,
                                                view_counter=self.__view_counter, state=state)
-        self.__y_animation = MapNavSmoothYInAnimation(pos=self.__pos, view=self.__view_counter,
-                                                      list_manager=self.__list_manager)
+        self.__animation_manager = AnimationManager(view=self.__view_counter, pos=self.__pos,
+                                                    list_manager=self.__list_manager)
 
     def show(self, main_menu_surface):
         self.__initializer.init_leaderboard()
         self.__check_if_change_index()
-        self.__check_for_animation()
+        self.__animation_manager.check_for_animation()
         self.__show_all_map_bar(main_menu_surface=main_menu_surface)
         self.__search_bar.show(surface=main_menu_surface, selected_map_bar_pos=self.__list_manager.map_bar_list[
             self.__index_manager.current_index].position, map_bar_size=self.__pos.chosen_size)
@@ -50,13 +51,7 @@ class MapNavigator:
             self.__initializer.set_initialized()
             return
         elif self.__index_manager.changed:
-            top_view = self.__index_manager.current_index - 2
-            current_y = self.__pos.record_starting_y
-            target_y = self.__pos.get_target_y(index=top_view)
-            self.__y_animation.setup(current_y=current_y, target_y=target_y)
-
-    def __check_for_animation(self):
-        self.__y_animation.check_if_change_y()
+            self.__animation_manager.setup(current_index=self.__index_manager.current_index)
 
     def __show_all_map_bar(self, main_menu_surface):
         if self.__search_manager.check_if_search(main_menu_surface=main_menu_surface):
@@ -78,11 +73,12 @@ class MapNavigator:
         if not self.__search_tracker.changed:
             return
         self.__set_top_view()
+        self.__pos.set_y(index=self.__view_counter.current_top_view)
         self.__reset_pos()
 
     def __reset_pos(self):
         for map_bar in self.__list_manager.map_bar_list:
-            map_bar.reset_pos()
+            map_bar.update_rect()
 
     def __set_top_view(self):
         self.__view_counter.current_top_view = self.__index_manager.current_index - 2
@@ -95,6 +91,9 @@ class MapNavigator:
 
     def update(self):
         self.__index_manager.set_change()
+
+    def __debug(self):
+        print(self.__pos.record_starting_y, self.__pos.filtered_starting_y)
 
 
 class MapNavInitializer:

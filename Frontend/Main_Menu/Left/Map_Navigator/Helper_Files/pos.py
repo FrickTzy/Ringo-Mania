@@ -82,6 +82,9 @@ class MapNavigatorPos:
         else:
             self.__filtered_starting_y -= self.__SCROLL_SPEED
 
+    def set_exact_filtered_y(self, y):
+        self.__filtered_starting_y = y
+
     @property
     def get_window_size(self):
         return self.__display.get_window_size

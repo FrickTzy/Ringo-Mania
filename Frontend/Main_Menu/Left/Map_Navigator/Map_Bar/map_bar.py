@@ -28,7 +28,7 @@ class MapBar:
         self.__timer = DelayTimer()
 
     def show(self, main_menu_surface):
-        self.__update_rect()
+        self.update_rect()
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
@@ -95,7 +95,7 @@ class MapBar:
             r, g, b = self.__COLOR
             draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
 
-    def __update_rect(self):
+    def update_rect(self):
         self.__pos.set_record_y()
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
