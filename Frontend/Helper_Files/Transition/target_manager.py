@@ -19,6 +19,10 @@ class TargetManager:
     def current_value(self):
         return self.__current_value
 
+    @property
+    def target_value(self):
+        return self.__target_value
+
     def check_if_equal_target_value(self, value):
         if value == self.__target_value:
             return True

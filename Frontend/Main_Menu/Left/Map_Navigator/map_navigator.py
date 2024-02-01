@@ -30,7 +30,8 @@ class MapNavigator:
                                                list_manager=self.__list_manager, display=display,
                                                index_manager=self.__index_manager, pos=self.__pos,
                                                view_counter=self.__view_counter, state=state)
-        self.__y_animation = MapNavSmoothYInAnimation(pos=self.__pos)
+        self.__y_animation = MapNavSmoothYInAnimation(pos=self.__pos, view=self.__view_counter,
+                                                      list_manager=self.__list_manager)
 
     def show(self, main_menu_surface):
         self.__initializer.init_leaderboard()
@@ -49,9 +50,9 @@ class MapNavigator:
             self.__initializer.set_initialized()
             return
         elif self.__index_manager.changed:
-            self.__set_top_view()
+            top_view = self.__index_manager.current_index - 2
             current_y = self.__pos.record_starting_y
-            target_y = self.__pos.get_target_y(index=self.__view_counter.current_top_view)
+            target_y = self.__pos.get_target_y(index=top_view)
             self.__y_animation.setup(current_y=current_y, target_y=target_y)
 
     def __check_for_animation(self):
@@ -63,8 +64,7 @@ class MapNavigator:
         self.__show_unfiltered_map_bar(main_menu_surface=main_menu_surface)
 
     def __show_unfiltered_map_bar(self, main_menu_surface):
-        if self.__search_tracker.changed:
-            self.__reset_pos()
+        self.__check_if_init()
         self.__search_manager.reset_search()
         self.__list_manager.using_filter = False
         top_view_index = self.__view_counter.current_top_view
@@ -73,6 +73,12 @@ class MapNavigator:
                 self.__list_manager.map_bar_list[index].show(main_menu_surface=main_menu_surface)
             except IndexError:
                 break
+
+    def __check_if_init(self):
+        if not self.__search_tracker.changed:
+            return
+        self.__set_top_view()
+        self.__reset_pos()
 
     def __reset_pos(self):
         for map_bar in self.__list_manager.map_bar_list:
