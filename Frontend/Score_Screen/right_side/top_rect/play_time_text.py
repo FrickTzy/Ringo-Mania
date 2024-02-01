@@ -10,9 +10,12 @@ class PlayTimeText:
         self.__font = Font()
 
     def show(self, screen, date_time: dict):
-        time_text = self.__font.date_time_font(height=self.__pos.height).render(
-            f"Played on {date_time['time']} - {date_time['date']}", True,
-            self.__COLOR)
+        self.__font.check_if_update_font(height=self.__pos.height)
+        self.__show_text(screen=screen, date_time=date_time)
+
+    def __show_text(self, screen, date_time: dict):
+        time_text = self.__font.date_time_font.render(f"Played on {date_time['time']} - {date_time['date']}", True,
+                                                      self.__COLOR)
         screen.blit(time_text, self.__pos.date_time_pos)
 
 
@@ -41,9 +44,23 @@ class PlayTimeTextPos:
 
 class Font:
     __TIME_FONT_RATIO = 50
+    __current_height = 0
 
-    def date_time_font(self, height: int):
-        return font.SysFont("Arialblack", self.__song_font_size(height=height))
+    def __init__(self):
+        self.__date_time_font = font.SysFont("Arialblack", 20)
 
-    def __song_font_size(self, height: int):
+    @property
+    def date_time_font(self):
+        return self.__date_time_font
+
+    def __update_font(self, height: int):
+        self.__date_time_font = font.SysFont("Arialblack", self.__time_font_size(height=height))
+
+    def check_if_update_font(self, height: int):
+        if self.__current_height == height:
+            return
+        self.__update_font(height=height)
+        self.__current_height = height
+
+    def __time_font_size(self, height: int):
         return height // self.__TIME_FONT_RATIO

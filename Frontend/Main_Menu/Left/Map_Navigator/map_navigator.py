@@ -63,6 +63,8 @@ class MapNavigator:
         self.__show_unfiltered_map_bar(main_menu_surface=main_menu_surface)
 
     def __show_unfiltered_map_bar(self, main_menu_surface):
+        if self.__search_tracker.changed:
+            self.__reset_pos()
         self.__search_manager.reset_search()
         self.__list_manager.using_filter = False
         top_view_index = self.__view_counter.current_top_view
@@ -71,6 +73,10 @@ class MapNavigator:
                 self.__list_manager.map_bar_list[index].show(main_menu_surface=main_menu_surface)
             except IndexError:
                 break
+
+    def __reset_pos(self):
+        for map_bar in self.__list_manager.map_bar_list:
+            map_bar.reset_pos()
 
     def __set_top_view(self):
         self.__view_counter.current_top_view = self.__index_manager.current_index - 2

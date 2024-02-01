@@ -4,27 +4,19 @@ from os import path
 
 class AccLogo:
     __HIDE_PERFECT = False
+    __current_logo_size = 0
 
     def __init__(self, screen_pos, opacity):
         self.__pos = AccLogoPos(screen_pos=screen_pos)
         self.__opacity = opacity
-        self.__miss_img = transform.scale(
-            image.load(path.join("Frontend\Mania_Window\Img", "hit0.png")).convert_alpha(),
-            self.__pos.logo_size_tuple)
-        self.__okay_img = transform.scale(
-            image.load(path.join("Frontend\Mania_Window\Img", "hit50.png")).convert_alpha(),
-            self.__pos.logo_size_tuple)
-        self.__good_img = transform.scale(
-            image.load(path.join("Frontend\Mania_Window\Img", "hit100.png")).convert_alpha(),
-            self.__pos.logo_size_tuple)
-        self.__perfect_img = transform.scale(
-            image.load(path.join("Frontend\Mania_Window\Img", "hit300.png")).convert_alpha(),
-            self.__pos.logo_size_tuple)
-        self.__amazing_img = transform.scale(
-            image.load(path.join("Frontend\Mania_Window\Img", "hit320.png")).convert_alpha(),
-            self.__pos.logo_size_tuple)
+        self.__miss_img = image.load(path.join("Frontend\Mania_Window\Img", "hit0.png")).convert_alpha()
+        self.__okay_img = image.load(path.join("Frontend\Mania_Window\Img", "hit50.png")).convert_alpha()
+        self.__good_img = image.load(path.join("Frontend\Mania_Window\Img", "hit100.png")).convert_alpha()
+        self.__perfect_img = image.load(path.join("Frontend\Mania_Window\Img", "hit300.png")).convert_alpha()
+        self.__amazing_img = image.load(path.join("Frontend\Mania_Window\Img", "hit320.png")).convert_alpha()
 
     def show_logo(self, screen_surface: Surface):
+        self.__check_if_update_logo()
         self.__set_logo_opacity()
         self.__blit_logo(screen_surface=screen_surface)
 
@@ -41,6 +33,12 @@ class AccLogo:
         self.__good_img.set_alpha(self.__opacity.opacity)
         self.__okay_img.set_alpha(self.__opacity.opacity)
         self.__miss_img.set_alpha(self.__opacity.opacity)
+
+    def __check_if_update_logo(self):
+        if self.__current_logo_size == self.__pos.logo_size_tuple[0]:
+            return
+        self.__update_logo_size()
+        self.__current_logo_size = self.__pos.logo_size_tuple[0]
 
     def __update_logo_size(self):
         self.__miss_img = transform.scale(

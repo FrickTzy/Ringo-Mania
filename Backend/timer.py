@@ -119,6 +119,12 @@ class IntervalTimer:
             self.last_time = current_time
             return True
         return False
+    
+    def debug(self):
+        print("Debugging: ")
+        print(f"current time: {time.get_ticks()}")
+        print(f"last time: {self.last_time}")
+        print(f"interval: {self.interval}\n")
 
     def change_interval(self, interval):
         self.interval = interval

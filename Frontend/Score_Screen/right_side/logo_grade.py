@@ -3,6 +3,10 @@ from os import path
 
 
 class LogoGrade:
+    __current_size = 0
+    __current_img = None
+    __current_grade = None
+
     def __init__(self, pos):
         self.__pos = GradePosSize(pos=pos)
         self.__f_img = image.load(path.join("Frontend\Mania_Window\Img", "F.png")).convert_alpha()
@@ -23,8 +27,14 @@ class LogoGrade:
         }
 
     def show_grade(self, grade: str, screen: Surface):
-        img_grade = transform.scale(self.__grades[grade], self.__pos.size_tuple)
-        screen.blit(img_grade, self.__pos.img_coord)
+        self.__check_if_change_current_img(grade=grade)
+        screen.blit(self.__current_img, self.__pos.img_coord)
+
+    def __check_if_change_current_img(self, grade: str):
+        if self.__current_size == self.__pos.size_tuple[0] and self.__current_grade == grade:
+            return
+        self.__current_img = transform.scale(self.__grades[grade], self.__pos.size_tuple)
+        self.__current_size, self.__current_grade = self.__pos.size_tuple[0], grade
 
 
 class GradePosSize:

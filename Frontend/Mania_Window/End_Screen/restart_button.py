@@ -16,7 +16,7 @@ class RestartButton:
 
     def show_text(self, end_screen) -> None:
         self.__update_surface(end_screen=end_screen)
-        self.__font.update_font(height=self.__pos.height)
+        self.__font.check_if_update_font(height=self.__pos.height)
         self.__run_text()
 
     def __update_surface(self, end_screen):

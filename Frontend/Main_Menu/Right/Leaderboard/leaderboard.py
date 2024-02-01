@@ -42,6 +42,7 @@ class Leaderboard:
         self.__best_play = play_list["best play"]
         for record in play_list["all records"]:
             self.__record_list.append(record)
+        self.__pos.reset_record_starting_y()
         self.change_record_size()
         self.__initialized = True
 
@@ -172,6 +173,9 @@ class Pos:
     @property
     def __leaderboard_starting_y(self):
         return 222
+
+    def reset_record_starting_y(self):
+        self.__record_starting_y = self.__leaderboard_starting_y
 
     @property
     def leaderboard_x(self):
