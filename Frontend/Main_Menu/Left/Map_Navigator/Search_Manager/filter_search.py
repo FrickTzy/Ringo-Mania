@@ -6,10 +6,16 @@ class FilteredSearchManager:
         self.__pos = map_nav_pos
 
     def filter_map_bar(self, main_menu_surface):
+        self.__check_if_search_changed()
+        self.__show_filtered_map_bar(main_menu_surface=main_menu_surface)
+
+    def __check_if_search_changed(self):
         if self.__search_tracker.changed:
             self.reset_filter()
             self.__reset_pos()
             self.__update_filtered_list()
+
+    def __show_filtered_map_bar(self, main_menu_surface):
         top_view_index = self.__view_counter.filtered_top_view
         for index in range(top_view_index, top_view_index + self.__view_counter.MAX_BAR_VIEW):
             try:

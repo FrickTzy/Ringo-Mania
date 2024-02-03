@@ -11,7 +11,7 @@ from Backend.Map_Info.Map_Infos.map_info import MapInfo
 
 
 class MapNavigator:
-    def __init__(self, map_info: MapInfo, display, state, search_tracker, notifier):
+    def __init__(self, map_info: MapInfo, display, state, search_tracker, notifier, sfx_manager):
         self.__map_info = map_info
         self.__song_checker = SongChecker()
         self.__search_tracker = search_tracker
@@ -23,7 +23,8 @@ class MapNavigator:
         self.__pos = MapNavigatorPos(display=display)
         self.__state = state
         self.__event_handler = MapNavigatorEventHandler(list_manager=self.__list_manager, pos=self.__pos,
-                                                        view=self.__view_counter, notifier=notifier)
+                                                        view=self.__view_counter, notifier=notifier,
+                                                        sfx_manager=sfx_manager)
         self.__search_manager = SearchManager(map_nav_pos=self.__pos, search_tracker=search_tracker,
                                               list_manager=self.__list_manager,
                                               view_counter=self.__view_counter)

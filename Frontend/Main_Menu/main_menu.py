@@ -3,7 +3,7 @@ from Frontend.Helper_Files import WindowInterface, State
 from Frontend.Helper_Files.Interfaces import WindowEventHandler
 from Frontend.Score_Screen import ScoreScreen
 from Frontend.Settings import Color
-from .Helper_Files import MainMenuPos, EventHandlerNotifier, Background
+from .Helper_Files import MainMenuPos, EventHandlerNotifier, Background, SFXManager
 from .Top import Top
 from .Bottom import Bottom
 from .Right import Right
@@ -19,6 +19,7 @@ class MainMenu(WindowInterface):
         self.__display = display
         self.__pos = MainMenuPos(display=display)
         self.__music = music
+        self.__sfx_manager = SFXManager()
         self.__search_tracker = SearchTracker()
         self.__notifier = EventHandlerNotifier()
         self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager,
@@ -30,7 +31,8 @@ class MainMenu(WindowInterface):
                                  notifier=self.__notifier)
         self.__map_info = map_info
         self.__left_div = Left(display=self.__display, map_info=self.__map_info, state=self.__event_handler.state,
-                               search_tracker=self.__search_tracker, notifier=self.__notifier)
+                               search_tracker=self.__search_tracker, notifier=self.__notifier,
+                               sfx_manager=self.__sfx_manager)
         self.__background = Background()
         self.__score_screen = ScoreScreen(window_size=self.__display.get_window_size, state=self.__event_handler.state,
                                           map_info=map_info)
