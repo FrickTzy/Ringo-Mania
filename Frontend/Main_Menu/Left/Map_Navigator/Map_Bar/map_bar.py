@@ -1,9 +1,11 @@
-from pygame import Rect, draw, image, transform
+from pygame import Rect, draw
 from Frontend.Settings import Color
-from Backend.Map_Info.Map_Infos.map_info import MapInfo
-from Backend.Map_Info import MapImage
+from .map_bar_preview import MapBarBackgroundPreview
 from .map_bar_text import MapBarText
 from .map_bar_event_handler import MapBarEventHandler
+from .map_bar_info import MapBarInfo
+from .map_bar_pos import MapBarPos
+from .map_bar_animation import MapBarAnimation
 
 
 class MapBar:
@@ -14,7 +16,7 @@ class MapBar:
 
     def __init__(self, song_name: str, play_rank: str, display, pos, state, index_manager, index):
         self.__index = index
-        self.__pos = RecordPos(display=display, pos=pos, index=self.__index)
+        self.__pos = MapBarPos(display=display, pos=pos, index=self.__index)
         self.__map_bar_info = MapBarInfo(song_name=song_name, play_rank=play_rank)
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
@@ -22,11 +24,13 @@ class MapBar:
         self.__state = state
         self.__text = MapBarText(map_info=self.__map_bar_info, pos=self.__pos)
         self.__index_manager = index_manager
+        self.__map_bar_animation = MapBarAnimation(is_chosen=self.is_chosen, map_bar_pos=self.__pos)
         self.__event_handler = MapBarEventHandler(index=self.__index, index_manager=index_manager, pos=self.__pos,
                                                   state=state)
 
     def show(self, main_menu_surface):
         self.update_rect()
+        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen)
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
@@ -35,6 +39,7 @@ class MapBar:
 
     def show_filtered(self, main_menu_surface, index: int):
         self.__update_filtered_rect(index=index)
+        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen)
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
@@ -75,9 +80,9 @@ class MapBar:
             self.__viewed = True
 
     def __draw_rect(self, main_menu_surface, is_chosen: bool = False):
+        self.__rect.width = self.__pos.current_map_bar_width
         if is_chosen:
             r, g, b = self.__CHOSEN_COLOR
-            self.__rect.width = self.__pos.chosen_record_width
             draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
         else:
             r, g, b = self.__COLOR
@@ -123,154 +128,3 @@ class MapBar:
 
     def reset_pos(self):
         self.__pos.reset_y()
-
-
-class MapBarInfo:
-    def __init__(self, song_name, play_rank, star_rating=3.0):
-        self.__map_info = MapInfo(song_name=song_name)
-        self.__play_rank = play_rank
-        self.__star_rating = star_rating
-
-    @property
-    def song_name(self):
-        return self.__map_info.song_name
-
-    @property
-    def song_file_name(self):
-        return self.__map_info.song_file_name
-
-    @property
-    def song_artist(self):
-        return self.__map_info.song_artist
-
-    @property
-    def song_name_status(self):
-        return self.__map_info.map_background_status
-
-
-class MapBarBackgroundPreview:
-    __OPACITY = 100
-
-    def __init__(self, pos, image_status):
-        name, is_an_anime = image_status
-        self.__pos = BackgroundPreviewPos(pos=pos)
-        self.__image_checker = MapImage()
-        self.__background_image = self.__load_image(title=name, anime_song=is_an_anime)
-        self.__final_img = None
-
-    def __load_image(self, title, anime_song):
-        return image.load(
-            self.__image_checker.get_image(title=title, anime_song=anime_song)).convert_alpha()
-
-    def show_profile(self, main_menu_surface, is_chosen: bool):
-        self.__image_setup(chosen=is_chosen)
-        img_coord = self.__pos.chosen_img_coord if is_chosen else self.__pos.img_coord
-        main_menu_surface.blit(self.__final_img, img_coord)
-
-    def __image_setup(self, chosen: bool = False):
-        self.__final_img = transform.scale(self.__background_image, self.__pos.size_tuple)
-        self.__set_opacity(chosen=chosen)
-
-    def __set_opacity(self, chosen: bool):
-        if chosen:
-            self.__final_img.set_alpha(255)
-        else:
-            self.__final_img.set_alpha(self.__OPACITY)
-
-    @property
-    def image(self):
-        return self.__background_image
-
-
-class BackgroundPreviewPos:
-    __SIZE_RATIO = 18
-    __X_RATIO = 1.27
-    __WIDTH_RATIO, __HEIGHT_RATIO = 5, 1.14
-
-    def __init__(self, pos):
-        self.__pos = pos
-
-    @property
-    def img_coord(self):
-        return self.__x, self.y
-
-    @property
-    def chosen_img_coord(self):
-        return self.__chosen_x, self.y
-
-    @property
-    def __x(self):
-        return self.__pos.record_x + self.__pos.record_width // self.__X_RATIO
-
-    @property
-    def __chosen_x(self):
-        return self.__pos.record_x + 633
-
-    @property
-    def y(self):
-        return self.__pos.record_y + 6
-
-    @property
-    def size_tuple(self):
-        return self.__width, self.__height
-
-    @property
-    def __width(self):
-        return self.__pos.record_width // self.__WIDTH_RATIO
-
-    @property
-    def __height(self):
-        return self.__pos.record_height // self.__HEIGHT_RATIO
-
-
-class RecordPos:
-    def __init__(self, display, pos, index):
-        self.__display = display
-        self.__pos = pos
-        self.__record_y = 0
-        self.__index = index
-
-    @property
-    def record_width(self):
-        return 700
-
-    @property
-    def record_height(self):
-        return self.__pos.record_height
-
-    @property
-    def chosen_record_width(self):
-        return self.__pos.chosen_record_width
-
-    @property
-    def record_size(self):
-        return self.record_width, self.record_height
-
-    @property
-    def chosen_map_bar_size(self):
-        return self.chosen_record_width, self.record_height
-
-    @property
-    def height(self):
-        return self.__display.height
-
-    def set_record_y(self):
-        self.__record_y = self.__pos.record_starting_y + self.__pos.starting_record_pos(index=self.__index)
-
-    def set_record_y_filter(self, index):
-        self.__record_y = self.__pos.filtered_starting_y + self.__pos.starting_record_pos(index=index)
-
-    def reset_y(self):
-        self.__record_y = 0
-
-    @property
-    def record_y(self):
-        return self.__record_y
-
-    @property
-    def record_x(self):
-        return self.__pos.leaderboard_x
-
-    @property
-    def record_starting_coord(self):
-        return self.record_x, self.record_y
