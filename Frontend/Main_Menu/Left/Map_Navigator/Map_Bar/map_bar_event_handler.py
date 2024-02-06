@@ -34,12 +34,19 @@ class MapBarEventHandler:
         if not self.__timer.timer_finished:
             return False
         clicked = self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
-                                                                 size=self.__pos.record_size,
+                                                                 size=self.__pos.chosen_map_bar_size,
                                                                  command=lambda: self.__state.show_play_window())
         if clicked:
             return True
         else:
             return False
+
+    def check_if_hovered(self):
+        if self.__button_handler.check_if_mouse_is_in_an_area(
+                starting_pos=self.__pos.record_starting_coord,
+                size=self.__pos.chosen_map_bar_size):
+            return True
+        return False
 
     def set_chosen(self):
         self.__index_manager.set_index(index=self.__index)

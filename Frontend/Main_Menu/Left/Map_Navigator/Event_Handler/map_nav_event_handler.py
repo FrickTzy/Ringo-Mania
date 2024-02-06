@@ -24,7 +24,7 @@ class MapNavigatorEventHandler:
                                                              list_manager=list_manager, sfx_manager=sfx_manager)
 
     def check_for_events(self, current_index):
-        self.__mouse_event_handler.check_mouse_input_events()
+        self.__mouse_event_handler.check_mouse_input_events(current_index=current_index)
         self.__keyboard_event_handler.check_keyboard_input_events(current_index=current_index)
 
 
@@ -51,8 +51,9 @@ class MouseEventHandler:
         else:
             self.__scroll_manager.go_down()
 
-    def check_mouse_input_events(self):
-        if not self.__check_mouse_pos_is_in_correct_position():
+    def check_mouse_input_events(self, current_index):
+        chosen_map_bar_hovered = self.__list_manager.map_bar_list[current_index].check_if_hovered()
+        if not self.__check_mouse_pos_is_in_correct_position() and not chosen_map_bar_hovered:
             return
         self.__check_if_scroll()
         self.__check_if_clicked_record()
@@ -68,7 +69,8 @@ class MouseEventHandler:
         if not self.__interval_timer.time_interval_finished():
             return
         elif self.__list_manager.using_filter:
-            self.__filtered_event_handler.check_if_clicked_filtered_record()
+            if self.__filtered_event_handler.check_if_clicked_filtered_record():
+                self.__sfx_manager.play_menu_hit()
         else:
             if self.__unfiltered_event_handler.check_if_clicked_unfiltered_record():
                 self.__sfx_manager.play_menu_hit()

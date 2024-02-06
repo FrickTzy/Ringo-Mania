@@ -30,10 +30,14 @@ class Record:
         self.__viewed = True
 
     def check_if_clicked(self):
-        self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
-                                                       size=self.__pos.record_size,
-                                                       command=lambda: self.__state.show_score_screen(
-                                                           current_play=self.__play_dict))
+        clicked = self.__button_handler.check_buttons_for_clicks(starting_pos=self.__pos.record_starting_coord,
+                                                                 size=self.__pos.record_size,
+                                                                 command=lambda: self.__state.show_score_screen(
+                                                                     current_play=self.__play_dict))
+        if clicked:
+            return True
+        else:
+            return False
 
     @property
     def is_viewed(self) -> bool:
@@ -48,10 +52,12 @@ class Record:
         self.__draw_rect(main_menu_surface=main_menu_surface)
         self.__profile.show_static_profile(main_menu_surface=main_menu_surface, y=y)
         self.__text_stats.show_static_text(main_menu_surface=main_menu_surface, y=y)
-        self.__button_handler.check_buttons_for_clicks(starting_pos=(self.__pos.record_x, y),
-                                                       size=self.__pos.record_size,
-                                                       command=lambda: self.__state.show_score_screen(
-                                                           current_play=self.__play_dict))
+
+    def check_if_clicked_best_play(self, y: int):
+        return self.__button_handler.check_buttons_for_clicks(starting_pos=(self.__pos.record_x, y),
+                                                              size=self.__pos.record_size,
+                                                              command=lambda: self.__state.show_score_screen(
+                                                                  current_play=self.__play_dict))
 
     def __draw_rect(self, main_menu_surface):
         r, g, b = self.__COLOR

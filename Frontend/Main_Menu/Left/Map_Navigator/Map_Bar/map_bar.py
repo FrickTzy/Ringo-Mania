@@ -118,6 +118,9 @@ class MapBar:
     def position(self):
         return self.__pos.record_x, self.__pos.record_y
 
+    def check_if_hovered(self):
+        return self.__event_handler.check_if_hovered()
+
     def reset_pos(self):
         self.__pos.reset_y()
 
@@ -242,6 +245,10 @@ class RecordPos:
     @property
     def record_size(self):
         return self.record_width, self.record_height
+
+    @property
+    def chosen_map_bar_size(self):
+        return self.chosen_record_width, self.record_height
 
     @property
     def height(self):

@@ -7,7 +7,7 @@ class Leaderboard:
     __initialized = False
     __map_records_dict = {}
 
-    def __init__(self, play_tracker, display, state, notifier):
+    def __init__(self, play_tracker, display, state, notifier, sfx_manager):
         self.__play_tracker = play_tracker
         self.__display = display
         self.__pos = Pos(display=display)
@@ -17,7 +17,8 @@ class Leaderboard:
         self.__best_play: Record
         self.__hidden_background = HiddenBackground()
         self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos,
-                                                       view=self.__view_counter, notifier=notifier)
+                                                       view=self.__view_counter, notifier=notifier,
+                                                       sfx_manager=sfx_manager)
         self.__profile_image = RecordProfileImage()
 
     def show_leaderboard(self, main_menu_surface, background_img):
@@ -32,6 +33,7 @@ class Leaderboard:
             self.__view_counter.check_if_viewed(record=record)
         if len(self.__record_list) >= self.__view_counter.MAX_RECORD_VIEW:
             self.__best_play.show_static(main_menu_surface=main_menu_surface, y=690)
+            self.__event_handler.check_if_click_best_record(record=self.__best_play)
             self.__hidden_background.show(background_img=background_img, surface=main_menu_surface)
 
     def __init_leaderboard(self):
@@ -107,11 +109,12 @@ class HiddenBackground:
 
 
 class LeaderboardEventHandler:
-    def __init__(self, record_list: list[Record], pos, view: ViewCounter, notifier):
+    def __init__(self, record_list: list[Record], pos, view: ViewCounter, notifier, sfx_manager):
         self.__record_list = record_list
         self.__view = view
         self.__pos = pos
         self.__notifier = notifier
+        self.__sfx_manager = sfx_manager
         self.__button_event_handler = ButtonEventHandler()
 
     def check_for_events(self):
@@ -131,8 +134,17 @@ class LeaderboardEventHandler:
         return False
 
     def __check_if_clicked_record(self):
+        record_clicked = False
         for record in self.__record_list:
-            record.check_if_clicked()
+            current_record_clicked = record.check_if_clicked()
+            if not record_clicked:
+                record_clicked = current_record_clicked
+        if record_clicked:
+            self.__sfx_manager.play_menu_hit()
+
+    def check_if_click_best_record(self, record):
+        if record.check_if_clicked_best_play(y=690):
+            self.__sfx_manager.play_menu_hit()
 
     def __check_if_scroll(self):
         if self.__notifier.scrolled:
