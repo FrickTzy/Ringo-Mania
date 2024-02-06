@@ -55,11 +55,11 @@ class BackgroundPreviewPos:
 
     @property
     def __x(self):
-        return self.__pos.current_map_bar_width // self.__X_WIDTH_RATIO
+        return self.__pos.current_map_bar_width - self.__width - 7
 
     @property
     def __chosen_x(self):
-        return self.__pos.current_map_bar_width // self.__X_CHOSEN_WIDTH_RATIO
+        return self.__pos.current_map_bar_width - self.__width - 7
 
     @property
     def y(self):

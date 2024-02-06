@@ -81,12 +81,8 @@ class MapBar:
 
     def __draw_rect(self, main_menu_surface, is_chosen: bool = False):
         self.__rect.width = self.__pos.current_map_bar_width
-        if is_chosen:
-            r, g, b = self.__CHOSEN_COLOR
-            draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
-        else:
-            r, g, b = self.__COLOR
-            draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
+        r, g, b = self.__CHOSEN_COLOR if is_chosen else self.__COLOR
+        draw.rect(main_menu_surface, (r, g, b, self.__OPACITY), self.__rect)
 
     def update_rect(self):
         self.__pos.set_record_y()

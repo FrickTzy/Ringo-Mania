@@ -98,8 +98,7 @@ class Font:
 class TextPos:
     __X_RATIO = 1.89
     __SONG_NAME_RATIO, __SONG_ARTIST_RATIO = 40, 11.43
-    __X_CHOSEN_WIDTH_RATIO = 1.26
-    __X_WIDTH_RATIO = 1.30
+    __X_WIDTH_RATIO = 1.13
 
     def __init__(self, pos):
         self.__pos = pos
@@ -109,21 +108,11 @@ class TextPos:
         return self.__pos.height
 
     def song_name_pos(self, text_width, is_chosen: bool = False):
-        if is_chosen:
-            return self.__chosen_x - text_width, self.__pos.record_y + 10
-        else:
-            return self.__not_chosen_x - text_width, self.__pos.record_y + 10
+        return self.__x - text_width, self.__pos.record_y + 10
 
     def song_artist_pos(self, text_width, is_chosen: bool = False):
-        if is_chosen:
-            return self.__chosen_x - text_width, self.__pos.record_y + 35
-        else:
-            return self.__not_chosen_x - text_width, self.__pos.record_y + 35
+        return self.__x - text_width, self.__pos.record_y + 35
 
     @property
-    def __chosen_x(self):
-        return self.__pos.current_map_bar_width // self.__X_CHOSEN_WIDTH_RATIO
-
-    @property
-    def __not_chosen_x(self):
-        return self.__pos.current_map_bar_width // self.__X_WIDTH_RATIO
+    def __x(self):
+        return self.__pos.current_map_bar_width - 160

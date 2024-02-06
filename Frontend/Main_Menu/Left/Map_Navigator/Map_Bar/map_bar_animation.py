@@ -3,7 +3,7 @@ from Frontend.Helper_Files.Transition.target_manager import TargetManager
 
 
 class MapBarAnimation:
-    __SPEED_PER_FRAME = 0.1
+    __SPEED_PER_FRAME = 0.125
     __start_animation = False
 
     def __init__(self, is_chosen: bool, map_bar_pos):
