@@ -5,7 +5,7 @@ from .map_bar_text import MapBarText
 from .map_bar_event_handler import MapBarEventHandler
 from .map_bar_info import MapBarInfo
 from .map_bar_pos import MapBarPos
-from .map_bar_animation import MapBarAnimation
+from .Map_Bar_Animation import MapBarAnimation
 
 
 class MapBar:
@@ -30,7 +30,8 @@ class MapBar:
 
     def show(self, main_menu_surface):
         self.update_rect()
-        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen)
+        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen,
+                                                     is_hovered=self.check_if_hovered())
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:
@@ -39,7 +40,8 @@ class MapBar:
 
     def show_filtered(self, main_menu_surface, index: int):
         self.__update_filtered_rect(index=index)
-        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen)
+        self.__map_bar_animation.check_for_animation(is_chosen=self.is_chosen,
+                                                     is_hovered=self.check_if_hovered())
         if self.is_chosen:
             self.__show_chosen(main_menu_surface=main_menu_surface)
         else:

@@ -30,6 +30,10 @@ class MapBarPos:
         return self.__current_width
 
     @property
+    def hover_width(self):
+        return self.__current_width + (self.__current_width * 0.05)
+
+    @property
     def chosen_map_bar_size(self):
         return self.chosen_record_width, self.record_height
 

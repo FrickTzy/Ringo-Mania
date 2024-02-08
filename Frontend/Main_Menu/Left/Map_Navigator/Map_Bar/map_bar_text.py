@@ -21,28 +21,17 @@ class MapBarText:
         song_name_text = self.__font.song_font.render(song_name,
                                                       True, self.__COLOR)
         self.__check_if_blur(text_object=song_name_text, not_blur=is_chosen)
-        if is_chosen:
-            main_menu_surface.blit(song_name_text,
-                                   self.__pos.song_name_pos(text_width=self.__font.song_text_width(text=song_name),
-                                                            is_chosen=is_chosen))
-        else:
-            main_menu_surface.blit(song_name_text,
-                                   self.__pos.song_name_pos(text_width=self.__font.song_text_width(text=song_name),
-                                                            is_chosen=is_chosen))
+        main_menu_surface.blit(song_name_text,
+                               self.__pos.song_name_pos(text_width=self.__font.song_text_width(text=song_name)))
 
     def __show_song_artist_text(self, main_menu_surface, is_chosen: bool = False):
         song_artist = self.__map_info.song_artist
         song_artist_text = self.__font.artist_font.render(song_artist,
                                                           True, self.__COLOR)
         self.__check_if_blur(text_object=song_artist_text, not_blur=is_chosen)
-        if is_chosen:
-            main_menu_surface.blit(song_artist_text,
-                                   self.__pos.song_artist_pos(
-                                       text_width=self.__font.artist_text_width(text=song_artist), is_chosen=is_chosen))
-        else:
-            main_menu_surface.blit(song_artist_text,
-                                   self.__pos.song_artist_pos(
-                                       text_width=self.__font.artist_text_width(text=song_artist), is_chosen=is_chosen))
+        main_menu_surface.blit(song_artist_text,
+                               self.__pos.song_artist_pos(
+                                   text_width=self.__font.artist_text_width(text=song_artist)))
 
     def __check_if_blur(self, text_object, not_blur: bool):
         if not_blur:
@@ -107,10 +96,10 @@ class TextPos:
     def height(self):
         return self.__pos.height
 
-    def song_name_pos(self, text_width, is_chosen: bool = False):
+    def song_name_pos(self, text_width):
         return self.__x - text_width, self.__pos.record_y + 10
 
-    def song_artist_pos(self, text_width, is_chosen: bool = False):
+    def song_artist_pos(self, text_width):
         return self.__x - text_width, self.__pos.record_y + 35
 
     @property
