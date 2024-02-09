@@ -61,3 +61,7 @@ class MapBarPos:
     @property
     def record_starting_coord(self):
         return self.record_x, self.record_y
+
+    @property
+    def current_size(self):
+        return self.__current_width, self.record_height

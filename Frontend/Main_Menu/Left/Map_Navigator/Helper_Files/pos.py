@@ -88,3 +88,7 @@ class MapNavigatorPos:
     @property
     def get_window_size(self):
         return self.__display.get_window_size
+
+    @property
+    def scrollable_area(self):
+        return 780, self.leaderboard_height

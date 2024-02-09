@@ -1,8 +1,9 @@
-from pygame import K_BACKSPACE, K_TAB, K_DOWN, K_UP, K_KP_ENTER
+from pygame import K_BACKSPACE, K_TAB, K_DOWN, K_UP, K_RETURN, K_LALT, K_RALT, K_KP_ENTER
 
 
 class SearchTracker:
     __changed = False
+    __FORBIDDEN_KEYS = [K_TAB, K_LALT, K_RALT, K_DOWN, K_UP, K_RETURN, K_KP_ENTER]
 
     def __init__(self):
         self.__current_search = ""
@@ -22,9 +23,7 @@ class SearchTracker:
         return changed
 
     def add_letter(self, event):
-        if event.key == K_TAB:
-            return
-        elif event.key == K_DOWN or event.key == K_UP or event.key == K_KP_ENTER:
+        if event.key in self.__FORBIDDEN_KEYS:
             return
         elif event.key == K_BACKSPACE:
             self.__current_search = self.__current_search[:-1]

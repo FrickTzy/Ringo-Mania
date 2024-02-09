@@ -1,7 +1,6 @@
 from random import shuffle
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
-from .Map_Bar.map_bar import MapBar
-from .Map_Bar.map_index_manager import MapIndexManager
+from .Map_Bar import MapBar, MapIndexManager
 from .Search_Bar import SearchBar
 from .Event_Handler import MapNavigatorEventHandler
 from .Search_Manager import SearchManager

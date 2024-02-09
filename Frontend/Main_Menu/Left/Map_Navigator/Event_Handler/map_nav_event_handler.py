@@ -1,4 +1,4 @@
-from pygame import key, K_RSHIFT, K_UP, K_DOWN
+from pygame import key, K_RETURN, K_UP, K_DOWN
 from Backend.timer import IntervalTimer
 from Frontend.Helper_Files import ButtonEventHandler
 
@@ -61,7 +61,7 @@ class MouseEventHandler:
     def __check_mouse_pos_is_in_correct_position(self):
         if self.__button_event_handler.check_if_mouse_is_in_an_area(
                 starting_pos=self.__pos.leaderboard_starting_pos,
-                size=self.__pos.leaderboard_size):
+                size=self.__pos.scrollable_area):
             return True
         return False
 
@@ -83,7 +83,7 @@ class KeyboardEventHandler:
         self.__sfx_manager = sfx_manager
 
     def __check_if_enter_key(self, key_pressed, map_bar):
-        if key_pressed[K_RSHIFT]:
+        if key_pressed[K_RETURN]:
             self.__sfx_manager.play_menu_hit()
             map_bar.key_hit()
 
@@ -160,6 +160,8 @@ class FilteredEventHandler:
     def check_if_clicked_filtered_record(self):
         map_bar_clicked = False
         for map_bar in self.__list_manager.filtered_map_bar_list:
+            if not map_bar.is_viewed:
+                continue
             current_map_bar_clicked = map_bar.check_if_clicked()
             if not map_bar_clicked:
                 map_bar_clicked = current_map_bar_clicked
@@ -207,6 +209,8 @@ class UnfilteredEventHandler:
     def check_if_clicked_unfiltered_record(self):
         map_bar_clicked = False
         for map_bar in self.__list_manager.map_bar_list:
+            if not map_bar.is_viewed:
+                continue
             current_map_bar_clicked = map_bar.check_if_clicked()
             if not map_bar_clicked:
                 map_bar_clicked = current_map_bar_clicked
