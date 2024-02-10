@@ -5,12 +5,13 @@ from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 class MapBarEventHandler:
     __CLICK_INTERVAL = 80
 
-    def __init__(self, pos, index_manager, index, state):
+    def __init__(self, pos, index_manager, index, state, hover_manager):
         self.__timer = DelayTimer()
         self.__pos = pos
         self.__button_handler = ButtonEventHandler()
         self.__index_manager = index_manager
         self.__index = index
+        self.__hover_manager = hover_manager
         self.__state = state
 
     def check_if_clicked(self, chosen: bool):
@@ -42,8 +43,12 @@ class MapBarEventHandler:
         if self.__button_handler.check_if_mouse_is_in_an_area(
                 starting_pos=self.__pos.record_starting_coord,
                 size=self.__pos.current_size):
+            self.__set_hover()
             return True
         return False
+
+    def __set_hover(self):
+        self.__hover_manager.check_if_change_hover(hover_index=self.__index)
 
     def set_chosen(self):
         self.__index_manager.set_index(index=self.__index)

@@ -21,7 +21,8 @@ class SmoothAnimation:
         self.__reset_animation = True
 
     def get_current_value(self):
-        value = self.__target_manager.current_value + self.__get_add_value
+        add_value = self.__get_add_value
+        value = self.__target_manager.current_value + add_value
         if self.__target_manager.check_if_equal_target_value(value=value):
             self.__finished_animation = True
         return value

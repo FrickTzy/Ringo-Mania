@@ -5,7 +5,7 @@ from Backend.timer import IntervalTimer
 
 
 class SFXManager:
-    __SOUND_INTERVAL = 90
+    __SOUND_INTERVAL = 80
     __SFX_VOLUME = SFX_VOLUME
     __ON_SFX = True
 

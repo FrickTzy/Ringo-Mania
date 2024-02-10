@@ -14,7 +14,7 @@ class MapBar:
     __OPACITY = 190
     __viewed = False
 
-    def __init__(self, song_name: str, play_rank: str, display, pos, state, index_manager, index):
+    def __init__(self, song_name: str, play_rank: str, display, pos, state, index_manager, index, hover_manager):
         self.__index = index
         self.__pos = MapBarPos(display=display, pos=pos, index=self.__index)
         self.__map_bar_info = MapBarInfo(song_name=song_name, play_rank=play_rank)
@@ -26,7 +26,7 @@ class MapBar:
         self.__index_manager = index_manager
         self.__map_bar_animation = MapBarAnimation(is_chosen=self.is_chosen, map_bar_pos=self.__pos)
         self.__event_handler = MapBarEventHandler(index=self.__index, index_manager=index_manager, pos=self.__pos,
-                                                  state=state)
+                                                  state=state, hover_manager=hover_manager)
 
     def show(self, main_menu_surface):
         self.update_rect()

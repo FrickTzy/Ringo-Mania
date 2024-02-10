@@ -4,8 +4,8 @@ from .Map_Bar import MapBar, MapIndexManager
 from .Search_Bar import SearchBar
 from .Event_Handler import MapNavigatorEventHandler
 from .Search_Manager import SearchManager
-from .Helper_Files import MapBarListManager, MapNavigatorPos, ViewCounter
-from .Animation import AnimationManager
+from .Helper_Files import MapBarListManager, MapNavigatorPos, ViewCounter, HoverManager
+from .Animation import AnimationManager, SmoothScroll
 from Backend.Map_Info.Map_Infos.map_info import MapInfo
 
 
@@ -21,16 +21,20 @@ class MapNavigator:
         self.__view_counter = ViewCounter()
         self.__pos = MapNavigatorPos(display=display)
         self.__state = state
+        self.__hover_manager = HoverManager()
+        self.__scroll_manager = SmoothScroll(list_manager=self.__list_manager, pos=self.__pos, view=self.__view_counter)
         self.__event_handler = MapNavigatorEventHandler(list_manager=self.__list_manager, pos=self.__pos,
-                                                        view=self.__view_counter, notifier=notifier,
-                                                        sfx_manager=sfx_manager)
+                                                        notifier=notifier,
+                                                        sfx_manager=sfx_manager, hover_manager=self.__hover_manager,
+                                                        scroll_manager=self.__scroll_manager)
         self.__search_manager = SearchManager(map_nav_pos=self.__pos, search_tracker=search_tracker,
                                               list_manager=self.__list_manager,
                                               view_counter=self.__view_counter)
         self.__initializer = MapNavInitializer(map_info=map_info, song_checker=self.__song_checker,
                                                list_manager=self.__list_manager, display=display,
                                                index_manager=self.__index_manager, pos=self.__pos,
-                                               view_counter=self.__view_counter, state=state)
+                                               view_counter=self.__view_counter, state=state,
+                                               hover_manager=self.__hover_manager)
         self.__animation_manager = AnimationManager(view=self.__view_counter, pos=self.__pos,
                                                     list_manager=self.__list_manager)
 
@@ -99,7 +103,8 @@ class MapNavigator:
 class MapNavInitializer:
     __initialized = False
 
-    def __init__(self, map_info: MapInfo, song_checker, list_manager, display, index_manager, view_counter, state, pos):
+    def __init__(self, map_info: MapInfo, song_checker, list_manager, display, index_manager, view_counter, state, pos,
+                 hover_manager):
         self.__map_info = map_info
         self.__song_checker = song_checker
         self.__list_manager = list_manager
@@ -108,6 +113,7 @@ class MapNavInitializer:
         self.__view_counter = view_counter
         self.__pos = pos
         self.__state = state
+        self.__hover_manager = hover_manager
 
     def init_leaderboard(self):
         if self.__initialized:
@@ -133,7 +139,8 @@ class MapNavInitializer:
     def __append_list(self, index, song):
         self.__list_manager.map_bar_list.append(
             MapBar(song_name=song, play_rank="A", display=self.__display, pos=self.__pos,
-                   state=self.__state, index=index, index_manager=self.__index_manager))
+                   state=self.__state, index=index, index_manager=self.__index_manager,
+                   hover_manager=self.__hover_manager))
 
     def __set_index(self, len_of_song_list):
         if self.__index_manager.current_index is None:

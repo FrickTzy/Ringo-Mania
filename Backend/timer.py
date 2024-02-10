@@ -119,7 +119,7 @@ class IntervalTimer:
             self.last_time = current_time
             return True
         return False
-    
+
     def debug(self):
         print("Debugging: ")
         print(f"current time: {time.get_ticks()}")
@@ -128,3 +128,27 @@ class IntervalTimer:
 
     def change_interval(self, interval):
         self.interval = interval
+
+
+class ActivationTimer:
+    def __init__(self, interval: int = 100):
+        self.__last_time_taken: int = time.get_ticks()
+        self.__interval = interval
+
+    def activation_stopped(self, activated: bool) -> bool:
+        current_time = time.get_ticks()
+        if activated:
+            self.__last_time_taken = current_time
+        if current_time >= self.__last_time_taken + self.__interval:
+            self.__last_time_taken = current_time
+            return True
+        return False
+
+    def debug(self):
+        print("Debugging: ")
+        print(f"current time: {time.get_ticks()}")
+        print(f"last time: {self.__last_time_taken}")
+        print(f"interval: {self.__interval}\n")
+
+    def change_interval(self, interval):
+        self.__interval = interval

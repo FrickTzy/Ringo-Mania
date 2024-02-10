@@ -85,6 +85,18 @@ class MapNavigatorPos:
     def set_exact_filtered_y(self, y):
         self.__filtered_starting_y = y
 
+    def add_y(self, y):
+        self.__record_starting_y += y
+
+    def add_filtered_y(self, y):
+        self.__filtered_starting_y += y
+
+    def subtract_y(self, y):
+        self.__record_starting_y -= y
+
+    def subtract_filtered_y(self, y):
+        self.__filtered_starting_y -= y
+
     @property
     def get_window_size(self):
         return self.__display.get_window_size
