@@ -31,6 +31,9 @@ class Animation:
     def reset(self):
         self.__current_seconds = 0
 
+    def change_interval(self, ms_interval: float):
+        self.__ms_interval_per_iteration = ms_interval
+
 
 class SmoothingInterface(ABC):
     @staticmethod

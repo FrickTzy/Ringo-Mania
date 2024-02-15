@@ -5,7 +5,11 @@ from Backend.timer import ActivationTimer
 
 
 class SmoothScroll:
-    __SPEED_PER_FRAME = 0.15
+    __IN_SCROLL_SPEED = 0.2
+    __SLOW_IN_SCROLL_SPEED = 0.1
+    __OUT_SCROLL_SPEED = 0.04
+    __SLOW_OUT_SCROLL_SPEED = 0.025
+    __TIMER_INTERVAL = 120
     __scrolling = False
     __scroll_going_up = False
     __start_end_scroll = False
@@ -13,29 +17,32 @@ class SmoothScroll:
     def __init__(self, pos: MapNavigatorPos, view, list_manager):
         self.__target_manager = TargetManager()
         self.__animation_manager = SmoothAnimation(target_manager=self.__target_manager,
-                                                   speed_per_frame=self.__SPEED_PER_FRAME)
+                                                   speed_per_frame=self.__IN_SCROLL_SPEED)
         self.__list_manager = list_manager
         self.__scroll_speed_manager = ScrollSpeedManager()
         self.__unfiltered_animation = UnfilteredAnimation(view=view, list_manager=list_manager, pos=pos,
                                                           scroll_speed_manager=self.__scroll_speed_manager)
         self.__filtered_animation = FilteredAnimation(view=view, list_manager=list_manager, pos=pos,
                                                       scroll_speed_manager=self.__scroll_speed_manager)
-        self.__activation_timer = ActivationTimer(interval=140)
+        self.__activation_timer = ActivationTimer(interval=self.__TIMER_INTERVAL)
 
     def check_if_scroll(self, scrolling, going_up):
         self.__scroll_condition(scrolling=scrolling, going_up=going_up)
         self.__change_scroll_speed()
         self.__check_if_end_scroll()
-        if self.__scrolling:
-            if self.__list_manager.using_filter:
-                self.__filtered_animation.scroll(going_up=self.__scroll_going_up)
-            else:
-                self.__unfiltered_animation.scroll(going_up=self.__scroll_going_up)
+        if not self.__scrolling:
+            return
+        if self.__list_manager.using_filter:
+            self.__filtered_animation.scroll(going_up=self.__scroll_going_up)
+        else:
+            self.__unfiltered_animation.scroll(going_up=self.__scroll_going_up)
 
     def __scroll_condition(self, scrolling, going_up):
         activation_stopped = self.__activation_timer.activation_stopped(activated=scrolling)
         if self.__scroll_going_up != going_up and going_up is not None:
             self.__scroll_going_up = going_up
+            if self.__scrolling:
+                self.__setup_in()
         if self.__scrolling == scrolling:
             return
         if scrolling is False:
@@ -76,11 +83,27 @@ class SmoothScroll:
 
     def __setup_in(self):
         self.__animation_manager.reset()
-        self.__target_manager.setup(current_value=0,
-                                    target_value=self.__scroll_speed_manager.max_scroll_speed)
+        self.__animation_manager.change_interval(ms_interval=self.__IN_SCROLL_SPEED)
+
+        current_scroll_speed = self.__scroll_speed_manager.current_scroll_speed
+        max_scroll_speed = self.__scroll_speed_manager.max_scroll_speed
+
+        if self.__scroll_speed_manager.check_if_double_scroll_speed():
+            if current_scroll_speed > (scroll_speed_limit := self.__scroll_speed_manager.scroll_speed_limit):
+                current_scroll_speed = scroll_speed_limit
+            self.__target_manager.setup(current_value=current_scroll_speed,
+                                        target_value=current_scroll_speed * 1.5)
+        else:
+            self.__target_manager.setup(current_value=current_scroll_speed,
+                                        target_value=max_scroll_speed)
 
     def __setup_out(self):
         self.__animation_manager.reset()
+        if self.__scroll_speed_manager.check_if_slow_scroll_out():
+            self.__animation_manager.change_interval(ms_interval=self.__SLOW_OUT_SCROLL_SPEED)
+        else:
+            self.__animation_manager.change_interval(ms_interval=self.__OUT_SCROLL_SPEED)
+
         self.__target_manager.setup(current_value=self.__scroll_speed_manager.current_scroll_speed, target_value=0)
 
 
@@ -183,7 +206,9 @@ class UnfilteredAnimation:
 
 
 class ScrollSpeedManager:
-    __MAX_SCROLL_SPEED = 40
+    __SCROLL_SPEED_LIMIT = 40
+    __MAX_SCROLL_SPEED = 25
+    __DOUBLE_SCROLL_SCOPE_RATIO = 1.5
     __current_scroll_speed = 0
 
     @property
@@ -196,3 +221,25 @@ class ScrollSpeedManager:
     @property
     def max_scroll_speed(self):
         return self.__MAX_SCROLL_SPEED
+
+    @property
+    def double_scroll_speed(self):
+        return self.__MAX_SCROLL_SPEED * 2
+
+    def check_if_double_scroll_speed(self):
+        if self.__current_scroll_speed >= self.__double_scroll_scope:
+            return True
+        return False
+
+    def check_if_slow_scroll_out(self):
+        if self.__current_scroll_speed > self.__MAX_SCROLL_SPEED:
+            return True
+        return False
+
+    @property
+    def scroll_speed_limit(self):
+        return self.__SCROLL_SPEED_LIMIT
+
+    @property
+    def __double_scroll_scope(self):
+        return self.__MAX_SCROLL_SPEED // self.__DOUBLE_SCROLL_SCOPE_RATIO

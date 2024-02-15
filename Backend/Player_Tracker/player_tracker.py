@@ -1,0 +1,2 @@
+class PlayerTracker:
+    pass

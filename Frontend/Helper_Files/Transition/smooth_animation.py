@@ -34,3 +34,6 @@ class SmoothAnimation:
     @property
     def finished_animation(self):
         return self.__finished_animation
+
+    def change_interval(self, ms_interval: float):
+        self.__animation.change_interval(ms_interval=ms_interval)
