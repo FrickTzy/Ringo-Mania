@@ -1,13 +1,14 @@
 from .animation import Animation
-from .target_manager import TargetManager
+from .smoothing_methods import EaseOutCubicSmoothing
+from Frontend.Helper_Files.Transition.target_manager import TargetManager
 
 
 class SmoothAnimation:
     __reset_animation = False
     __finished_animation = False
 
-    def __init__(self, target_manager: TargetManager, speed_per_frame):
-        self.__animation = Animation(ms_interval_per_iteration=speed_per_frame)
+    def __init__(self, target_manager: TargetManager, speed_per_frame, smoothing_method=EaseOutCubicSmoothing()):
+        self.__animation = Animation(ms_interval_per_iteration=speed_per_frame, smoothing_method=smoothing_method)
         self.__target_manager = target_manager
 
     def reset(self):

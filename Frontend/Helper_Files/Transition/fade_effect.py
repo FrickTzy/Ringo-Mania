@@ -2,7 +2,7 @@ from pygame import Rect, draw
 from Backend.timer import DelayTimer
 from Frontend.Settings import Color
 from Frontend.Helper_Files.Transition.opacity import Opacity
-from Frontend.Helper_Files.Transition.animation import Animation
+from Frontend.Helper_Files.Transition.Animation import Animation, EaseOutCubicSmoothing
 
 
 class FadeEffect:
@@ -97,7 +97,8 @@ class SmoothFadeManager:
 
     def __init__(self, opacity):
         self.__opacity = opacity
-        self.__animation = Animation(ms_interval_per_iteration=self.__FADE_PER_FRAME)
+        self.__animation = Animation(ms_interval_per_iteration=self.__FADE_PER_FRAME,
+                                     smoothing_method=EaseOutCubicSmoothing())
 
     def reset(self):
         self.__reset_animation = False

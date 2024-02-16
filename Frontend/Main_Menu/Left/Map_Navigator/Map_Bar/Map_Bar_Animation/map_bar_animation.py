@@ -1,4 +1,4 @@
-from Frontend.Helper_Files.Transition.smooth_animation import SmoothAnimation
+from Frontend.Helper_Files.Transition.Animation.smooth_animation import SmoothAnimation
 from Frontend.Helper_Files.Transition.target_manager import TargetManager
 from .click_animation import ClickAnimation
 from .hover_animation import HoverAnimation

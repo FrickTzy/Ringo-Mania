@@ -39,7 +39,7 @@ class Leaderboard:
     def __init_leaderboard(self):
         if self.__initialized:
             return
-        if not (play_list := self.__get_records()):
+        if not (play_list := self.__get_records_without_checking_dict()):
             return
         self.__best_play = play_list["best play"]
         for record in play_list["all records"]:
@@ -53,6 +53,10 @@ class Leaderboard:
             play_list = self.__play_tracker.check_plays()
             self.__map_records_dict[name] = self.__get_all_map_bars(play_list=play_list)
         return self.__map_records_dict[name]
+    
+    def __get_records_without_checking_dict(self):
+        play_list = self.__play_tracker.check_plays()
+        return self.__get_all_map_bars(play_list=play_list)
 
     def __get_all_map_bars(self, play_list):
         record_list = []

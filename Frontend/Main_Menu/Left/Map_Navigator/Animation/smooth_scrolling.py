@@ -1,4 +1,4 @@
-from Frontend.Helper_Files.Transition.smooth_animation import SmoothAnimation
+from Frontend.Helper_Files.Transition.Animation import SmoothAnimation, EaseOutBackSmoothing
 from Frontend.Helper_Files.Transition.target_manager import TargetManager
 from Frontend.Main_Menu.Left.Map_Navigator.Helper_Files.pos import MapNavigatorPos
 from Backend.timer import ActivationTimer
@@ -6,7 +6,6 @@ from Backend.timer import ActivationTimer
 
 class SmoothScroll:
     __IN_SCROLL_SPEED = 0.2
-    __SLOW_IN_SCROLL_SPEED = 0.1
     __OUT_SCROLL_SPEED = 0.04
     __SLOW_OUT_SCROLL_SPEED = 0.025
     __TIMER_INTERVAL = 120
@@ -17,7 +16,8 @@ class SmoothScroll:
     def __init__(self, pos: MapNavigatorPos, view, list_manager):
         self.__target_manager = TargetManager()
         self.__animation_manager = SmoothAnimation(target_manager=self.__target_manager,
-                                                   speed_per_frame=self.__IN_SCROLL_SPEED)
+                                                   speed_per_frame=self.__IN_SCROLL_SPEED,
+                                                   smoothing_method=EaseOutBackSmoothing())
         self.__list_manager = list_manager
         self.__scroll_speed_manager = ScrollSpeedManager()
         self.__unfiltered_animation = UnfilteredAnimation(view=view, list_manager=list_manager, pos=pos,
@@ -92,7 +92,7 @@ class SmoothScroll:
             if current_scroll_speed > (scroll_speed_limit := self.__scroll_speed_manager.scroll_speed_limit):
                 current_scroll_speed = scroll_speed_limit
             self.__target_manager.setup(current_value=current_scroll_speed,
-                                        target_value=current_scroll_speed * 1.5)
+                                        target_value=current_scroll_speed * 1.4)
         else:
             self.__target_manager.setup(current_value=current_scroll_speed,
                                         target_value=max_scroll_speed)

@@ -41,9 +41,11 @@ class MouseEventHandler:
         self.__hover_manager = hover_manager
 
     def __check_if_scroll(self):
+        """This is some risky code, since I check scrolling twice"""
         scrolling = self.__notifier.scrolled
         going_up = self.__going_up(event_occur=self.__notifier.event) if scrolling else None
-        self.__scroll_manager.check_if_scroll(scrolling=scrolling, going_up=going_up)
+        if scrolling:
+            self.__scroll_manager.check_if_scroll(scrolling=scrolling, going_up=going_up)
 
     @staticmethod
     def __going_up(event_occur):
@@ -96,13 +98,12 @@ class KeyboardEventHandler:
     def __check_if_scroll(self, key_pressed):
         """This is some risky code, since I check scrolling twice"""
         scrolling, going_up = self.__check_if_enter_arrow_key(key_pressed=key_pressed)
-        if scrolling:
-            self.__scroll_manager.check_if_scroll(scrolling=scrolling, going_up=going_up)
+        self.__scroll_manager.check_if_scroll(scrolling=scrolling, going_up=going_up)
 
     @staticmethod
     def __check_if_enter_arrow_key(key_pressed):
         scrolling = False
-        going_up = False
+        going_up = None
         if key_pressed[K_UP]:
             scrolling = True
             going_up = True
