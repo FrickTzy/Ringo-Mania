@@ -1,7 +1,7 @@
 from os import path
 from Backend.Map_Info.Map_Image.map_image_downloader import MapImageDownloader
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
-from Backend.Map_Info.Map_Infos.map_info import MapInfo
+from Backend.Map_Info.Map_Info.map_info import MapInfo
 
 
 class MapImage:

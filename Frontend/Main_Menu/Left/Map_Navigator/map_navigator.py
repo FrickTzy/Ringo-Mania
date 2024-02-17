@@ -6,7 +6,7 @@ from .Event_Handler import MapNavigatorEventHandler
 from .Search_Manager import SearchManager
 from .Helper_Files import MapBarListManager, MapNavigatorPos, ViewCounter, HoverManager
 from .Animation import AnimationManager, SmoothScroll
-from Backend.Map_Info.Map_Infos.map_info import MapInfo
+from Backend.Map_Info.Map_Info.map_info import MapInfo
 
 
 class MapNavigator:

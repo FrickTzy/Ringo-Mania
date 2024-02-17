@@ -1,4 +1,4 @@
-from Backend.Map_Info.Map_Infos.map_info import MapInfo
+from Backend.Map_Info.Map_Info.map_info import MapInfo
 
 
 class MapBarInfo:

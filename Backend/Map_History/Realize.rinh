@@ -1,1 +1,1 @@
-{'score': 538725, 'accuracy': '96.06%', 'acc_dict': {'Miss': 4, 'Okay': 8, 'Good': 61, 'Perfect': 295, 'Amazing': 222}, 'combo': 123, 'highest_combo': 277, 'grade': 'A', 'date': '23/12/2023', 'time': '12:30 pm'}
+{'player_name': 'DudeTzy', 'score': 538725, 'accuracy': '96.06%', 'acc_dict': {'Miss': 4, 'Okay': 8, 'Good': 61, 'Perfect': 295, 'Amazing': 222}, 'combo': 123, 'highest_combo': 277, 'grade': 'A', 'date': '23/12/2023', 'time': '12:30 pm'}

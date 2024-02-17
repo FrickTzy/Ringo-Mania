@@ -1,6 +1,6 @@
 from pygame import transform
 from copy import copy
-from Backend.Map_Info.Map_Infos.map_info_checker import MapInfoChecker
+from Backend.Map_Info.Map_Info.map_info_checker import MapInfoChecker
 
 
 class MapInfo:

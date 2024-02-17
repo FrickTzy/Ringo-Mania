@@ -1,2 +1,2 @@
-{'score': 703150, 'accuracy': '96.24%', 'acc_dict': {'Miss': 8, 'Okay': 2, 'Good': 56, 'Perfect': 300, 'Amazing': 247}, 'combo': 60, 'highest_combo': 318, 'grade': 'A', 'date': '19/01/2024', 'time': '11:38 am'}
-{'score': 180025, 'accuracy': '92.49%', 'acc_dict': {'Miss': 23, 'Okay': 6, 'Good': 76, 'Perfect': 285, 'Amazing': 209}, 'combo': 36, 'highest_combo': 121, 'grade': 'A', 'date': '21/01/2024', 'time': '4:47 pm'}
+{'player_name': 'DudeTzy', 'score': 703150, 'accuracy': '96.24%', 'acc_dict': {'Miss': 8, 'Okay': 2, 'Good': 56, 'Perfect': 300, 'Amazing': 247}, 'combo': 60, 'highest_combo': 318, 'grade': 'A', 'date': '19/01/2024', 'time': '11:38 am'}
+{'player_name': 'DudeTzy', 'score': 180025, 'accuracy': '92.49%', 'acc_dict': {'Miss': 23, 'Okay': 6, 'Good': 76, 'Perfect': 285, 'Amazing': 209}, 'combo': 36, 'highest_combo': 121, 'grade': 'A', 'date': '21/01/2024', 'time': '4:47 pm'}

@@ -1,4 +1,4 @@
-from Frontend.Helper_Files.Transition.Animation.smooth_animation import SmoothAnimation
+from Frontend.Helper_Files.Animation import SmoothAnimation
 from Frontend.Helper_Files.Transition.target_manager import TargetManager
 from Frontend.Main_Menu.Left.Map_Navigator.Helper_Files.pos import MapNavigatorPos
 from .animation_interface import AnimationInterface
