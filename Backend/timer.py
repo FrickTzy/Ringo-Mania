@@ -3,12 +3,13 @@ from pygame import time
 
 class Timer:
     def __init__(self):
+        self.__pause_timer = PauseTimer()
         self.started: bool = False
         self.target_time: int | float = 0
         self.starting_time: int | float = 0
         self.ending_time: int | float = 0
         self.timer_finished: bool = False
-        self.seconds_restarted: int = 0
+        self.ms_restarted: int = 0
 
     def update_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:
@@ -27,7 +28,8 @@ class Timer:
         self.ending_time = 0
 
     def restart(self):
-        self.seconds_restarted = self.ms_to_second(time.get_ticks())
+        self.ms_restarted = time.get_ticks()
+        self.__pause_timer.restart()
         self.timer_finished = False
 
     @staticmethod
@@ -36,7 +38,7 @@ class Timer:
 
     @property
     def current_time(self):
-        return self.ms_to_second(time.get_ticks()) - self.seconds_restarted
+        return self.ms_to_second(time.get_ticks() - self.ms_restarted - self.__pause_timer.ms_spent_paused)
 
     def compute_if_finish_timer(self):
         if self.current_time == self.target_time:
@@ -63,8 +65,43 @@ class Timer:
             self.timer_finished = True
 
     def debug(self):
-        print(self.target_time)
-        print(self.current_time)
+        print(
+            f"current time: {self.current_time} | ms restarted: {self.ms_restarted} | "
+            f"pause time: {self.__pause_timer.ms_spent_paused} | target time: {self.target_time}")
+
+    @property
+    def pause_timer(self):
+        return self.__pause_timer
+
+
+class PauseTimer:
+    __started_pause = False
+
+    def __init__(self):
+        self.__ms_pause_start: int = 0
+        self.__ms_pause_ended: int = 0
+        self.__total_ms_spent_paused = 0
+
+    def restart(self):
+        self.__ms_pause_start = 0
+        self.__ms_pause_ended = 0
+        self.__total_ms_spent_paused = 0
+        self.__started_pause = False
+
+    @property
+    def ms_spent_paused(self):
+        if self.__started_pause:
+            return self.__total_ms_spent_paused + (time.get_ticks() - self.__ms_pause_start)
+        return self.__total_ms_spent_paused
+
+    def start_pause(self):
+        self.__ms_pause_start = time.get_ticks()
+        self.__started_pause = True
+
+    def end_pause(self):
+        self.__ms_pause_ended = time.get_ticks()
+        self.__total_ms_spent_paused += self.__ms_pause_ended - self.__ms_pause_start
+        self.__started_pause = False
 
 
 class DelayTimer:

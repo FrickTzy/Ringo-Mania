@@ -23,7 +23,8 @@ class ManiaPlayWindow(GameModeWindow):
         self.circle_interval_timer = IntervalTimer()
         self.show_acc = ShowAcc()
         self.map_status = MapStatus(imported=self.imported)
-        self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font, state=self.state)
+        self.pause = Pause(music=self.music, mini_timer=self.circle_interval_timer, font=self.font, state=self.state,
+                           pause_timer=self.timer.pause_timer)
         self.end_screen = EndScreen(window_size=self.display.get_window_size, state=self.state, map_info=map_info)
         self.rectangle = Rectangle(maps=self.map_manager,
                                    display=self.display, combo_counter=self.combo_counter,
@@ -34,6 +35,7 @@ class ManiaPlayWindow(GameModeWindow):
 
     def run(self):
         self.background_setup()
+        self.timer.debug()
         self.timer.compute_if_finish_timer()
         self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
         self.show_stats_and_etc()
@@ -61,7 +63,7 @@ class ManiaPlayWindow(GameModeWindow):
         if self.__setup_finished:
             return
         music_length = self.music.play_music()
-        self.timer.update_target_time(music_length, END_SONG_DELAY)
+        self.timer.set_target_time(music_length, END_SONG_DELAY)
         self.record.init_record(self.play_tracker.check_plays())
         self.display.show_cursor(show=False)
         self.__setup_finished = True

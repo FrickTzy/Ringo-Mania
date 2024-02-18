@@ -10,12 +10,13 @@ class Pause:
     __PAUSE_INTERVAL = 150
     __BACKGROUND_COLOR = Color.BLACK
 
-    def __init__(self, music: Music, mini_timer, font: Font, state):
+    def __init__(self, music: Music, mini_timer, font: Font, state, pause_timer):
         self.__starting_time: int = 0
         self.__paused = False
         self.__music = music
         self.__opacity = Opacity()
         self.__pos = PausePos()
+        self.__pause_timer = pause_timer
         self.mini_timer = mini_timer
         self.timer = Timer()
         self.__state = state
@@ -36,11 +37,13 @@ class Pause:
                 if self.__paused:
                     self.unpause()
                     self.timer.end_time_ms()
+                    self.__pause_timer.end_pause()
                     self.__paused = False
                     return False
                 else:
                     self.timer.reset_time()
                     self.timer.start_time_ms()
+                    self.__pause_timer.start_pause()
                     self.__paused = True
                     return True
         return False

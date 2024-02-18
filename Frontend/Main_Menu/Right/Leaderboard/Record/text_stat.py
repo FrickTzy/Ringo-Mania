@@ -1,5 +1,5 @@
 from pygame import font
-from Frontend.Settings import Color, PLAYER_NAME
+from Frontend.Settings import Color
 
 
 class TextStats:
@@ -12,7 +12,7 @@ class TextStats:
 
     def show_text(self, main_menu_surface):
         self.__font.check_if_change_font(height=self.__pos.height)
-        player_name = self.__font.font.render(PLAYER_NAME, True, self.__COLOR)
+        player_name = self.__font.font.render(f"{self.__play_info['player_name']}", True, self.__COLOR)
         score = self.__font.font.render(f"{self.__play_info['score']}", True, self.__COLOR)
         accuracy = self.__font.font.render(
             f"{format(float(str(self.__play_info['accuracy']).removesuffix('%')), '.2f')}%",
@@ -23,7 +23,7 @@ class TextStats:
 
     def show_static_text(self, main_menu_surface, y):
         self.__font.check_if_change_font(height=self.__pos.height)
-        player_name = self.__font.font.render(PLAYER_NAME, True, self.__COLOR)
+        player_name = self.__font.font.render(f"{self.__play_info['player_name']}", True, self.__COLOR)
         score = self.__font.font.render(str(self.__play_info["score"]), True, self.__COLOR)
         accuracy = self.__font.font.render(str(self.__play_info["accuracy"]), True,
                                            self.__COLOR)

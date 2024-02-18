@@ -1,5 +1,6 @@
 from pygame import font as pyfont
-from Frontend.Settings import Color, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG
+from Frontend.Settings import Color, MAX_LIFE, LIFE_INCREASE, LIFE_DMG, GRADE_ACC, COMBO_DIVIDER, OKAY_lIFE_DMG, \
+    PLAYER_NAME
 from Frontend.Mania_Window.Stats.Combo.date import Date
 
 
@@ -167,7 +168,8 @@ class ComboCounter:
 
     @property
     def get_stats(self):
-        return {"score": self.info.score, "accuracy": f"{self.__formatted_acc}%", "acc_dict": self.__acc_dict,
+        return {"player_name": PLAYER_NAME, "score": self.info.score, "accuracy": f"{self.__formatted_acc}%",
+                "acc_dict": self.__acc_dict,
                 "combo": self.info.combo,
                 "highest_combo": self.info.highest_combo, "grade": self.get_grade, "date": self.__date.get_date,
                 "time": self.__date.get_time}
