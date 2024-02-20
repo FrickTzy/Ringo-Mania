@@ -9,14 +9,16 @@ class Record:
     __OPACITY = 200
     __viewed = False
 
-    def __init__(self, play_dict, display, pos, state, profile_image):
+    def __init__(self, play_dict, display, pos, state, leaderboard_image_manager):
         self.__pos = RecordPos(display=display, pos=pos)
         self.__play_dict = play_dict
         self.__text_stats = TextStats(play_info=play_dict, pos=self.__pos)
         self.__rect = Rect(self.__pos.record_x, self.__pos.record_y, self.__pos.record_width,
                            self.__pos.record_height)
         self.__button_handler = ButtonEventHandler()
-        self.__profile = RecordProfile(pos=self.__pos, profile_image=profile_image)
+        self.__profile = RecordProfile(pos=self.__pos,
+                                       leaderboard_image_manager=leaderboard_image_manager,
+                                       player_name=play_dict["player_name"])
         self.__state = state
 
     def show(self, main_menu_surface, y: int):
@@ -70,30 +72,23 @@ class Record:
         self.__rect.width = self.__pos.record_width
         self.__rect.height = self.__pos.record_height
 
-    @property
-    def profile_size_tuple(self):
-        return self.__profile.profile_size_tuple
-
 
 class RecordProfile:
-    def __init__(self, pos, profile_image):
+    def __init__(self, pos, leaderboard_image_manager, player_name):
         self.__pos = ProfilePos(pos=pos)
-        self.__profile_image = profile_image
+        self.__leaderboard_image_manager = leaderboard_image_manager
+        self.__player_name = player_name
 
     def show_profile(self, main_menu_surface):
-        main_menu_surface.blit(self.__profile_image.profile_image, self.__pos.img_coord)
+        main_menu_surface.blit(self.__leaderboard_image_manager.get_profile_image(player_name=self.__player_name),
+                               self.__pos.img_coord)
 
     def show_static_profile(self, main_menu_surface, y: int):
-        main_menu_surface.blit(self.__profile_image.profile_image, (self.__pos.img_coord[0], self.__pos.y(y=y)))
-
-    @property
-    def profile_size_tuple(self):
-        return self.__pos.size_tuple
+        main_menu_surface.blit(self.__leaderboard_image_manager.get_profile_image(player_name=self.__player_name),
+                               (self.__pos.img_coord[0], self.__pos.y(y=y)))
 
 
 class ProfilePos:
-    __SIZE_RATIO = 18
-
     def __init__(self, pos):
         self.__pos = pos
 
@@ -109,14 +104,6 @@ class ProfilePos:
         if not y:
             return self.__pos.record_y + 5
         return y + 5
-
-    @property
-    def size_tuple(self):
-        return self.__size, self.__size
-
-    @property
-    def __size(self):
-        return self.__pos.height // self.__SIZE_RATIO
 
 
 class RecordPos:

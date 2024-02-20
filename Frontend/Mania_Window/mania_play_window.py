@@ -35,7 +35,6 @@ class ManiaPlayWindow(GameModeWindow):
 
     def run(self):
         self.background_setup()
-        self.timer.debug()
         self.timer.compute_if_finish_timer()
         self.rectangle.run(current_time=self.timer.current_time, pause=self.pause.is_paused)
         self.show_stats_and_etc()

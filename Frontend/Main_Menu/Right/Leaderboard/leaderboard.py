@@ -1,4 +1,5 @@
-from .Record import Record, RecordProfileImage
+from .Record import Record
+from .Image_Manager import LeaderboardImageManager
 from pygame import Surface
 from Frontend.Helper_Files import ButtonEventHandler
 
@@ -7,7 +8,7 @@ class Leaderboard:
     __initialized = False
     __map_records_dict = {}
 
-    def __init__(self, play_tracker, display, state, notifier, sfx_manager):
+    def __init__(self, play_tracker, display, state, notifier, sfx_manager, profile_image_manager):
         self.__play_tracker = play_tracker
         self.__display = display
         self.__pos = Pos(display=display)
@@ -19,10 +20,12 @@ class Leaderboard:
         self.__event_handler = LeaderboardEventHandler(record_list=self.__record_list, pos=self.__pos,
                                                        view=self.__view_counter, notifier=notifier,
                                                        sfx_manager=sfx_manager)
-        self.__profile_image = RecordProfileImage()
+        self.__leaderboard_image_manager = LeaderboardImageManager(profile_image_manager=profile_image_manager,
+                                                                   display=display)
 
     def show_leaderboard(self, main_menu_surface, background_img):
         self.__init_leaderboard()
+        self.__leaderboard_image_manager.check_if_resize()
         self.__show_all_records(main_menu_surface=main_menu_surface, background_img=background_img)
         self.__event_handler.check_for_events()
 
@@ -45,7 +48,6 @@ class Leaderboard:
         for record in play_list["all records"]:
             self.__record_list.append(record)
         self.__pos.reset_record_starting_y()
-        self.change_record_size()
         self.__initialized = True
 
     def __get_records(self):
@@ -53,7 +55,7 @@ class Leaderboard:
             play_list = self.__play_tracker.check_plays()
             self.__map_records_dict[name] = self.__get_all_map_bars(play_list=play_list)
         return self.__map_records_dict[name]
-    
+
     def __get_records_without_checking_dict(self):
         play_list = self.__play_tracker.check_plays()
         return self.__get_all_map_bars(play_list=play_list)
@@ -64,17 +66,12 @@ class Leaderboard:
             return {}
         for play in play_list:
             record_list.append(Record(play_dict=play, display=self.__display, state=self.__state, pos=self.__pos,
-                                      profile_image=self.__profile_image))
+                                      leaderboard_image_manager=self.__leaderboard_image_manager))
         return {
             "best play": Record(play_dict=play_list[0], display=self.__display, state=self.__state, pos=self.__pos,
-                                profile_image=self.__profile_image),
+                                leaderboard_image_manager=self.__leaderboard_image_manager),
             "all records": record_list
         }
-
-    def change_record_size(self):
-        if not self.__record_list:
-            return
-        self.__profile_image.set_size(self.__record_list[0].profile_size_tuple)
 
     def restart(self):
         self.__initialized = False
