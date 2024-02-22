@@ -15,7 +15,7 @@ class MainMenu(WindowInterface):
     __FONT_COLOR = Color.WHITE
     __COLOR = Color.DARK_PURPLE
 
-    def __init__(self, display, window_manager, map_info, play_tracker, music, profile_image_manager):
+    def __init__(self, display, window_manager, map_info, play_tracker, player_tracker, music, profile_image_manager):
         self.__display = display
         self.__pos = MainMenuPos(display=display)
         self.__music = music
@@ -25,7 +25,8 @@ class MainMenu(WindowInterface):
         self.__event_handler = MainMenuEventHandler(main_menu=self, window_manager=window_manager,
                                                     search_tracker=self.__search_tracker, notifier=self.__notifier)
         self.__main_menu_surface = Surface(self.__display.get_window_size, SRCALPHA)
-        self.__top_div = Top(display=self.__display, map_info=map_info)
+        self.__top_div = Top(display=self.__display, map_info=map_info, player_tracker=player_tracker,
+                             image_manager=profile_image_manager)
         self.__bottom_div = Bottom(display=self.__display)
         self.__right_div = Right(play_tracker=play_tracker, display=self.__display, state=self.__event_handler.state,
                                  notifier=self.__notifier, sfx_manager=self.__sfx_manager,

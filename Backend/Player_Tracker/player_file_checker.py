@@ -23,7 +23,7 @@ class PlayerFileChecker:
             json.dump(self.__get_new_player_json(player_name=player_name), file)
 
     def __get_new_player_json(self, player_name):
-        return {'name': player_name, "accuracy": "100.00%", "rin_points": "0rp", "total_score": 0,
+        return {'player_name': player_name, "level": 1, "accuracy": "100.00%", "rin_points": "0rp", "total_score": 0,
                 "date_created": self.__get_date()}
 
     @staticmethod

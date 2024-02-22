@@ -1,6 +1,5 @@
 from pygame import font
 from Frontend.Settings import Color
-from Frontend.Helper_Files import ButtonEventHandler
 
 
 class Text:
@@ -8,7 +7,6 @@ class Text:
 
     def __init__(self, map_info, display):
         self.__map_info = map_info
-        self.__event_handler = ButtonEventHandler()
         self.__font = Font()
         self.__pos = TextPos(display=display)
 

@@ -1,4 +1,4 @@
-from player_file_checker import PlayerFileChecker
+from .player_file_checker import PlayerFileChecker
 
 
 class PlayerTracker:
@@ -12,6 +12,3 @@ class PlayerTracker:
         if not self.__file_checker.check_if_player_exist(player_name=player_name):
             self.__create_player_info(player_name=player_name)
         return self.__file_checker.get_player_info(player_name=player_name)
-
-
-print(PlayerTracker().get_player_info("Frick"))

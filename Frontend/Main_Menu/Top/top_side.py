@@ -1,16 +1,18 @@
 from pygame import Rect, draw, Surface, SRCALPHA
 from Frontend.Settings import Color
-from Frontend.Main_Menu.Top.Top_Right.top_right_info import TopRight
+from .Top_Right import TopRight
+from .Profile_Box import ProfileBox
 
 
 class Top:
     __COLOR = Color.DARK_PURPLE
 
-    def __init__(self, display, map_info):
+    def __init__(self, display, map_info, image_manager, player_tracker):
         self.__pos = Pos(display=display)
         self.__top_rect = Rect(0, 0, self.__pos.width, self.__pos.top_rect_height)
         self.__outline = Outline()
         self.__top_surface = Surface(self.__pos.get_window_size, SRCALPHA)
+        self.__profile_box = ProfileBox(display=display, image_manager=image_manager, player_tracker=player_tracker)
         self.__top_right_div = TopRight(display=display, map_info=map_info, outline=self.__outline)
 
     def __update_rect(self):
@@ -21,6 +23,7 @@ class Top:
         self.__top_right_div.show(surface=self.__top_surface)
         self.__show_outline(surface=self.__top_surface)
         self.__show_rect(surface=self.__top_surface)
+        self.__profile_box.show(surface=self.__top_surface)
         main_menu_surface.blit(self.__top_surface, (0, 0))
 
     def __show_outline(self, surface):
