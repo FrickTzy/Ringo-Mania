@@ -1,9 +1,10 @@
-from pygame import K_BACKSPACE, K_TAB, K_DOWN, K_UP, K_RETURN, K_LALT, K_RALT, K_KP_ENTER
+from pygame import K_BACKSPACE, K_TAB, K_DOWN, K_UP, K_RETURN, K_LALT, K_RALT, K_KP_ENTER, K_RSHIFT, K_LSHIFT, \
+    K_CAPSLOCK
 
 
 class SearchTracker:
     __changed = False
-    __FORBIDDEN_KEYS = [K_TAB, K_LALT, K_RALT, K_DOWN, K_UP, K_RETURN, K_KP_ENTER]
+    __FORBIDDEN_KEYS = [K_TAB, K_LALT, K_RALT, K_DOWN, K_UP, K_RETURN, K_KP_ENTER, K_LSHIFT, K_RSHIFT, K_CAPSLOCK]
 
     def __init__(self):
         self.__current_search = ""

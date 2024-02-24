@@ -95,7 +95,7 @@ class TextPos:
         return self.__profile_box_pos.starting_y + 14
 
     def player_info_pos(self, image_end_x, nth_position):
-        return self.__text_x(image_end_x=image_end_x), self.__player_name_y + 11 + \
+        return self.__text_x(image_end_x=image_end_x), self.__player_name_y + 10 + \
                self.__player_info_y_interval * nth_position
 
     @property

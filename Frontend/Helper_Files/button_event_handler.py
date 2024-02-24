@@ -3,10 +3,11 @@ from pygame import mouse
 
 class ButtonEventHandler:
     @classmethod
-    def check_buttons_for_clicks(cls, starting_pos: tuple[int, int], size: tuple[int, int], command) -> bool:
+    def check_buttons_for_clicks(cls, starting_pos: tuple[int, int], size: tuple[int, int], command=None) -> bool:
         mouse_pressed = mouse.get_pressed()[0]
         if cls.check_if_mouse_is_in_an_area(starting_pos=starting_pos, size=size) and mouse_pressed:
-            command()
+            if command is not None:
+                command()
             return True
         return False
 

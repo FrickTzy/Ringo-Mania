@@ -1,5 +1,6 @@
 from pygame import transform, Surface
 from copy import copy
+from .profile_image_event_handler import ProfileImageEventHandler
 
 
 class ProfileImage:
@@ -7,6 +8,7 @@ class ProfileImage:
         self.__image = self.__copy_profile_image(image_manager=image_manager, player_name=player_name)
         self.__size_manager = SizeManager(display=display)
         self.__pos = PosManager(profile_box_pos=profile_box_pos)
+        self.__event_handler = ProfileImageEventHandler()
 
     @staticmethod
     def __copy_profile_image(image_manager, player_name):
@@ -14,6 +16,8 @@ class ProfileImage:
 
     def show(self, surface: Surface):
         self.__check_if_resize()
+        self.__event_handler.check_if_click(starting_pos=self.__pos.profile_image_pos,
+                                            size=self.__size_manager.profile_image_size)
         surface.blit(self.__image, self.__pos.profile_image_pos)
 
     def __check_if_resize(self):
