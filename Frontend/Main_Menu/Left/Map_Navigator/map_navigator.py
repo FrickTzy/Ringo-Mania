@@ -26,7 +26,8 @@ class MapNavigator:
         self.__event_handler = MapNavigatorEventHandler(list_manager=self.__list_manager, pos=self.__pos,
                                                         notifier=notifier,
                                                         sfx_manager=sfx_manager, hover_manager=self.__hover_manager,
-                                                        scroll_manager=self.__scroll_manager)
+                                                        scroll_manager=self.__scroll_manager,
+                                                        search_tracker=search_tracker)
         self.__search_manager = SearchManager(map_nav_pos=self.__pos, search_tracker=search_tracker,
                                               list_manager=self.__list_manager,
                                               view_counter=self.__view_counter)

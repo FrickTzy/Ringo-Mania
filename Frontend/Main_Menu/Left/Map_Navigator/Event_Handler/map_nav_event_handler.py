@@ -1,12 +1,12 @@
-from pygame import key, K_RETURN, K_UP, K_DOWN
-from Backend.timer import IntervalTimer
+from pygame import key, K_RETURN, K_UP, K_DOWN, K_BACKSPACE
+from Backend.timer import IntervalTimer, ActivationTimer
 from Frontend.Helper_Files import ButtonEventHandler
 
 
 class MapNavigatorEventHandler:
     __CLICK_INTERVAL = 80
 
-    def __init__(self, list_manager, pos, notifier, sfx_manager, hover_manager, scroll_manager):
+    def __init__(self, list_manager, pos, notifier, sfx_manager, hover_manager, scroll_manager, search_tracker):
         self.__interval_timer: IntervalTimer = IntervalTimer(interval=self.__CLICK_INTERVAL)
         self.__filtered_event_handler = FilteredEventHandler(list_manager=list_manager)
         self.__unfiltered_event_handler = UnfilteredEventHandler(list_manager=list_manager)
@@ -19,7 +19,8 @@ class MapNavigatorEventHandler:
                                                        notifier=notifier, sfx_manager=sfx_manager,
                                                        hover_manager=hover_manager)
         self.__keyboard_event_handler = KeyboardEventHandler(scroll_manager=scroll_manager,
-                                                             list_manager=list_manager, sfx_manager=sfx_manager)
+                                                             list_manager=list_manager, sfx_manager=sfx_manager,
+                                                             search_tracker=search_tracker)
 
     def check_for_events(self, current_index):
         self.__mouse_event_handler.check_mouse_input_events(current_index=current_index)
@@ -85,10 +86,11 @@ class MouseEventHandler:
 
 
 class KeyboardEventHandler:
-    def __init__(self, scroll_manager, list_manager, sfx_manager):
+    def __init__(self, scroll_manager, list_manager, sfx_manager, search_tracker):
         self.__scroll_manager = scroll_manager
         self.__list_manager = list_manager
         self.__sfx_manager = sfx_manager
+        self.__search_backspace_tracker = SearchBackspaceTracker(search_tracker=search_tracker)
 
     def __check_if_enter_key(self, key_pressed, map_bar):
         if key_pressed[K_RETURN]:
@@ -114,8 +116,38 @@ class KeyboardEventHandler:
 
     def check_keyboard_input_events(self, current_index):
         key_pressed = key.get_pressed()
+        self.__search_backspace_tracker.check_if_hold_backspace(key_pressed=key_pressed)
         self.__check_if_enter_key(key_pressed=key_pressed, map_bar=self.__list_manager.map_bar_list[current_index])
         self.__check_if_scroll(key_pressed=key_pressed)
+
+
+class SearchBackspaceTracker:
+    __BACKSPACE_HOLD_INTERVAL = 200
+    __REMOVE_CHARACTER_INTERVAL = 50
+    __hold_backspace = False
+
+    def __init__(self, search_tracker):
+        self.__search_tracker = search_tracker
+        self.__activation_timer = ActivationTimer(interval=self.__BACKSPACE_HOLD_INTERVAL)
+        self.__remover_timer = ActivationTimer(interval=self.__REMOVE_CHARACTER_INTERVAL)
+
+    def check_if_hold_backspace(self, key_pressed):
+        pressed_backspace = key_pressed[K_BACKSPACE]
+        finished_interval = self.__remover_timer.activation_started(activated=pressed_backspace)
+        self.__check_if_started_holding_backspace(pressed_backspace=pressed_backspace)
+        if not pressed_backspace:
+            self.__hold_backspace = False
+            return
+        if not self.__hold_backspace:
+            return
+        if not finished_interval:
+            return
+        self.__search_tracker.remove_a_letter()
+
+    def __check_if_started_holding_backspace(self, pressed_backspace: bool):
+        activation_complete = self.__activation_timer.activation_started(activated=pressed_backspace)
+        if activation_complete:
+            self.__hold_backspace = True
 
 
 class FilteredEventHandler:

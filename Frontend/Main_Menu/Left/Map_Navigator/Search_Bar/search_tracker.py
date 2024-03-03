@@ -23,11 +23,16 @@ class SearchTracker:
         self.__changed = False
         return changed
 
+    def remove_a_letter(self):
+        if not self.__current_search:
+            return
+        self.__current_search = self.__current_search[:-1]
+
     def add_letter(self, event):
         if event.key in self.__FORBIDDEN_KEYS:
             return
         elif event.key == K_BACKSPACE:
-            self.__current_search = self.__current_search[:-1]
+            self.remove_a_letter()
         else:
             self.__current_search += event.dict.get("unicode", "")
         self.__changed = True

@@ -173,8 +173,27 @@ class ActivationTimer:
         self.__interval = interval
 
     def activation_stopped(self, activated: bool) -> bool:
+        """
+        This function takes a bool and if that bool stays false for a certain time, it will return True.
+        :param activated:
+        :return:
+        """
         current_time = time.get_ticks()
         if activated:
+            self.__last_time_taken = current_time
+        if current_time >= self.__last_time_taken + self.__interval:
+            self.__last_time_taken = current_time
+            return True
+        return False
+
+    def activation_started(self, activated: bool) -> bool:
+        """
+        This function takes a bool and if that bool stays true for a certain time, it will return True.
+        :param activated:
+        :return:
+        """
+        current_time = time.get_ticks()
+        if not activated:
             self.__last_time_taken = current_time
         if current_time >= self.__last_time_taken + self.__interval:
             self.__last_time_taken = current_time
