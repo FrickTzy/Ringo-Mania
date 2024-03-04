@@ -1,4 +1,4 @@
-from Backend.timer import DelayTimer
+from Backend.Timer import DelayTimer
 from Frontend.Helper_Files.button_event_handler import ButtonEventHandler
 
 

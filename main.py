@@ -1,5 +1,6 @@
 import pygame
-from Backend import Music, Timer, MapManager, PlayTracker, MapInfo, ProfileImageManager, PlayerTracker
+from Backend import Music, MapManager, PlayTracker, MapInfo, ProfileImageManager, PlayerTracker
+from Backend.Timer import TargetTimer
 from Frontend.Main_Menu import MainMenu
 from Frontend.Mania_Window import ManiaPlayWindow
 from Frontend.Helper_Files import Display, WindowManager
@@ -11,7 +12,7 @@ class Main:
     __FRAME_COLOR = Color.BLACK
 
     def __init__(self):
-        self.__timer = Timer()
+        self.__timer = TargetTimer()
         self.__display = Display()
         self.__map_info = MapInfo()
         self.__music = Music(map_info=self.__map_info)

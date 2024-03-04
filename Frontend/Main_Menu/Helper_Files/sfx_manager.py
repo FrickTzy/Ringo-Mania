@@ -1,7 +1,7 @@
 from pygame import mixer
 from os import path
 from Frontend.Settings import SFX_VOLUME
-from Backend.timer import IntervalTimer
+from Backend.Timer import IntervalTimer
 
 
 class SFXManager:

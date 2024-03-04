@@ -1,5 +1,5 @@
 from pygame import Rect, draw
-from Backend.timer import DelayTimer
+from Backend.Timer import DelayTimer
 from Frontend.Settings import Color
 from Frontend.Helper_Files.Transition.opacity import Opacity
 from Frontend.Helper_Files.Animation import Animation, EaseOutCubicSmoothing

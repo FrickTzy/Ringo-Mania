@@ -1,6 +1,6 @@
 from Frontend.Mania_Window.Rectangle.Circles.circles import Circle
 from Frontend.Settings import FALLING_SPEED, Color, DEFAULT_CIRCLE_SIZE
-from Backend.timer import IntervalTimer
+from Backend.Timer import IntervalTimer
 from pygame import Rect, draw
 from random import randrange
 

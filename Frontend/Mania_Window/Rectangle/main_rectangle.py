@@ -3,7 +3,7 @@ from Frontend.Settings import IMPORT_MAP, Color
 from Frontend.Mania_Window.Stats.Combo.combo import ComboCounter
 from Frontend.Mania_Window.Rectangle.lane_manager import LaneManager, ImportCircles
 from Frontend.Mania_Window.Stats.Show_Acc.show_acc import ShowAcc
-from Backend.timer import IntervalTimer
+from Backend.Timer import IntervalTimer
 
 
 class Rectangle:

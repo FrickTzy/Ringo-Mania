@@ -1,6 +1,5 @@
 from pygame import Surface, SurfaceType, SRCALPHA, draw, mouse
-
-from Backend import DelayTimer
+from Backend.Timer import DelayTimer
 from .left_side import LeftScoreScreen
 from .right_side import RightScoreScreen
 from Frontend.Helper_Files import FadeEffect, Opacity, State

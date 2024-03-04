@@ -7,7 +7,8 @@ from Frontend.Mania_Window.Stats import ComboCounter, ShowAcc, Stats, Record
 from Frontend.Mania_Window.Pause import Pause
 from Frontend.Mania_Window.End_Screen import EndScreen
 from Frontend.Helper_Files.Interfaces import State, WindowEventHandler
-from Backend import IntervalTimer, Music
+from Backend import Music
+from Backend.Timer import IntervalTimer
 
 
 class ManiaPlayWindow(GameModeWindow):

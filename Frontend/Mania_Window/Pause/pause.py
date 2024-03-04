@@ -1,6 +1,6 @@
 from pygame import time, Surface, SRCALPHA, SurfaceType, draw, K_TAB, mouse
 from Backend import Music
-from Backend import Timer
+from Backend.Timer import StopwatchTimer
 from Frontend.Mania_Window.Misc.font import Font
 from Frontend.Settings import WIDTH, HEIGHT, Color
 from Frontend.Helper_Files import ButtonEventHandler
@@ -17,8 +17,8 @@ class Pause:
         self.__opacity = Opacity()
         self.__pos = PausePos()
         self.__pause_timer = pause_timer
-        self.mini_timer = mini_timer
-        self.timer = Timer()
+        self.__mini_timer = mini_timer
+        self.__stopwatch = StopwatchTimer()
         self.__state = state
         self.__pause_surface = Surface((WIDTH, HEIGHT), SRCALPHA)
         self.__restarted = False
@@ -36,13 +36,13 @@ class Pause:
                 self.__starting_time = current_time
                 if self.__paused:
                     self.unpause()
-                    self.timer.end_time_ms()
+                    self.__stopwatch.end_time_ms()
                     self.__pause_timer.end_pause()
                     self.__paused = False
                     return False
                 else:
-                    self.timer.reset_time()
-                    self.timer.start_time_ms()
+                    self.__stopwatch.reset_time()
+                    self.__stopwatch.start_time_ms()
                     self.__pause_timer.start_pause()
                     self.__paused = True
                     return True
@@ -81,13 +81,13 @@ class Pause:
 
     def unpause(self) -> None:
         self.__music.unpause_music()
-        self.mini_timer.last_time += self.timer.get_time_spent()
+        self.__mini_timer.last_time += self.__stopwatch.get_time_spent()
         self.__paused = False
         mouse.set_visible(False)
 
     @property
     def time_spent_paused(self) -> int | float:
-        return self.timer.get_time_spent()
+        return self.__stopwatch.get_time_spent()
 
 
 class PauseText:

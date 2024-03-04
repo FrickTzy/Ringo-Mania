@@ -1,7 +1,7 @@
 from Frontend.Mania_Window.Rectangle.lane import Lane
 from .Circles import CircleImage
 from random import randrange, getrandbits
-from Backend.timer import IntervalTimer
+from Backend.Timer import IntervalTimer
 
 
 class LaneManager:

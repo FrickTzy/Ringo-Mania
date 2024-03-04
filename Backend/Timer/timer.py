@@ -1,36 +1,31 @@
 from pygame import time
 
 
-class Timer:
+class TargetTimer:
+    __started: bool = False
+    __timer_finished: bool = False
+
     def __init__(self):
         self.__pause_timer = PauseTimer()
-        self.started: bool = False
-        self.target_time: int | float = 0
-        self.starting_time: int | float = 0
-        self.ending_time: int | float = 0
-        self.timer_finished: bool = False
-        self.ms_restarted: int = 0
+        self.__target_time: int | float = 0
+        self.__ms_restarted: int = 0
 
     def update_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:
-            self.target_time += target_time - end_song_delay
+            self.__target_time += target_time - end_song_delay
         else:
-            self.target_time += int(target_time) - end_song_delay
+            self.__target_time += int(target_time) - end_song_delay
 
     def set_target_time(self, target_time, end_song_delay=0, ms=False) -> None:
         if ms:
-            self.target_time = target_time - end_song_delay
+            self.__target_time = target_time - end_song_delay
         else:
-            self.target_time = int(target_time) - end_song_delay
-
-    def reset_time(self):
-        self.starting_time = 0
-        self.ending_time = 0
+            self.__target_time = int(target_time) - end_song_delay
 
     def restart(self):
-        self.ms_restarted = time.get_ticks()
+        self.__ms_restarted = time.get_ticks()
         self.__pause_timer.restart()
-        self.timer_finished = False
+        self.__timer_finished = False
 
     @staticmethod
     def ms_to_second(ms):
@@ -38,40 +33,60 @@ class Timer:
 
     @property
     def current_time(self):
-        return self.ms_to_second(time.get_ticks() - self.ms_restarted - self.__pause_timer.ms_spent_paused)
+        return self.ms_to_second(time.get_ticks() - self.__ms_restarted - self.__pause_timer.ms_spent_paused)
 
     def compute_if_finish_timer(self):
-        if self.current_time == self.target_time:
-            self.timer_finished = True
+        if self.current_time == self.__target_time:
+            self.__timer_finished = True
 
-    def start_time_ms(self):
-        self.starting_time = time.get_ticks()
-        self.started = True
-
-    def end_time_ms(self):
-        self.ending_time = time.get_ticks()
+    def compute_ms_time(self):
+        if self.get_current_ms >= self.__target_time:
+            self.__timer_finished = True
 
     @property
     def get_current_ms(self):
         return time.get_ticks()
 
-    def get_time_spent(self) -> int | float:
-        if not self.started:
-            return 0
-        return self.get_current_ms - self.starting_time
-
-    def compute_ms_time(self):
-        if self.get_current_ms >= self.target_time:
-            self.timer_finished = True
+    @property
+    def timer_finished(self):
+        return self.__timer_finished
 
     def debug(self):
         print(
-            f"current time: {self.current_time} | ms restarted: {self.ms_restarted} | "
-            f"pause time: {self.__pause_timer.ms_spent_paused} | target time: {self.target_time}")
+            f"current time: {self.current_time} | ms restarted: {self.__ms_restarted} | "
+            f"pause time: {self.__pause_timer.ms_spent_paused} | target time: {self.__target_time}")
 
     @property
     def pause_timer(self):
         return self.__pause_timer
+
+
+class StopwatchTimer:
+    __started: bool = False
+
+    def __init__(self):
+        self.__starting_time: int | float = 0
+        self.__ending_time: int | float = 0
+
+    def reset_time(self):
+        self.__starting_time = 0
+        self.__ending_time = 0
+
+    def start_time_ms(self):
+        self.__starting_time = time.get_ticks()
+        self.__started = True
+
+    def end_time_ms(self):
+        self.__ending_time = time.get_ticks()
+
+    def get_time_spent(self) -> int | float:
+        if not self.__started:
+            return 0
+        return self.__get_current_ms - self.__starting_time
+
+    @property
+    def __get_current_ms(self):
+        return time.get_ticks()
 
 
 class PauseTimer:
@@ -178,13 +193,10 @@ class ActivationTimer:
         :param activated:
         :return:
         """
-        current_time = time.get_ticks()
+        current_time = self.__get_current_time
         if activated:
             self.__last_time_taken = current_time
-        if current_time >= self.__last_time_taken + self.__interval:
-            self.__last_time_taken = current_time
-            return True
-        return False
+        return self.__check_if_finished_interval(current_time=current_time)
 
     def activation_started(self, activated: bool) -> bool:
         """
@@ -192,13 +204,20 @@ class ActivationTimer:
         :param activated:
         :return:
         """
-        current_time = time.get_ticks()
+        current_time = self.__get_current_time
         if not activated:
             self.__last_time_taken = current_time
+        return self.__check_if_finished_interval(current_time=current_time)
+
+    def __check_if_finished_interval(self, current_time):
         if current_time >= self.__last_time_taken + self.__interval:
             self.__last_time_taken = current_time
             return True
         return False
+
+    @property
+    def __get_current_time(self):
+        return time.get_ticks()
 
     def debug(self):
         print("Debugging: ")

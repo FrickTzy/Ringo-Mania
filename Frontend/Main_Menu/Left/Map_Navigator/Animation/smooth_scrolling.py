@@ -1,7 +1,7 @@
 from Frontend.Helper_Files.Animation import SmoothAnimation, EaseOutBackSmoothing
 from Frontend.Helper_Files.Transition.target_manager import TargetManager
 from Frontend.Main_Menu.Left.Map_Navigator.Helper_Files.pos import MapNavigatorPos
-from Backend.timer import ActivationTimer
+from Backend.Timer import ActivationTimer
 
 
 class SmoothScroll:

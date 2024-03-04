@@ -1,5 +1,5 @@
 from pygame import key, K_RETURN, K_UP, K_DOWN, K_BACKSPACE
-from Backend.timer import IntervalTimer, ActivationTimer
+from Backend.Timer import IntervalTimer, ActivationTimer
 from Frontend.Helper_Files import ButtonEventHandler
 
 

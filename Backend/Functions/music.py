@@ -1,7 +1,7 @@
 from pygame import mixer
 from pygame import time
 from Frontend.Settings import SONG_VOLUME, HIT_SOUND_VOLUME, MISS_SOUND_VOLUME, SONG_FADE
-from Backend.timer import IntervalTimer, Timer
+from Backend.Timer import IntervalTimer, TargetTimer
 from Backend.Map_Info.Map_Songs.songs_checker import SongChecker
 import os
 
@@ -18,7 +18,7 @@ class Music:
         self.__song_volume = SONG_VOLUME
         self.__starting_ms = time.get_ticks()
         self.__mini_timer: IntervalTimer = IntervalTimer(self.__SOUND_INTERVAL)
-        self.__timer: Timer = Timer()
+        self.__timer: TargetTimer = TargetTimer()
         self.__map_info = map_info
         self.__song_checker = SongChecker()
         mixer.init()
